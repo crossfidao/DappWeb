@@ -1,91 +1,96 @@
 <template>
   <div class="home" ref="form" :model="params" label-width="80px">
-    <el-button @click="ethereum">连接 MetaMask</el-button>
-    <!-- usdt -->
-    <el-form class="form" ref="form" :model="params" label-width="80px">
-      <el-form-item label="地址">
-        <el-input
-          v-model="usdt.address"
-          placeholder="请输入合约地址"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="金额">
-        <el-input
-          v-model="usdt.value"
-          placeholder="请输入金额（精度为6）"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="approve">
-          {{ '调用 approve' }}
-        </el-button>
-      </el-form-item>
-    </el-form>
-    <div class="line"></div>
-    <el-form class="form" ref="form" :model="params" label-width="80px">
-      <el-form-item label="合约地址">
-        <el-input
-          v-model="params.address"
-          placeholder="请输入合约地址"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="合约ABI">
-        <!-- <el-input v-model="params.abi" placeholder="请输入合约ABI"></el-input> -->
-      </el-form-item>
-      <el-form-item label="方法类型" v-show="contract">
-        <el-radio-group
-          style="width:100%"
-          v-model="params.status"
-          @change="changeStatus"
-        >
-          <el-radio :label="0">查询</el-radio>
-          <el-radio :label="1">执行</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="合约方法" v-show="contract">
-        <el-select
-          style="width:100%"
-          v-model="methods"
-          placeholder="请选择"
-          @change="changeMethods"
-        >
-          <el-option
-            v-for="item in abiOptions"
-            :key="item.name"
-            :label="item.name"
-            :value="item.name"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item
-        v-for="(item, index) in inputs"
-        :label="item.name"
-        :key="item.name"
-      >
-        <el-input
-          v-model="inputs[index].params"
-          :placeholder="item.type"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="value" v-if="inputs.stateMutability === 'payable'">
-        <el-input v-model="price" placeholder="请输入金额"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="initContract" v-if="!contract">
-          {{ contract ? '执行' : '初始化合约' }}
-        </el-button>
-        <el-button type="primary" @click="handleClick" v-else>
-          {{ contract ? '执行' : '初始化合约' }}
-        </el-button>
-      </el-form-item>
-    </el-form>
-    <div class="result" v-for="(item, key, index) in result" :key="index">
-      <span v-show="getShow(key)">{{ key }} {{ item }}</span>
+    <div class="header">
+      <div class="header-top">
+        账户总览
+        <span>...</span>
+      </div>
+      <div class="header-address">
+        <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
+        <span>转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span>
+      </div>
     </div>
-    <!-- <div class="result" v-for="(item, index) in result" :key="index">
-      {{ item }}
-    </div> -->
+
+    <div class="content">
+      FD_H5
+      <h4 class="title">钱包资产</h4>
+      <div class="item">
+        <div class="number-box flex">
+          <span class="text border">eFile</span>
+          <div class="number">23123.32</div>
+        </div>
+        <div class="btn-box flex">
+          <span class="text-desc">
+            eFil 可由 1:1 的 Filecoin 兑换获得
+          </span>
+          <div class="btn" @click="showMask = true">回购</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="number-box flex">
+          <span class="text border">FD</span>
+          <div class="number">23123.32</div>
+        </div>
+        <div class="btn-box flex">
+          <span class="text-desc">
+            FD 可由控股和挖矿获得
+          </span>
+          <div class="btn">回购</div>
+        </div>
+      </div>
+      <h4 class="title">合约资产</h4>
+      <div class="items">
+        <div class="items-content">
+          <div class="border items-item">
+            <span class="text">eFil 资产</span>
+            <p class="number">34343.34</p>
+          </div>
+          <div class="items-item">
+            <span class="text">eFil 资产</span>
+            <p class="number1">34343.34</p>
+          </div>
+        </div>
+        <div class="items-content">
+          <div class="border items-item">
+            <span class="text">eFil 资产</span>
+            <p class="number">34343.34</p>
+          </div>
+          <div class="items-item">
+            <span class="text">eFil 资产</span>
+            <p class="number1">34343.34</p>
+          </div>
+        </div>
+      </div>
+      <router-link to="/investment" tag="div" class="confirm-btn">
+        存币挖矿 获取利息
+      </router-link>
+    </div>
+    <div class="mask" v-show="showMask" @click="showMask = false">
+      <div class="mask-content">
+        <h4 class="mask-title">Filcoin 回购</h4>
+        <div class="form">
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="value"
+            placeholder="请输入您要售出的eFil数目"
+          />
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="value"
+            placeholder="请输入您自己的Filecoin地址"
+          />
+        </div>
+        <div class="footer">
+          <div class="footer-btn" @click="showMask = false">取消</div>
+          <div class="footer-btn">确定</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -98,9 +103,11 @@ export default {
   components: {},
   data() {
     return {
+      showMask: false,
+
       price: '',
       result: '',
-      value: 0,
+      value: '',
       usdt: {
         address: '',
         value: '',
@@ -880,7 +887,187 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.home {
+  background: #eee;
+  height: 100%;
+}
+.header {
+  position: relative;
+  &-top {
+    position: relative;
+    background: red;
+    height: 120px;
+    padding-top: 24px;
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    color: #fff;
+    font-size: 32px;
+    span {
+      position: absolute;
+      right: 12px;
+    }
+  }
+  &-address {
+    position: absolute;
+    top: 80px;
+    left: 58px;
+    right: 58px;
+    height: 143px;
+    background: #fff;
+    border-radius: 16px;
+    color: 12px;
+    font-size: 24px;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.content {
+  padding-top: 100px;
+  padding: 100px 58px;
+  .title {
+    margin-bottom: 32px;
+    font-size: 31px;
+    font-family: PingFang SC;
+    font-weight: 300;
+    color: #000000;
+    text-align: left;
+  }
+  .item {
+    background: #fff;
+    margin-bottom: 40px;
+    padding: 24px 40px;
+    border-radius: 10px;
+    // font-size: 46px;
+    .number-box {
+      height: 56px;
+    }
+    .number {
+      font-weight: bold;
+      font-size: 42px;
+    }
+    .btn-box {
+      margin-top: 24px;
+    }
+    .border {
+      border-bottom: 1px solid red;
+    }
+    .text {
+      width: 312px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 26px;
+      font-family: PingFang SC;
+      font-weight: 300;
+      text-align: left;
+      font-weight: bold;
+    }
+    .text-desc {
+      width: 400px;
+      text-align: left;
+      color: #96a5bf;
+      font-size: 20px;
+    }
+
+    .btn {
+      width: 130px;
+      height: 56px;
+      line-height: 56px;
+      font-size: 24px;
+      background: rgb(65, 181, 194);
+      border-radius: 30px;
+      color: #fff;
+    }
+  }
+}
+.items {
+  display: flex;
+  justify-content: space-around;
+  &-content {
+    width: 309px;
+    background: #fff;
+    border-radius: 16px;
+    text-align: left;
+    font-size: 24px;
+  }
+  .border {
+    border-bottom: 1px solid red;
+  }
+  &-item {
+    padding: 32px 42px;
+    .text {
+      display: block;
+      margin-bottom: 12px;
+      color: #96a5bf;
+    }
+    .number {
+      font-size: 42px;
+      font-weight: bold;
+    }
+    .number1 {
+      font-size: 32px;
+      color: #4d4d4d;
+    }
+  }
+}
+.confirm-btn {
+  width: 634px;
+  height: 87px;
+  line-height: 87px;
+  background: rgb(65, 181, 194);
+  margin-top: 24px;
+  border-radius: 42px;
+  color: #fff;
+  font-size: 32px;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  &-content {
+    width: 620px;
+    height: 400px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: #fff;
+    border-radius: 32px;
+    font-size: 30px;
+    color: #63c2cd;
+  }
+  &-title {
+    padding: 24px 0;
+  }
+  .footer {
+    display: flex;
+    justify-content: center;
+    &-btn {
+      width: 174px;
+      height: 64px;
+      margin: 0 27px;
+      line-height: 64px;
+      background: #63c2cd;
+      color: #fff;
+      font-size: 30px;
+      border-radius: 32px;
+    }
+  }
+}
 .form {
-  width: 500px;
+  padding: 0 32px;
+}
+.field {
+  height: 84px;
+  line-height: 84px;
+  background: #eee;
+  margin-bottom: 20px;
 }
 </style>

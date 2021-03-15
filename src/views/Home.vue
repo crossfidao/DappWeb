@@ -1,57 +1,6 @@
 <template>
   <div class="home" ref="form" :model="params" label-width="80px">
-    <el-form class="form" ref="form" :model="params" label-width="80px">
-      <el-form-item label="合约地址">
-        <el-input
-          v-model="params.address"
-          placeholder="请输入合约地址"
-        ></el-input>
-      </el-form-item>
-      <el-form-item label="合约ABI">
-        <!-- <el-input v-model="params.abi" placeholder="请输入合约ABI"></el-input> -->
-      </el-form-item>
-      <el-form-item label="方法类型" v-show="contract">
-        <el-radio-group
-          style="width:100%"
-          v-model="params.status"
-          @change="changeStatus"
-        >
-          <el-radio :label="0">查询</el-radio>
-          <el-radio :label="1">执行</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="合约方法" v-show="contract">
-        <el-select
-          style="width:100%"
-          v-model="methods"
-          placeholder="请选择"
-          @change="changeMethods"
-        >
-          <el-option
-            v-for="item in abiOptions"
-            :key="item.name"
-            :label="item.name"
-            :value="item"
-          >
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item
-        v-for="(item, index) in inputs"
-        :label="item.name"
-        :key="item.name"
-      >
-        <el-input
-          v-model="inputs[index].params"
-          :placeholder="item.type"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="initContract">{{
-          contract ? '执行' : '初始化合约'
-        }}</el-button>
-      </el-form-item>
-    </el-form>
+    <div>FD_H5</div>
   </div>
 </template>
 
