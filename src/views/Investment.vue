@@ -1,11 +1,44 @@
 <template>
   <div class="about">
-    <van-steps>
-      <van-step>买家下单</van-step>
-      <van-step>商家接单</van-step>
-      <van-step>买家提货</van-step>
-      <van-step>交易完成</van-step>
-    </van-steps>
+    <BaseHeader>
+      <div class="step-box">
+        <base-step></base-step>
+      </div>
+      <div class="header-title">
+        <h4>我的持仓</h4>
+        <span>icon</span>
+      </div>
+      <div class="desc">当前有3款产品可赎回</div>
+    </BaseHeader>
+
+    <div class="items mr-t">
+      <h4 class="title">eFil 投资</h4>
+      <div
+        class="item-box"
+        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+        v-for="(item, index) in 3"
+        :key="item"
+      >
+        <div class="item" :style="getStyle(index)">
+          <div
+            class="item-content "
+            :class="index % 2 == 0 ? 'content-left' : ''"
+          >
+            <div class="name">
+              <h5 class="">FDdf3933</h5>
+              <span class="text">本期年化</span>
+            </div>
+            <div class="btn">购买</div>
+          </div>
+          <span
+            class="date"
+            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+          >
+            30日
+          </span>
+        </div>
+      </div>
+    </div>
     <div class="items">
       <h4 class="title">eFil 投资</h4>
       <div
@@ -38,13 +71,17 @@
 </template>
 
 <script>
+import BaseStep from '@/components/base/BaseStep.vue'
 export default {
+  components: {
+    BaseStep,
+  },
+  data() {
+    return {
+      active: 0,
+    }
+  },
   methods: {
-    data() {
-      return {
-        active: 0,
-      }
-    },
     getStyle(index) {
       console.log(index)
       return `background: no-repeat center/100% url('./bg${index}.png');`
@@ -55,10 +92,29 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.step-box {
+  // padding: 0 64px;
+  border-bottom: 1px solid #9cd8df;
+}
+.header-title {
+  display: flex;
+  justify-content: space-between;
+  margin: 80px 48px 64px;
+  font-size: 30px;
+  color: #63c2cd;
+}
+.desc {
+  margin-bottom: 75px;
+  color: #96a5bf;
+  font-size: 22px;
+}
+.mr-t {
+  margin-top: 550px;
+}
 .items {
   position: relative;
   background: #fff;
-  margin: 50px 42px;
+  margin: 0 42px 90px;
   padding-top: 100px;
   padding-bottom: 42px;
   border-radius: 12px;
@@ -147,5 +203,8 @@ export default {
       }
     }
   }
+}
+.mr-t {
+  margin-top: 550px;
 }
 </style>

@@ -1,18 +1,25 @@
 <template>
   <div class="home" ref="form" :model="params" label-width="80px">
-    <div class="header">
+    <BaseHeader>
+      <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
+      <span class="text"
+        >转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span
+      >
+    </BaseHeader>
+    <!-- <div class="header">
       <div class="header-top">
-        账户总览
+        {{ $t('overview') }}
         <span>...</span>
       </div>
       <div class="header-address">
         <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
-        <span>转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span>
+        <span class="text"
+          >转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span
+        >
       </div>
-    </div>
+    </div> -->
 
     <div class="content">
-      FD_H5
       <h4 class="title">钱包资产</h4>
       <div class="item">
         <div class="number-box flex">
@@ -66,7 +73,7 @@
         存币挖矿 获取利息
       </router-link>
     </div>
-    <div class="mask" v-show="showMask" @click="showMask = false">
+    <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
         <h4 class="mask-title">Filcoin 回购</h4>
         <div class="form">
@@ -90,7 +97,32 @@
           <div class="footer-btn">确定</div>
         </div>
       </div>
-    </div>
+    </van-overlay>
+    <!-- <div class="mask" v-show="showMask">
+      <div class="mask-content">
+        <h4 class="mask-title">Filcoin 回购</h4>
+        <div class="form">
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="value"
+            placeholder="请输入您要售出的eFil数目"
+          />
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="value"
+            placeholder="请输入您自己的Filecoin地址"
+          />
+        </div>
+        <div class="footer">
+          <div class="footer-btn" @click="showMask = false">取消</div>
+          <div class="footer-btn">确定</div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -891,34 +923,6 @@ export default {
   background: #eee;
   height: 100%;
 }
-.header {
-  position: relative;
-  &-top {
-    position: relative;
-    background: red;
-    height: 120px;
-    padding-top: 24px;
-    border-bottom-left-radius: 32px;
-    border-bottom-right-radius: 32px;
-    color: #fff;
-    font-size: 32px;
-    span {
-      position: absolute;
-      right: 12px;
-    }
-  }
-  &-address {
-    position: absolute;
-    top: 80px;
-    left: 58px;
-    right: 58px;
-    height: 143px;
-    background: #fff;
-    border-radius: 16px;
-    color: 12px;
-    font-size: 24px;
-  }
-}
 
 .flex {
   display: flex;
@@ -929,10 +933,10 @@ export default {
   padding-top: 100px;
   padding: 100px 58px;
   .title {
-    margin-bottom: 32px;
+    margin: 32px 0;
     font-size: 31px;
     font-family: PingFang SC;
-    font-weight: 300;
+    font-weight: 500;
     color: #000000;
     text-align: left;
   }
@@ -953,7 +957,7 @@ export default {
       margin-top: 24px;
     }
     .border {
-      border-bottom: 1px solid red;
+      border-bottom: 1px solid #ccebef;
     }
     .text {
       width: 312px;
@@ -989,12 +993,13 @@ export default {
   &-content {
     width: 309px;
     background: #fff;
+    border: 1px solid #2faebd;
     border-radius: 16px;
     text-align: left;
     font-size: 24px;
   }
   .border {
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid #ccebef;
   }
   &-item {
     padding: 32px 42px;
@@ -1025,16 +1030,17 @@ export default {
 }
 
 .mask {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.6);
+  // position: fixed;
+  // top: 0;
+  // bottom: 0;
+  // left: 0;
+  // right: 0;
+  // background: rgba(0, 0, 0, 0.6);
   &-content {
     width: 620px;
     height: 400px;
     position: absolute;
+    z-index: 99;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
