@@ -2,9 +2,9 @@
   <div class="home" ref="form" :model="params" label-width="80px">
     <BaseHeader>
       <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
-      <span class="text"
-        >转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span
-      >
+      <span class="text">
+        {{ $t('exchangeDesc') }}
+      </span>
     </BaseHeader>
     <!-- <div class="header">
       <div class="header-top">
@@ -20,7 +20,7 @@
     </div> -->
 
     <div class="content">
-      <h4 class="title">钱包资产</h4>
+      <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
         <div class="number-box flex">
           <span class="text border">eFile</span>
@@ -28,9 +28,9 @@
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
-            eFil 可由 1:1 的 Filecoin 兑换获得
+            {{ $t('eFilDesc') }}
           </span>
-          <div class="btn" @click="showMask = true">回购</div>
+          <div class="btn" @click="showMask = true">{{ $t('repurchase') }}</div>
         </div>
       </div>
 
@@ -41,60 +41,62 @@
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
-            FD 可由控股和挖矿获得
+            {{ $t('FDDesc') }}
           </span>
-          <div class="btn">回购</div>
+          <div class="btn">{{ $t('repurchase') }}</div>
         </div>
       </div>
-      <h4 class="title">合约资产</h4>
+      <h4 class="title">{{ $t('contract') }}{{ $t('assets') }}</h4>
       <div class="items">
         <div class="items-content">
           <div class="border items-item">
-            <span class="text">eFil 资产</span>
+            <span class="text">eFil {{ $t('assets') }}</span>
             <p class="number">34343.34</p>
           </div>
           <div class="items-item">
-            <span class="text">eFil 资产</span>
+            <span class="text">eFil {{ $t('assets') }}</span>
             <p class="number1">34343.34</p>
           </div>
         </div>
         <div class="items-content">
           <div class="border items-item">
-            <span class="text">eFil 资产</span>
+            <span class="text">eFil {{ $t('assets') }}</span>
             <p class="number">34343.34</p>
           </div>
           <div class="items-item">
-            <span class="text">eFil 资产</span>
+            <span class="text">eFil {{ $t('assets') }}</span>
             <p class="number1">34343.34</p>
           </div>
         </div>
       </div>
       <router-link to="/investment" tag="div" class="confirm-btn">
-        存币挖矿 获取利息
+        {{ $t('mining') }}
       </router-link>
     </div>
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
-        <h4 class="mask-title">Filcoin 回购</h4>
+        <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
         <div class="form">
           <van-field
             class="field"
             center
             clearable
             v-model="value"
-            placeholder="请输入您要售出的eFil数目"
+            :placeholder="$t('eFilPlaceholder')"
           />
           <van-field
             class="field"
             center
             clearable
             v-model="value"
-            placeholder="请输入您自己的Filecoin地址"
+            :placeholder="$t('FilecoinPlaceholder')"
           />
         </div>
         <div class="footer">
-          <div class="footer-btn" @click="showMask = false">取消</div>
-          <div class="footer-btn">确定</div>
+          <div class="footer-btn" @click="showMask = false">
+            {{ $t('cancel') }}
+          </div>
+          <div class="footer-btn">{{ $t('confirm') }}</div>
         </div>
       </div>
     </van-overlay>

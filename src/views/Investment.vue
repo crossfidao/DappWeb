@@ -5,14 +5,14 @@
         <base-step></base-step>
       </div>
       <div class="header-title">
-        <h4>我的持仓</h4>
+        <h4>{{ $t('position') }}</h4>
         <span>icon</span>
       </div>
-      <div class="desc">当前有3款产品可赎回</div>
+      <div class="desc">{{ $t('redemption', { value: 12 }) }}</div>
     </BaseHeader>
 
     <div class="items mr-t">
-      <h4 class="title">eFil 投资</h4>
+      <h4 class="title">eFil {{ $t('investment') }}</h4>
       <div
         class="item-box"
         :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
@@ -26,21 +26,21 @@
           >
             <div class="name">
               <h5 class="">FDdf3933</h5>
-              <span class="text">本期年化</span>
+              <span class="text">{{ $t('annualized') }}</span>
             </div>
-            <div class="btn">购买</div>
+            <div class="btn">{{ $t('buy') }}</div>
           </div>
           <span
             class="date"
             :class="index % 2 == 0 ? 'date-left' : 'date-right'"
           >
-            30日
+            30{{ $t('time') }}
           </span>
         </div>
       </div>
     </div>
     <div class="items">
-      <h4 class="title">eFil 投资</h4>
+      <h4 class="title">eFil {{ $t('investment') }}</h4>
       <div
         class="item-box"
         :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
@@ -54,15 +54,15 @@
           >
             <div class="name">
               <h5 class="">FDdf3933</h5>
-              <span class="text">本期年化</span>
+              <span class="text">{{ $t('annualized') }}</span>
             </div>
-            <div class="btn">购买</div>
+            <div class="btn">{{ $t('buy') }}</div>
           </div>
           <span
             class="date"
             :class="index % 2 == 0 ? 'date-left' : 'date-right'"
           >
-            30日
+            30{{ $t('time') }}
           </span>
         </div>
       </div>

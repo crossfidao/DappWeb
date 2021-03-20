@@ -38,7 +38,7 @@ export default {
     return {
       text: [
         {
-          title: 'buy',
+          title: 'buyProduct',
           desc: 'date',
         },
         {
