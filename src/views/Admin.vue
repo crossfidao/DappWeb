@@ -3,32 +3,67 @@
     <BaseHeader>
       <div class="items">
         <div class="title">
-          <span>到期资产</span>
+          <span>eFil {{ $t('interestRate') }}</span>
           <div class="btn">一键赎回</div>
         </div>
-        <div class="item" v-for="item in 3" :key="item">
+        <div class="item" v-for="item in fdList" :key="item.date">
           <div class="date">
-            <span class="text">30日</span>
-            <p class="date-bg">eFile</p>
+            <span class="text">{{ item.date }}{{ $t('time') }}</span>
+            <!-- <p class="date-bg">eFile</p> -->
           </div>
           <div class="item-content">
             <div class="price">
-              <h5>FD:2.4$</h5>
-              <h4 class="number">1500.00</h4>
+              <h5 class="price-title">FD {{ $t('rate') }}:</h5>
+              <span class="price-text" v-if="item.show">
+                {{ item.fdRate }}
+              </span>
+              <van-field
+                v-else
+                class="price-input"
+                border
+                v-model="value"
+                placeholder=""
+              />
+              <span>%</span>
             </div>
-            <div class="income">
-              <span>[到期时间]09：43</span>
-              <div>
-                <span>+3493 eFil</span>
-                <p>+3493 FD</p>
-              </div>
+            <div class="price">
+              <h5 class="price-title">eFil {{ $t('rate') }}:</h5>
+              <span class="price-text" v-if="item.show">
+                {{ item.eFilRate }}
+              </span>
+              <van-field
+                v-else
+                class="price-input"
+                border
+                v-model="value"
+                placeholder=""
+              />
+              <span>%</span>
             </div>
           </div>
+          <van-button
+            class="item-btn"
+            type="primary"
+            size="mormal"
+            v-if="item.show"
+            @click="handleEdit(item)"
+          >
+            {{ $t('edit') }}
+          </van-button>
+          <van-button
+            class="item-btn"
+            type="primary"
+            size="mormal"
+            v-else
+            @click="handleEdit(item)"
+          >
+            {{ $t('config') }}
+          </van-button>
         </div>
       </div>
     </BaseHeader>
     <div class="content"></div>
-    <div class="items mr-t">
+    <!-- <div class="items mr-t">
       <div class="title">到期资产</div>
       <div class="item" v-for="item in 3" :key="item">
         <div class="date">
@@ -49,8 +84,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="items">
+    </div> -->
+    <!-- <div class="items">
       <div class="title">eFil 投资</div>
       <div class="item" v-for="item in 3" :key="item">
         <div class="date">
@@ -71,8 +106,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="items">
+    </div> -->
+    <!-- <div class="items">
       <div class="title">FD 投资</div>
       <div class="item" v-for="item in 3" :key="item">
         <div class="date">
@@ -93,9 +128,34 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
+
+<script>
+export default {
+  name: 'admin',
+  data() {
+    return {
+      value: '',
+      fdList: [
+        {
+          date: '24',
+          fdRate: '123',
+          eFilRate: 234,
+          show: true,
+          showeFil: true,
+        },
+      ],
+    }
+  },
+  methods: {
+    handleEdit(item) {
+      item.show = !item.show
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .items {
@@ -162,6 +222,23 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+    }
+    .price {
+      justify-content: flex-start;
+
+      margin-bottom: 12px;
+      &-title {
+        width: 120px;
+      }
+      &-text {
+        width: 160px;
+        margin: 0 16px;
+      }
+      &-input {
+        width: 160px;
+        border: 1px solid #ebedf0;
+        margin: 0 16px;
+      }
     }
     .number {
       font-size: 44px;
