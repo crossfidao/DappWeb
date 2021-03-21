@@ -267,24 +267,20 @@ export default {
         })
         if (this.params.status === 0) {
           let data = await this.contract.callContract('name', args)
-          console.log(data)
         }
       }
     },
     changeStatus(value) {
       let payableType = value === 1
-      console.log(value, payableType, this.list)
       this.abiOptions = []
       this.list.forEach(e => {
         let { type, payable } = e
-        console.log(type === 'function' && payable === payableType)
         if (type === 'function' && payable === payableType) {
           this.abiOptions.push(e)
         }
       })
     },
     changeMethods(data) {
-      console.log(data)
       this.inputs = []
       data.inputs.forEach((e, index) => {
         let { name, type } = e
@@ -296,7 +292,6 @@ export default {
         })
         this.$set(this.inputs, index, e)
       })
-      console.log(this.inputs)
     },
   },
 }

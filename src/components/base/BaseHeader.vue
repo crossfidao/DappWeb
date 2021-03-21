@@ -1,8 +1,8 @@
 <template>
   <div class="header">
     <div class="header-top">
-      {{ $t('overview') }}
-      <span>...</span>
+      {{ $t(title) }}
+      <span @click="handleClick">...</span>
     </div>
     <div class="header-address">
       <slot></slot>
@@ -16,11 +16,16 @@ export default {
   props: {
     title: {
       type: String,
-      default: '',
+      default: 'depositCoins',
     },
   },
   data() {
     return {}
+  },
+  methods: {
+    handleClick() {
+      this.$i18n.locale = 'cn'
+    },
   },
 }
 </script>

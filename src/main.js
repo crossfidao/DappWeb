@@ -3,7 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n/i18n'
-
+import Contract from '@/plugin/eth'
+import { abi } from '@/plugin/abi'
+import { coinAbi } from '@/plugin/coinAbi'
+import '@/plugin/filter.js'
 Vue.config.productionTip = false
 
 import 'amfe-flexible'
@@ -15,8 +18,29 @@ Vue.use(Vant)
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+let corsslend = new Contract({
+  address: '0x6cf56f22cd39bec47ecdf49d8fda584af3306a78',
+  abi,
+})
+
+let utils = corsslend.web3.utils
+
+let fd = new Contract({
+  address: '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
+  abi: coinAbi,
+})
+
+let eFile = new Contract({
+  address: '0xde72e9f35176f11274ae6c0654da745c97531501',
+  abi: coinAbi,
+})
+
+Vue.prototype.$corsslend = corsslend
+Vue.prototype.$fd = fd
+Vue.prototype.$eFile = eFile
+Vue.prototype.$utils = utils
+
 import BaseHeader from '@/components/base/BaseHeader.vue'
-console.log(BaseHeader)
 Vue.component('BaseHeader', BaseHeader)
 // Vue.use(BaseHeader, BaseHeader)
 Vue.use(Element)

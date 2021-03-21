@@ -1,5 +1,19 @@
 import Web3 from 'web3'
 
+// web3.eth.send({
+//   from: web3.eth.accounts[0],
+//   to: singleUseAddr1.toString('hex'),
+//   value: web3.toBigNumber('80000000000000000'),
+// })
+
+/* ===========================================================================
+5. Broadcast the deployment transaction.
+===========================================================================  */
+// web3.eth.sendRawTransaction(erc1820rawData, function(err, hash) {
+//   if (!err) console.log(hash)
+//   else console.log(err)
+// })
+
 export default class Contract {
   abi = null
   web3 = null
@@ -11,6 +25,8 @@ export default class Contract {
     this.address = address
     if (typeof window.web3 != undefined) {
       this.web3 = new Web3(window.web3.currentProvider)
+      window.web3 = this.web3
+
       window.ethereum.on('accountsChanged', account => {
         this.userAddress = account[0]
       })
@@ -33,6 +49,7 @@ export default class Contract {
     return await this.contract.methods[methods](...args).call()
   }
   async executeContract(methods, args) {
+    console.log(methods, args)
     let accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     })

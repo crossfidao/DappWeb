@@ -1,107 +1,198 @@
 <template>
   <div class="about">
-    <BaseHeader>
-      <div class="items">
-        <div class="title">
-          <span>到期资产</span>
-          <div class="btn">一键赎回</div>
-        </div>
-        <div class="item" v-for="item in 3" :key="item">
-          <div class="date">
-            <span class="text">30日</span>
-            <p class="date-bg">eFile</p>
-          </div>
-          <div class="item-content">
-            <div class="price">
-              <h5>FD:2.4$</h5>
-              <h4 class="number">1500.00</h4>
-            </div>
-            <div class="income">
-              <span>[到期时间]09：43</span>
-              <div>
-                <span>+3493 eFil</span>
-                <p>+3493 FD</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </BaseHeader>
+    <BaseHeader> </BaseHeader>
     <div class="content"></div>
-    <div class="items mr-t">
-      <div class="title">到期资产</div>
-      <div class="item" v-for="item in 3" :key="item">
+    <div class="items">
+      <div class="title">
+        <span>{{ $t('maturity') }}</span>
+        <div class="btn" @click="Withdraw">{{ $t('fast') }}</div>
+      </div>
+      <div class="item" v-for="item in expireList" :key="item.ID">
         <div class="date">
-          <span class="text">30日</span>
-          <p class="date-bg">eFile</p>
+          <span class="text">{{ item.Duration | date }}{{ $t('time') }}</span>
+          <p class="date-bg">{{ item.Type == 0 ? 'FD' : 'eFil' }}</p>
         </div>
         <div class="item-content">
           <div class="price">
-            <h5>FD:2.4$</h5>
-            <h4 class="number">1500.00</h4>
+            <h5>
+              FD:{{ item.FDInterestRate | rate }}% eFil:
+              {{ item.EFilInterestRate | rate }}%
+            </h5>
+            <h4 class="number">{{ item.Amount | decimals }}</h4>
           </div>
           <div class="income">
-            <span>[到期时间]09：43</span>
+            <span>[{{ $t('expireDate') }}] {{ item.EndTime | format }}</span>
             <div>
-              <span>+3493 eFil</span>
-              <p>+3493 FD</p>
+              <span>+{{ getValue(item, 1) }} eFil</span>
+              <p>+{{ getValue(item) }} FD</p>
             </div>
           </div>
         </div>
       </div>
+      <div class="empty" v-if="expireList.length == 0">{{ $t('empty') }}</div>
     </div>
     <div class="items">
-      <div class="title">eFil 投资</div>
-      <div class="item" v-for="item in 3" :key="item">
+      <div class="title">eFil {{ $t('investment') }}</div>
+      <div class="item" v-for="item in efilList" :key="item">
         <div class="date">
-          <span class="text">30日</span>
+          <span class="text">{{ item.Duration | date }}{{ $t('time') }}</span>
           <p class="date-bg">eFile</p>
         </div>
         <div class="item-content">
           <div class="price">
-            <h5>FD:2.4$</h5>
-            <h4 class="number">1500.00</h4>
+            <h5>
+              FD:{{ item.FDInterestRate | decimals }}% eFil:
+              {{ item.EFilInterestRate | decimals }}%
+            </h5>
+            <h4 class="number">{{ item.Amount | decimals }}</h4>
           </div>
           <div class="income">
-            <span>[到期时间]09：43</span>
+            <span>[{{ $t('expireDate') }}] {{ item.EndTime | format }}</span>
             <div>
-              <span>+3493 eFil</span>
-              <p>+3493 FD</p>
+              <span>+{{ getValue(item, 1) }} eFil</span>
+              <p>+{{ getValue(item) }} FD</p>
             </div>
           </div>
         </div>
       </div>
+      <div class="empty" v-if="efilList.length == 0">{{ $t('empty') }}</div>
     </div>
-    <div class="items">
-      <div class="title">FD 投资</div>
-      <div class="item" v-for="item in 3" :key="item">
+    <div class="items ">
+      <div class="title">FD {{ $t('investment') }}</div>
+      <!-- TODO: 时间 -->
+      <div class="item" v-for="item in fdList" :key="item.ID">
         <div class="date">
-          <span class="text">30日</span>
-          <p class="date-bg">eFile</p>
+          <span class="text"
+            >{{ item.Duration || 0 | date }}{{ $t('time') }}</span
+          >
+          <p class="date-bg">FD</p>
         </div>
         <div class="item-content">
           <div class="price">
-            <h5>FD:2.4$</h5>
-            <h4 class="number">1500.00</h4>
+            <h5>
+              FD:{{ item.FDInterestRate | rate }}% eFil:
+              {{ item.EFilInterestRate | rate }}%
+            </h5>
+            <h4 class="number">{{ item.Amount | decimals }}</h4>
           </div>
           <div class="income">
-            <span>[到期时间]09：43</span>
+            <span>[{{ $t('expireDate') }}] {{ item.EndTime | format }}</span>
             <div>
-              <span>+3493 eFil</span>
-              <p>+3493 FD</p>
+              <span>+{{ getValue(item, 1) }} eFil</span>
+              <p>+{{ getValue(item) }} FD</p>
             </div>
           </div>
         </div>
       </div>
+      <div class="empty" v-if="fdList.length == 0">{{ $t('empty') }}</div>
     </div>
   </div>
 </template>
+
+<script>
+import { mapActions } from 'vuex'
+export default {
+  data() {
+    return {
+      active: 0,
+    }
+  },
+  computed: {
+    expireList() {
+      let arr = []
+      let now = parseInt(new Date().getTime() / 1000)
+      let list = this.$store.state.userList
+      list.forEach(e => {
+        let { EndTime } = e
+        if (now > EndTime) {
+          arr.push(e)
+        }
+      })
+      return arr
+    },
+    fdList() {
+      let arr = []
+      let now = parseInt(new Date().getTime() / 1000)
+      let list = this.$store.state.userList
+      list.forEach(e => {
+        let { Type, EndTime } = e
+        if (now < EndTime && Type == 0) {
+          arr.push(e)
+        }
+      })
+      return arr
+    },
+    efilList() {
+      let arr = []
+      let now = parseInt(new Date().getTime() / 1000)
+      let list = this.$store.state.userList
+      list.forEach(e => {
+        let { EndTime, Type } = e
+        if (now < EndTime && Type == 1) {
+          arr.push(e)
+        }
+      })
+      return arr
+    },
+  },
+  mounted() {},
+  methods: {
+    ...mapActions(['Withdraw']),
+    async load() {
+      let list = await this.$corsslend.callContract('GetInvesterRecords', [
+        '0x5E95DbE6dd707B988e6CC2396b3F75a4Ea0afd0C',
+      ])
+      let now = parseInt(new Date().getTime() / 1000)
+
+      list.forEach(element => {
+        let { Type, EndTime } = element
+        if (now > EndTime) {
+          this.expireList.push(element)
+        } else {
+          if (Type == 0) {
+            this.fdList.push(element)
+          } else {
+            this.efilList.push(element)
+          }
+        }
+      })
+    },
+    getValue(data, type = 0) {
+      let { Amount, FDInterestRate, EFilInterestRate } = data
+      let rate = 0
+      if (type == 0) {
+        rate = FDInterestRate
+      } else {
+        rate = EFilInterestRate
+      }
+
+      rate = this.$utils.fromWei(rate.toString())
+
+      let value = parseFloat(this.$utils.fromWei(Amount)) * parseFloat(rate)
+      return value.toFixed(2)
+    },
+    async handleBuy() {
+      let betys = this.$fd.web3.eth.abi.encodeParameter('uint256', '0')
+      let list = await this.$fd.executeContract('send', [
+        '0x836f88f0f7147cb4cef05c0a92fcb2cc5c26f3b5',
+        10,
+        betys,
+      ])
+    },
+    getStyle(index) {
+      index = index >= 3 ? index % 2 : index
+      return `background: no-repeat center/100% url('./bg${index}.png');`
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .items {
   width: 634px;
   margin: 0 auto 40px;
   background: #fff;
+  padding-bottom: 24px;
   border-radius: 10px;
   text-align: left;
   font-size: 31px;
@@ -175,7 +266,12 @@
     }
   }
 }
+.empty {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 12px;
+}
 .mr-t {
-  margin-top: 200px;
+  margin-top: 390px;
 }
 </style>
