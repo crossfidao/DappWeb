@@ -8,18 +8,18 @@ import { coinAbi } from '@/plugin/coinAbi'
 Vue.use(Vuex)
 
 let corsslend = new Contract({
-  address: '0x7eef73f1ddbd0dab8ebb19f9696b532071c4c3fe',
+  address: '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87',
   abi,
 })
 
 let utils = corsslend.web3.utils
 let fdContract = new Contract({
-  address: '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
+  address: '0x36e3383367e4604d6365c809624b0ee06e6dcc5a',
   abi: coinAbi,
 })
 
 let eFileContract = new Contract({
-  address: '0xde72e9f35176f11274ae6c0654da745c97531501',
+  address: '0xa2bae2ecfdf6a20cd85d028d5e925f7fe29308b6',
   abi: coinAbi,
 })
 
@@ -137,6 +137,27 @@ export default new Vuex.Store({
     async Withdraw() {
       await corsslend.executeContract('Withdraw', [])
     },
+    // 管理员充值
+    async charge({ commit, dispatch }, data) {
+      let { value } = data
+      let betys = fdContract.web3.eth.abi.encodeParameters(
+        ['uint256', 'uint256'],
+        [1, 0],
+      )
+      value = utils.toWei(value)
+      commit('setLoading', true)
+      try {
+        await eFileContract.executeContract('send', [
+          '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87',
+          value,
+          betys,
+        ])
+        dispatch('initData')
+        commit('setLoading', false)
+      } catch (e) {
+        commit('setLoading', false)
+      }
+    },
     // 购买
     async buyCoin({ commit, dispatch }, data) {
       let { ID, Type, value } = data
@@ -146,40 +167,33 @@ export default new Vuex.Store({
         [0, ID],
       )
       value = utils.toWei(value)
-      let accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })
       commit('setLoading', true)
-      if (Type == 0) {
-        console.log('fd')
-        await fdContract.executeContract('send', [
-          '0x7eef73f1ddbd0dab8ebb19f9696b532071c4c3fe',
+      let contract = Type == 0 ? fdContract : eFileContract
+
+      try {
+        await contract.executeContract('send', [
+          '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87',
           value,
           betys,
         ])
-      } else {
-        await eFileContract.executeContract('send', [
-          '0x7eef73f1ddbd0dab8ebb19f9696b532071c4c3fe',
-          value,
-          betys,
-        ])
+        dispatch('initData')
+        commit('setLoading', false)
+      } catch (e) {
+        commit('setLoading', false)
       }
-      commit('setLoading', false)
-      dispatch('initData')
     },
     async initData({ commit }) {
       let accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
-      console.log('init')
 
-      let { admin } = await corsslend.callContract(
-        'GetInvestInfoByAddr',
-        accounts,
-      )
+      let { admin } = await corsslend.callContract('GetInvestInfo', [
+        0,
+        accounts[0],
+      ])
       console.log(admin)
-      if (!admin) {
-        router.push('/admin')
+      if (admin) {
+        router.replace('/admin')
       }
 
       // 获取余额

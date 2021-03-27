@@ -2,6 +2,7 @@
   <div class="about">
     <van-button @click="handleE820">
       handleE820
+      0xfefb2da535e927b85fe68eb81cb2e4a5827c905f78381a01ef2322aa9b0aee8e
     </van-button>
     <van-button @click="handleDeploy">
       deploy 0x2d091E247Da1effB899A2503B265d1501741c854

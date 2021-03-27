@@ -46,6 +46,7 @@ export default class Contract {
   }
 
   async callContract(methods, args) {
+    // console.log(methods, args)
     return await this.contract.methods[methods](...args).call()
   }
   async executeContract(methods, args) {

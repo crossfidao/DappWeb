@@ -4,7 +4,16 @@
       <div class="items">
         <div class="title">
           <span>eFil {{ $t('interestRate') }}</span>
-          <div class="btn">一键赎回</div>
+        </div>
+        <div class="charge">
+          <span></span>
+          <van-field
+            class="price-input"
+            border
+            v-model="value"
+            placeholder="请输入eFil数量"
+          />
+          <van-button class="charge-btn" @click="charge">充值</van-button>
         </div>
         <div class="item" v-for="item in fdList" :key="item.date">
           <div class="date">
@@ -133,6 +142,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'admin',
   data() {
@@ -150,6 +160,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['charge']),
     handleEdit(item) {
       item.show = !item.show
     },
@@ -158,6 +169,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.charge {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  border: 1px solid #63c2cd;
+  padding: 8px;
+  font-size: 12px;
+  &-btn {
+    width: 100px;
+  }
+}
 .items {
   width: 634px;
   margin: 0 auto 40px;

@@ -20,5 +20,5 @@ Vue.filter('rate', value => {
 })
 
 Vue.filter('format', value => {
-  return moment(value * 1000).format('yyyy-mm-DD HH:MM:ss')
+  return moment(value * 1000).format('yyyy-MM-DD HH:mm')
 })

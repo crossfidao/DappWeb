@@ -23,7 +23,7 @@ export const abi = [
                name: '_type',
                type: 'uint8',
              },
-             { internalType: 'uint256', name: 'duration', type: 'uint256' },
+             { internalType: 'uint256', name: 'dayTimes', type: 'uint256' },
              {
                internalType: 'uint256',
                name: 'fdInterestRate',
@@ -36,6 +36,45 @@ export const abi = [
              },
            ],
            name: 'AddPackage',
+           outputs: [],
+           stateMutability: 'nonpayable',
+           type: 'function',
+         },
+         {
+           inputs: [{ internalType: 'uint256', name: 'rate', type: 'uint256' }],
+           name: 'ChangeAffRate',
+           outputs: [],
+           stateMutability: 'nonpayable',
+           type: 'function',
+         },
+         {
+           inputs: [
+             { internalType: 'uint256', name: 'amount', type: 'uint256' },
+           ],
+           name: 'ChangeAffRequire',
+           outputs: [],
+           stateMutability: 'nonpayable',
+           type: 'function',
+         },
+         {
+           inputs: [
+             {
+               internalType: 'enum FinancialType',
+               name: 'fType',
+               type: 'uint8',
+             },
+             {
+               internalType: 'uint256',
+               name: 'fdInterestRate',
+               type: 'uint256',
+             },
+             {
+               internalType: 'uint256',
+               name: 'efilInterestRate',
+               type: 'uint256',
+             },
+           ],
+           name: 'ChangeDemandRate',
            outputs: [],
            stateMutability: 'nonpayable',
            type: 'function',
@@ -78,8 +117,18 @@ export const abi = [
            type: 'function',
          },
          {
+           inputs: [
+             { internalType: 'uint256', name: 'packageID', type: 'uint256' },
+             { internalType: 'bool', name: 'deleteFlag', type: 'bool' },
+           ],
+           name: 'DeletePackage',
+           outputs: [],
+           stateMutability: 'nonpayable',
+           type: 'function',
+         },
+         {
            inputs: [],
-           name: 'GetFinancialPackage',
+           name: 'GetAllFinancialPackage',
            outputs: [
              {
                components: [
@@ -88,7 +137,12 @@ export const abi = [
                    name: 'Type',
                    type: 'uint8',
                  },
-                 { internalType: 'uint256', name: 'Duration', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'deleteFlag',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
                  {
                    internalType: 'uint256',
                    name: 'FDInterestRate',
@@ -110,92 +164,69 @@ export const abi = [
            type: 'function',
          },
          {
-           inputs: [{ internalType: 'uint256', name: 'uid', type: 'uint256' }],
+           inputs: [],
+           name: 'GetFinancialPackage',
+           outputs: [
+             {
+               components: [
+                 {
+                   internalType: 'enum FinancialType',
+                   name: 'Type',
+                   type: 'uint8',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'deleteFlag',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'FDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EFilInterestRate',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'ID', type: 'uint256' },
+               ],
+               internalType: 'struct FinancialPackage[]',
+               name: 'packages',
+               type: 'tuple[]',
+             },
+           ],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
+           inputs: [
+             { internalType: 'uint256', name: 'uid', type: 'uint256' },
+             { internalType: 'address', name: 'addr', type: 'address' },
+           ],
            name: 'GetInvestInfo',
            outputs: [
              { internalType: 'bool', name: 'admin', type: 'bool' },
              { internalType: 'uint256', name: 'id', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestFD',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestFD',
-               type: 'uint256',
-             },
              { internalType: 'uint256', name: 'nowInvestFD', type: 'uint256' },
-             { internalType: 'uint256', name: 'inInterestFD', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestEFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestEFil',
-               type: 'uint256',
-             },
              {
                internalType: 'uint256',
                name: 'nowInvestEFil',
                type: 'uint256',
              },
-             {
-               internalType: 'uint256',
-               name: 'inInterestEFil',
-               type: 'uint256',
-             },
+             { internalType: 'uint256', name: 'totalAffFD', type: 'uint256' },
+             { internalType: 'uint256', name: 'fd', type: 'uint256' },
+             { internalType: 'uint256', name: 'fdInterest', type: 'uint256' },
+             { internalType: 'uint256', name: 'efil', type: 'uint256' },
+             { internalType: 'uint256', name: 'efilInterest', type: 'uint256' },
            ],
            stateMutability: 'view',
            type: 'function',
          },
          {
            inputs: [{ internalType: 'address', name: 'addr', type: 'address' }],
-           name: 'GetInvestInfoByAddr',
-           outputs: [
-             { internalType: 'bool', name: 'admin', type: 'bool' },
-             { internalType: 'uint256', name: 'id', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestFD',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestFD',
-               type: 'uint256',
-             },
-             { internalType: 'uint256', name: 'nowInvestFD', type: 'uint256' },
-             { internalType: 'uint256', name: 'inInterestFD', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestEFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestEFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'nowInvestEFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'inInterestEFil',
-               type: 'uint256',
-             },
-           ],
-           stateMutability: 'view',
-           type: 'function',
-         },
-         {
-           inputs: [{ internalType: 'address', name: 'addr', type: 'address' }],
-           name: 'GetInvesterRecords',
+           name: 'GetInvestRecords',
            outputs: [
              {
                components: [
@@ -209,6 +240,7 @@ export const abi = [
                    name: 'PackageID',
                    type: 'uint256',
                  },
+                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
                  { internalType: 'uint256', name: 'EndTime', type: 'uint256' },
                  {
                    internalType: 'uint256',
@@ -220,7 +252,105 @@ export const abi = [
                    name: 'EFilInterestRate',
                    type: 'uint256',
                  },
+                 { internalType: 'uint256', name: 'AffID', type: 'uint256' },
                  { internalType: 'uint256', name: 'Amount', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ReleaseTime',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct QueueData[]',
+               name: 'records',
+               type: 'tuple[]',
+             },
+             {
+               components: [
+                 { internalType: 'uint256', name: 'Amount', type: 'uint256' },
+                 { internalType: 'uint256', name: 'ParamFD', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'FixInterestFD',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamEFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'FixInterestEFil',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct DemandInvest',
+               name: 'demandFD',
+               type: 'tuple',
+             },
+             {
+               components: [
+                 { internalType: 'uint256', name: 'Amount', type: 'uint256' },
+                 { internalType: 'uint256', name: 'ParamFD', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'FixInterestFD',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamEFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'FixInterestEFil',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct DemandInvest',
+               name: 'demandEFil',
+               type: 'tuple',
+             },
+           ],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
+           inputs: [{ internalType: 'address', name: 'addr', type: 'address' }],
+           name: 'GetInvesterFinRecords',
+           outputs: [
+             {
+               components: [
+                 {
+                   internalType: 'enum FinancialType',
+                   name: 'Type',
+                   type: 'uint8',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'PackageID',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
+                 { internalType: 'uint256', name: 'EndTime', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'FDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EFilInterestRate',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'AffID', type: 'uint256' },
+                 { internalType: 'uint256', name: 'Amount', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ReleaseTime',
+                   type: 'uint256',
+                 },
                ],
                internalType: 'struct QueueData[]',
                name: 'records',
@@ -232,37 +362,150 @@ export const abi = [
          },
          {
            inputs: [],
+           name: 'GetPackages',
+           outputs: [
+             {
+               components: [
+                 {
+                   internalType: 'enum FinancialType',
+                   name: 'Type',
+                   type: 'uint8',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'deleteFlag',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'FDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EFilInterestRate',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'ID', type: 'uint256' },
+               ],
+               internalType: 'struct FinancialPackage[]',
+               name: 'financialPackages',
+               type: 'tuple[]',
+             },
+             {
+               components: [
+                 {
+                   internalType: 'enum FinancialType',
+                   name: 'Type',
+                   type: 'uint8',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ChangeFlag',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'FDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'NewFDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EFilInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'NewEFilInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'UpdateTime',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'ParamFD', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamEFil',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct DemandPackage',
+               name: 'demandFD',
+               type: 'tuple',
+             },
+             {
+               components: [
+                 {
+                   internalType: 'enum FinancialType',
+                   name: 'Type',
+                   type: 'uint8',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ChangeFlag',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'FDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'NewFDInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EFilInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'NewEFilInterestRate',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'UpdateTime',
+                   type: 'uint256',
+                 },
+                 { internalType: 'uint256', name: 'ParamFD', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamEFil',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct DemandPackage',
+               name: 'demandEFil',
+               type: 'tuple',
+             },
+           ],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
+           inputs: [],
            name: 'GetSystemInfo',
            outputs: [
              { internalType: 'uint256', name: 'personNum', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestFD',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestFD',
-               type: 'uint256',
-             },
+             { internalType: 'uint256', name: 'affRate', type: 'uint256' },
+             { internalType: 'uint256', name: 'affRequire', type: 'uint256' },
              { internalType: 'uint256', name: 'nowInvestFD', type: 'uint256' },
-             { internalType: 'uint256', name: 'inInvestFD', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalInvestEFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'totalWithdrawInterestEFil',
-               type: 'uint256',
-             },
              {
                internalType: 'uint256',
                name: 'nowInvestEFil',
                type: 'uint256',
              },
-             { internalType: 'uint256', name: 'inInvestEFil', type: 'uint256' },
              {
                internalType: 'uint256',
                name: 'efilInterestPool',
@@ -275,6 +518,13 @@ export const abi = [
          {
            inputs: [],
            name: 'Withdraw',
+           outputs: [],
+           stateMutability: 'nonpayable',
+           type: 'function',
+         },
+         {
+           inputs: [],
+           name: 'WithdrawDemand',
            outputs: [],
            stateMutability: 'nonpayable',
            type: 'function',
@@ -304,6 +554,11 @@ export const abi = [
                          },
                          {
                            internalType: 'uint256',
+                           name: 'Days',
+                           type: 'uint256',
+                         },
+                         {
+                           internalType: 'uint256',
                            name: 'EndTime',
                            type: 'uint256',
                          },
@@ -319,7 +574,17 @@ export const abi = [
                          },
                          {
                            internalType: 'uint256',
+                           name: 'AffID',
+                           type: 'uint256',
+                         },
+                         {
+                           internalType: 'uint256',
                            name: 'Amount',
+                           type: 'uint256',
+                         },
+                         {
+                           internalType: 'uint256',
+                           name: 'ReleaseTime',
                            type: 'uint256',
                          },
                        ],

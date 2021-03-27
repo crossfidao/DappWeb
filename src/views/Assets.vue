@@ -41,8 +41,8 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              FD:{{ item.FDInterestRate | decimals }}% eFil:
-              {{ item.EFilInterestRate | decimals }}%
+              FD:{{ item.FDInterestRate | rate }}% eFil:
+              {{ item.EFilInterestRate | rate }}%
             </h5>
             <h4 class="number">{{ item.Amount | decimals }}</h4>
           </div>
