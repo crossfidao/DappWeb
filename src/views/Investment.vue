@@ -11,7 +11,76 @@
       <div class="desc">{{ $t('redemption', { value: userLen }) }}</div>
     </BaseHeader>
 
+    <!-- 活期 -->
     <div class="items mr-t">
+      <h4 class="title">FD 活期 {{ $t('investment') }}</h4>
+      <div
+        class="item-box"
+        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+        v-for="(item, index) in demandFD"
+        :key="item.ID"
+      >
+        <div class="item" :style="getStyle(index)">
+          <div
+            class="item-content "
+            :class="index % 2 == 0 ? 'content-left' : ''"
+          >
+            <div class="name">
+              <h5 class="">
+                CRFI:{{ item.NewFDInterestRate || item.FDInterestRate | rate }}%
+                eFil:
+                {{ item.NewEFilInterestRate || item.EFilInterestRate | rate }}%
+              </h5>
+              <span class="text">{{ $t('annualized') }}</span>
+            </div>
+            <div class="btn" @click="handleDemandBuy(item)">
+              {{ $t('buy') }}
+            </div>
+          </div>
+          <span
+            class="date"
+            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+          >
+            {{ item.Days }}{{ $t('time') }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="items">
+      <h4 class="title">eFil 活期 {{ $t('investment') }}</h4>
+      <div
+        class="item-box"
+        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+        v-for="(item, index) in demandEFil"
+        :key="item.ID"
+      >
+        <div class="item" :style="getStyle(index)">
+          <div
+            class="item-content "
+            :class="index % 2 == 0 ? 'content-left' : ''"
+          >
+            <div class="name">
+              <h5 class="">
+                CRFI:{{ item.FDInterestRate | rate }}% eFil:
+                {{ item.EFilInterestRate | rate }}%
+              </h5>
+              <span class="text">{{ $t('annualized') }}</span>
+            </div>
+            <div class="btn" @click="handleDemandBuy(item)">
+              {{ $t('buy') }}
+            </div>
+          </div>
+          <span
+            class="date"
+            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+          >
+            {{ item.Days }}{{ $t('time') }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="items">
       <h4 class="title">eFil {{ $t('investment') }}</h4>
       <div
         class="item-box"
@@ -26,8 +95,8 @@
           >
             <div class="name">
               <h5 class="">
-                FD:{{ item.FDInterestRate | decimals }}% eFil:
-                {{ item.EFilInterestRate | decimals }}%
+                CRFI:{{ item.FDInterestRate | rate }}% eFil:
+                {{ item.EFilInterestRate | rate }}%
               </h5>
               <span class="text">{{ $t('annualized') }}</span>
             </div>
@@ -37,13 +106,13 @@
             class="date"
             :class="index % 2 == 0 ? 'date-left' : 'date-right'"
           >
-            {{ item.Duration | date }}{{ $t('time') }}
+            {{ item.Days }}{{ $t('time') }}
           </span>
         </div>
       </div>
     </div>
     <div class="items">
-      <h4 class="title">FD {{ $t('investment') }}</h4>
+      <h4 class="title">CRFI {{ $t('investment') }}</h4>
       <div
         class="item-box"
         :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
@@ -57,8 +126,8 @@
           >
             <div class="name">
               <h5 class="">
-                FD:{{ item.FDInterestRate | decimals }}% eFil:
-                {{ item.EFilInterestRate | decimals }}%
+                CRFI:{{ item.FDInterestRate | rate }}% eFil:
+                {{ item.EFilInterestRate | rate }}%
               </h5>
               <span class="text">{{ $t('annualized') }}</span>
             </div>
@@ -68,7 +137,7 @@
             class="date"
             :class="index % 2 == 0 ? 'date-left' : 'date-right'"
           >
-            <!-- {{ item.Duration | date }}{{ $t('time') }} -->
+            {{ item.Days }}{{ $t('time') }}
           </span>
         </div>
       </div>
@@ -108,6 +177,7 @@ export default {
   data() {
     return {
       showMask: false,
+      isDemand: false,
       value: '',
       curItem: null,
     }
@@ -131,26 +201,47 @@ export default {
     efilList() {
       return this.$store.state.eFilList
     },
+    demandFD() {
+      return this.$store.state.demandFD
+    },
+    demandEFil() {
+      return this.$store.state.demandEFil
+    },
   },
   mounted() {},
   methods: {
-    ...mapActions(['buyCoin']),
+    ...mapActions(['buyCoin', 'demandBuyCoin']),
 
     handleConfirm() {
       if (!this.value) {
         this.$toast(this.$t('toast'))
         return
       }
-      console.log(this.value)
-      this.buyCoin({
-        ...this.curItem,
-        value: this.value,
-      })
+      if (this.isDemand) {
+        console.log('demand', this.isDemand)
+        this.demandBuyCoin({
+          ...this.curItem,
+          value: this.value,
+        })
+      } else {
+        this.buyCoin({
+          ...this.curItem,
+          value: this.value,
+        })
+      }
       this.showMask = false
       this.value = ''
     },
     async handleBuy(data) {
       this.showMask = true
+      this.isDemand = false
+      this.curItem = data
+    },
+    // 活期
+    async handleDemandBuy(data) {
+      console.log('活期', data)
+      this.showMask = true
+      this.isDemand = true
       this.curItem = data
     },
     getStyle(index) {

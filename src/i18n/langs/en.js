@@ -15,7 +15,7 @@ const en = {
   repurchase: '回购',
   withdraw: '可提现',
   eFilDesc: 'eFil 可由 1:1 的 Filecoin 兑换获得',
-  FDDesc: 'FD 可由控股和挖矿获得',
+  FDDesc: 'CRFI 可由控股和挖矿获得',
   eFilPlaceholder: '请输入您要售出的eFil数目',
   FilecoinPlaceholder: '请输入您自己的Filecoin地址',
   mining: '存币挖矿 获取利息',

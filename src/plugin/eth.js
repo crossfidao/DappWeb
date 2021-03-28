@@ -46,7 +46,7 @@ export default class Contract {
   }
 
   async callContract(methods, args) {
-    // console.log(methods, args)
+    console.log(methods, args)
     return await this.contract.methods[methods](...args).call()
   }
   async executeContract(methods, args) {
@@ -58,10 +58,12 @@ export default class Contract {
     let gasAmount = await this.contract.methods[methods](...args).estimateGas({
       from: accounts[0],
     })
+    this.web3.eth.getGasPrice().then(console.log)
+    // console.log('gasPrice', gasAmount)
     return await this.contract.methods[methods](...args).send({
       from: accounts[0],
       gas: gasAmount,
-      gasPrice: '20000000000',
+      // gasPrice: '20000000000',
     })
   }
 }

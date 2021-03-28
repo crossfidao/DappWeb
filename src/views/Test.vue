@@ -24,26 +24,28 @@
       <div class="item">
         <div class="number-box flex">
           <span class="text border">eFile</span>
-          <div class="number">{{ balance.eFile | decimals }}</div>
+          <div class="number">{{ balance.watlletCRFI | decimals }}</div>
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
             {{ $t('eFilDesc') }}
           </span>
-          <div class="btn" @click="showMask = true">{{ $t('repurchase') }}</div>
+          <div class="btn" @click="showMask = true">
+            1{{ $t('repurchase') }}
+          </div>
         </div>
       </div>
 
       <div class="item">
         <div class="number-box flex">
-          <span class="text border">FD</span>
-          <div class="number">{{ balance.fd | decimals }}</div>
+          <span class="text border">CRFI</span>
+          <div class="number">{{ balance.watlletefil | decimals }}</div>
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
             {{ $t('FDDesc') }}
           </span>
-          <div class="btn">{{ $t('repurchase') }}</div>
+          <!-- <div class="btn">{{ $t('repurchase') }}</div> -->
         </div>
       </div>
       <h4 class="title">{{ $t('contract') }}{{ $t('assets') }}</h4>
@@ -51,21 +53,21 @@
         <div class="items-content">
           <div class="border items-item">
             <span class="text">eFil {{ $t('assets') }}</span>
-            <p class="number">{{ efilTotal }}</p>
+            <p class="number">{{ balance.efil | decimals }}</p>
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} eFil</span>
-            <p class="number1">{{ efilWithdrawable }}</p>
+            <p class="number1">{{ balance.efilInterest | decimals }}</p>
           </div>
         </div>
         <div class="items-content">
           <div class="border items-item">
-            <span class="text">FD {{ $t('assets') }}</span>
-            <p class="number">{{ fdTotal }}</p>
+            <span class="text">CRFI {{ $t('assets') }}</span>
+            <p class="number">{{ balance.CRFI | decimals }}</p>
           </div>
           <div class="items-item">
-            <span class="text"> {{ $t('withdraw') }} FD</span>
-            <p class="number1">{{ fdWithdrawable }}</p>
+            <span class="text"> {{ $t('withdraw') }} CRFI</span>
+            <p class="number1">{{ balance.fdInterest | decimals }}</p>
           </div>
         </div>
       </div>
@@ -96,7 +98,9 @@
           <div class="footer-btn" @click="showMask = false">
             {{ $t('cancel') }}
           </div>
-          <div class="footer-btn">{{ $t('confirm') }}</div>
+          <div class="footer-btn" @click="handleRepurchase">
+            {{ $t('confirm') }}
+          </div>
         </div>
       </div>
     </van-overlay>
@@ -163,18 +167,23 @@ export default {
     this.initData()
     this.ethereum()
     window.ethereum.on('accountsChanged', account => {})
-    this.getUser()
+    // this.getUser()
   },
 
   methods: {
-    ...mapActions(['initData']),
+    ...mapActions(['initData', 'Repurchase']),
+    handleRepurchase() {
+      this.Repurchase({
+        value: 1,
+      })
+    },
     async getUser() {
       let accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
-      let { fromWei } = this.$fd.web3.utils
+      let { fromWei } = this.$CRFI.web3.utils
 
-      let fdBalance = await this.$fd.callContract('balanceOf', accounts)
+      let fdBalance = await this.$CRFI.callContract('balanceOf', accounts)
       this.fdBalance = fromWei(fdBalance)
     },
     async ethereum() {

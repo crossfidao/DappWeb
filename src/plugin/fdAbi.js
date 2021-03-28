@@ -1,4 +1,4 @@
-export const coinAbi = [
+export const fdAbi = [
          {
            inputs: [
              { internalType: 'string', name: 'name_', type: 'string' },
@@ -8,7 +8,6 @@ export const coinAbi = [
                name: 'defaultOperators_',
                type: 'address[]',
              },
-             { internalType: 'address', name: 'fdAddr', type: 'address' },
            ],
            stateMutability: 'nonpayable',
            type: 'constructor',
@@ -92,31 +91,6 @@ export const coinAbi = [
              },
            ],
            name: 'Burned',
-           type: 'event',
-         },
-         {
-           anonymous: false,
-           inputs: [
-             {
-               indexed: true,
-               internalType: 'address',
-               name: 'account',
-               type: 'address',
-             },
-             {
-               indexed: false,
-               internalType: 'uint256',
-               name: 'amount',
-               type: 'uint256',
-             },
-             {
-               indexed: false,
-               internalType: 'bytes',
-               name: 'data',
-               type: 'bytes',
-             },
-           ],
-           name: 'BurnedFDEfil',
            type: 'event',
          },
          {
@@ -271,16 +245,9 @@ export const coinAbi = [
            type: 'function',
          },
          {
-           inputs: [{ internalType: 'uint256', name: 'rate', type: 'uint256' }],
-           name: 'ChangeBurnEFilRateFD',
-           outputs: [],
-           stateMutability: 'nonpayable',
-           type: 'function',
-         },
-         {
            inputs: [
              {
-               internalType: 'enum EFil.Erc777ModeType',
+               internalType: 'enum ERC777.Erc777ModeType',
                name: 'mode',
                type: 'uint8',
              },
@@ -408,13 +375,6 @@ export const coinAbi = [
          },
          {
            inputs: [],
-           name: 'burnEFilRateFD',
-           outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-           stateMutability: 'view',
-           type: 'function',
-         },
-         {
-           inputs: [],
            name: 'decimals',
            outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
            stateMutability: 'pure',
@@ -434,7 +394,7 @@ export const coinAbi = [
            name: 'erc777Mode',
            outputs: [
              {
-               internalType: 'enum EFil.Erc777ModeType',
+               internalType: 'enum ERC777.Erc777ModeType',
                name: '',
                type: 'uint8',
              },
@@ -547,7 +507,7 @@ export const coinAbi = [
            ],
            name: 'tokensReceived',
            outputs: [],
-           stateMutability: 'nonpayable',
+           stateMutability: 'pure',
            type: 'function',
          },
          {
