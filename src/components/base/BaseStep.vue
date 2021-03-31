@@ -31,7 +31,7 @@ export default {
   props: {
     step: {
       type: Number,
-      default: 1,
+      default: 2,
     },
   },
   data() {
@@ -127,12 +127,16 @@ export default {
   // left: 0;
   // top: 40px;
   flex: 1;
-  color: #96a5bf;
-  font-size: 12px;
+  font-size: 16px;
+  font-family: PingFangSC-Light, PingFang SC;
+  font-weight: 300;
+  color: #707070;
   .title {
     margin-bottom: 30px;
-    font-size: 14px;
-    font-weight: bold;
+    font-size: 10px;
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #707070;
   }
 }
 .text-active {

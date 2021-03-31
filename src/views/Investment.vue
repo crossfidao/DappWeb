@@ -12,133 +12,156 @@
     </BaseHeader>
 
     <!-- 活期 -->
-    <div class="items mr-t">
-      <h4 class="title">FD 活期 {{ $t('investment') }}</h4>
-      <div
-        class="item-box"
-        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-        v-for="(item, index) in demandFD"
-        :key="item.ID"
-      >
-        <div class="item" :style="getStyle(index)">
-          <div
-            class="item-content "
-            :class="index % 2 == 0 ? 'content-left' : ''"
-          >
-            <div class="name">
-              <h5 class="">
-                CRFI:{{ item.NewFDInterestRate || item.FDInterestRate | rate }}%
-                eFil:
-                {{ item.NewEFilInterestRate || item.EFilInterestRate | rate }}%
-              </h5>
-              <span class="text">{{ $t('annualized') }}</span>
+    <div class="content">
+      <!-- <div class="items">
+        <h4 class="title">FD 活期 {{ $t('investment') }}</h4>
+        <div
+          class="item-box"
+          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+          v-for="(item, index) in demandFD"
+          :key="item.ID"
+        >
+          <div class="item" :style="getStyle(index)">
+            <div
+              class="item-content "
+              :class="index % 2 == 0 ? 'content-left' : ''"
+            >
+              <div class="name">
+                <h5 class="">
+                  CRFI:{{
+                    item.NewFDInterestRate != 0
+                      ? item.NewFDInterestRate
+                      : item.FDInterestRate | rate
+                  }}% eFil:
+                  {{
+                    item.NewEFilInterestRate != 0
+                      ? item.NewFDInterestRate
+                      : item.EFilInterestRate | rate
+                  }}%
+                </h5>
+                <span class="text">{{ $t('annualized') }}</span>
+              </div>
+              <div class="btn" @click="handleDemandBuy(item)">
+                {{ $t('buy') }}
+              </div>
             </div>
-            <div class="btn" @click="handleDemandBuy(item)">
-              {{ $t('buy') }}
-            </div>
+            <span
+              class="date"
+              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+            >
+              {{ item.Days }}{{ $t('time') }}
+            </span>
           </div>
-          <span
-            class="date"
-            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-          >
-            {{ item.Days }}{{ $t('time') }}
-          </span>
         </div>
       </div>
-    </div>
-    <div class="items">
-      <h4 class="title">eFil 活期 {{ $t('investment') }}</h4>
-      <div
-        class="item-box"
-        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-        v-for="(item, index) in demandEFil"
-        :key="item.ID"
-      >
-        <div class="item" :style="getStyle(index)">
-          <div
-            class="item-content "
-            :class="index % 2 == 0 ? 'content-left' : ''"
-          >
-            <div class="name">
-              <h5 class="">
-                CRFI:{{ item.FDInterestRate | rate }}% eFil:
-                {{ item.EFilInterestRate | rate }}%
-              </h5>
-              <span class="text">{{ $t('annualized') }}</span>
+      <div class="items">
+        <h4 class="title">eFil 活期 {{ $t('investment') }}</h4>
+        <div
+          class="item-box"
+          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+          v-for="(item, index) in demandEFil"
+          :key="item.ID"
+        >
+          <div class="item" :style="getStyle(index)">
+            <div
+              class="item-content "
+              :class="index % 2 == 0 ? 'content-left' : ''"
+            >
+              <div class="name">
+                <h5 class="">
+                  CRFI:{{
+                    item.NewFDInterestRate != 0
+                      ? item.NewFDInterestRate
+                      : item.FDInterestRate | rate
+                  }}% eFil:
+                  {{
+                    item.NewEFilInterestRate != 0
+                      ? item.NewFDInterestRate
+                      : item.EFilInterestRate | rate
+                  }}%
+                </h5>
+                <span class="text">{{ $t('annualized') }}</span>
+              </div>
+              <div class="btn" @click="handleDemandBuy(item)">
+                {{ $t('buy') }}
+              </div>
             </div>
-            <div class="btn" @click="handleDemandBuy(item)">
-              {{ $t('buy') }}
-            </div>
+            <span
+              class="date"
+              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+            >
+              {{ item.Days }}{{ $t('time') }}
+            </span>
           </div>
-          <span
-            class="date"
-            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-          >
-            {{ item.Days }}{{ $t('time') }}
-          </span>
         </div>
-      </div>
-    </div>
+      </div> -->
 
-    <div class="items">
-      <h4 class="title">eFil {{ $t('investment') }}</h4>
-      <div
-        class="item-box"
-        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-        v-for="(item, index) in efilList"
-        :key="item.ID"
-      >
-        <div class="item" :style="getStyle(index)">
-          <div
-            class="item-content "
-            :class="index % 2 == 0 ? 'content-left' : ''"
-          >
-            <div class="name">
-              <h5 class="">
-                CRFI:{{ item.FDInterestRate | rate }}% eFil:
-                {{ item.EFilInterestRate | rate }}%
-              </h5>
-              <span class="text">{{ $t('annualized') }}</span>
+      <div class="items">
+        <h4 class="title">eFil {{ $t('investment') }}</h4>
+        <div
+          class="item-box"
+          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+          v-for="(item, index) in efilList"
+          :key="item.ID"
+        >
+          <div class="item" :style="getStyle(index)">
+            <div
+              class="item-content "
+              :class="index % 2 == 0 ? 'content-left' : ''"
+            >
+              <div class="name">
+                <h5 class="">
+                  CRFI:{{ item.FDInterestRate | rate }}% eFil:
+                  {{ item.EFilInterestRate | rate }}%
+                </h5>
+                <span class="text">{{ $t('annualized') }}</span>
+              </div>
+              <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
             </div>
-            <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
+            <span
+              class="date"
+              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+            >
+              {{ item.Days || $t('current') }}
+              <template v-if="item.Days">
+                {{ $t('time') }}
+              </template>
+            </span>
           </div>
-          <span
-            class="date"
-            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-          >
-            {{ item.Days }}{{ $t('time') }}
-          </span>
         </div>
       </div>
-    </div>
-    <div class="items">
-      <h4 class="title">CRFI {{ $t('investment') }}</h4>
-      <div
-        class="item-box"
-        :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-        v-for="(item, index) in fdList"
-        :key="item.ID"
-      >
-        <div class="item" :style="getStyle(index)">
-          <div
-            class="item-content "
-            :class="index % 2 == 0 ? 'content-left' : ''"
-          >
-            <div class="name">
-              <h5 class="">
-                CRFI:{{ item.FDInterestRate | rate }}% eFil:
-                {{ item.EFilInterestRate | rate }}%
-              </h5>
-              <span class="text">{{ $t('annualized') }}</span>
+      <div class="items">
+        <h4 class="title">CRFI {{ $t('investment') }}</h4>
+        <div
+          class="item-box"
+          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
+          v-for="(item, index) in fdList"
+          :key="item.ID"
+        >
+          <div class="item" :style="getStyle(index)">
+            <div
+              class="item-content "
+              :class="index % 2 == 0 ? 'content-left' : ''"
+            >
+              <div class="name">
+                <h5 class="">
+                  CRFI:{{ item.FDInterestRate | rate }}% eFil:
+                  {{ item.EFilInterestRate | rate }}%
+                </h5>
+                <span class="text">{{ $t('annualized') }}</span>
+              </div>
+              <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
             </div>
-            <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
+            <span
+              class="date"
+              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
+            >
+              {{ item.Days || $t('current') }}
+              <template v-if="item.Days">
+                {{ $t('time') }}
+              </template>
+            </span>
           </div>
-          <span
-            class="date"
-            :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-          >
-            {{ item.Days }}{{ $t('time') }}
-          </span>
         </div>
       </div>
     </div>
@@ -152,6 +175,13 @@
             clearable
             v-model="value"
             :placeholder="$t('buyPlaceholder')"
+          />
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="inviteValue"
+            :placeholder="$t('invitePlaceholder')"
           />
         </div>
         <div class="footer">
@@ -179,6 +209,7 @@ export default {
       showMask: false,
       isDemand: false,
       value: '',
+      inviteValue: '',
       curItem: null,
     }
   },
@@ -196,6 +227,7 @@ export default {
       return num
     },
     fdList() {
+      console.log('fdList', this.$store.state.fdList)
       return this.$store.state.fdList
     },
     efilList() {
@@ -222,19 +254,24 @@ export default {
         this.demandBuyCoin({
           ...this.curItem,
           value: this.value,
+          inviteValue: this.inviteValue,
         })
       } else {
         this.buyCoin({
           ...this.curItem,
           value: this.value,
+          inviteValue: this.inviteValue,
         })
       }
       this.showMask = false
       this.value = ''
     },
     async handleBuy(data) {
+      let { Days } = data
+      console.log(Days)
+
+      this.isDemand = !Days
       this.showMask = true
-      this.isDemand = false
       this.curItem = data
     },
     // 活期
@@ -254,24 +291,28 @@ export default {
 
 <style scoped lang="scss">
 .step-box {
-  // padding: 0 64px;
+  padding: 44px 0;
   border-bottom: 1px solid #9cd8df;
 }
 .header-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 80px 48px 64px;
+  margin: 40px 48px;
   font-size: 30px;
   color: #63c2cd;
 }
 .desc {
-  margin-bottom: 75px;
+  margin-bottom: 40px;
   color: #96a5bf;
   font-size: 22px;
 }
 .mr-t {
   margin-top: 550px;
+}
+.content {
+  padding-top: 520px;
+  padding-bottom: 24px;
 }
 .items {
   position: relative;
@@ -416,6 +457,6 @@ export default {
   margin-bottom: 20px;
 }
 .mr-t {
-  margin-top: 550px;
+  padding-top: 550px;
 }
 </style>

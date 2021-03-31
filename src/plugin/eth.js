@@ -46,22 +46,23 @@ export default class Contract {
   }
 
   async callContract(methods, args) {
-    console.log(methods, args)
+    // console.log(methods, args)
     return await this.contract.methods[methods](...args).call()
   }
-  async executeContract(methods, args) {
-    console.log(methods, args)
-    let accounts = await window.ethereum.request({
-      method: 'eth_requestAccounts',
-    })
+  async executeContract(methods, args, address) {
+    // console.log(methods, args)
+    let accounts = ['df']
+    // let accounts = await window.ethereum.request({
+    //   method: 'eth_requestAccounts',
+    // })
     // let gasPrict = await this.web3.eth.getGasPrice()
     let gasAmount = await this.contract.methods[methods](...args).estimateGas({
-      from: accounts[0],
+      from: address,
     })
     this.web3.eth.getGasPrice().then(console.log)
     // console.log('gasPrice', gasAmount)
     return await this.contract.methods[methods](...args).send({
-      from: accounts[0],
+      from: address,
       gas: gasAmount,
       // gasPrice: '20000000000',
     })

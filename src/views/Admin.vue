@@ -3,10 +3,20 @@
     <BaseHeader>
       <div class="items">
         <div class="title">
-          <span>eFil {{ $t('interestRate') }}</span>
-          {{ fdList }}
+          <span> {{ $t('inviteRate') }}</span>
         </div>
         <div class="charge">
+          <van-field
+            class="price-input"
+            border
+            v-model="value"
+            placeholder="请输入eFil数量"
+          />
+          <van-button class="charge-btn" @click="handleCharge">
+            {{ $t('edit') }}
+          </van-button>
+        </div>
+        <!-- <div class="charge">
           <span></span>
           <van-field
             class="price-input"
@@ -23,10 +33,37 @@
           <van-button class="charge-btn" @click="handleDemandRate">
             修改活期
           </van-button>
-        </div>
-        <div class="item" v-for="item in list" :key="item.date">
+        </div> -->
+      </div>
+    </BaseHeader>
+    <div class="content">
+      <!-- 重置 -->
+      <div class="charge-title">
+        <span> {{ $t('charge') }} eFil</span>
+      </div>
+      <div class="charge">
+        <van-field
+          class="price-input"
+          border
+          v-model="value"
+          placeholder="请输入eFil数量"
+        />
+        <van-button class="charge-btn" @click="handleCharge">
+          {{ $t('charge') }}
+        </van-button>
+      </div>
+      <div class="items">
+        <h4 class="title">CRFI {{ $t('investment') }}{{ fdList.length }}</h4>
+        <div class="item" v-for="item in fdList" :key="item.date">
           <div class="date">
-            <span class="text">{{ item.Days }}{{ $t('time') }}</span>
+            {{ item.Days || $t('current') }}
+
+            <span class="text">
+              {{ item.Days || $t('current') }}
+              <template v-if="item.Days">
+                {{ $t('time') }}
+              </template>
+            </span>
             <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'eFil' }}</p>
           </div>
           <div class="item-content">
@@ -35,26 +72,15 @@
               <span class="price-text" v-if="!item.show">
                 {{ item.FDInterestRate }}
               </span>
-              <!-- <van-field
-                v-else
-                class="price-input"
-                border
-                v-model="item.value"
-                placeholder=""
-              /> -->
+
               <span>%</span>
             </div>
             <div class="price">
               <h5 class="price-title">eFil {{ $t('rate') }}:</h5>
-              <span class="price-text" v-if="!item.show">
+              <span class="price-text">
                 {{ item.EFilInterestRate }}
               </span>
-              <!-- <van-field
-                class="price-input"
-                border
-                v-model="item.EFilInterestRate"
-                placeholder=""
-              /> -->
+
               <span>%</span>
             </div>
           </div>
@@ -64,88 +90,54 @@
             size="mormal"
             @click="handleEdit(item)"
           >
-            <!-- @click="handleEdit(item)" -->
             {{ $t('edit') }}
           </van-button>
-          <!-- <van-button
+        </div>
+      </div>
+      <div class="items">
+        <h4 class="title">eFil {{ $t('investment') }}</h4>
+        <div class="item" v-for="item in eFilList" :key="item.date">
+          <div class="date">
+            {{ item.Days || $t('current') }}
+
+            <span class="text">
+              {{ item.Days || $t('current') }}
+              <template v-if="item.Days">
+                {{ $t('time') }}
+              </template>
+            </span>
+            <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'eFil' }}</p>
+          </div>
+          <div class="item-content">
+            <div class="price">
+              <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
+              <span class="price-text" v-if="!item.show">
+                {{ item.FDInterestRate }}
+              </span>
+
+              <span>%</span>
+            </div>
+            <div class="price">
+              <h5 class="price-title">eFil {{ $t('rate') }}:</h5>
+              <span class="price-text">
+                {{ item.EFilInterestRate }}
+              </span>
+
+              <span>%</span>
+            </div>
+          </div>
+          <van-button
             class="item-btn"
             type="primary"
             size="mormal"
-            v-else
             @click="handleEdit(item)"
           >
-            {{ $t('config') }}
-          </van-button> -->
+            {{ $t('edit') }}
+          </van-button>
         </div>
       </div>
-    </BaseHeader>
-    <div class="content"></div>
-    <!-- <div class="items mr-t">
-      <div class="title">到期资产</div>
-      <div class="item" v-for="item in 3" :key="item">
-        <div class="date">
-          <span class="text">30日</span>
-          <p class="date-bg">eFile</p>
-        </div>
-        <div class="item-content">
-          <div class="price">
-            <h5>CRFI:2.4$</h5>
-            <h4 class="number">1500.00</h4>
-          </div>
-          <div class="income">
-            <span>[到期时间]09：43</span>
-            <div>
-              <span>+3493 eFil</span>
-              <p>+3493 CRFI</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="items">
-      <div class="title">eFil 投资</div>
-      <div class="item" v-for="item in 3" :key="item">
-        <div class="date">
-          <span class="text">30日</span>
-          <p class="date-bg">eFile</p>
-        </div>
-        <div class="item-content">
-          <div class="price">
-            <h5>CRFI:2.4$</h5>
-            <h4 class="number">1500.00</h4>
-          </div>
-          <div class="income">
-            <span>[到期时间]09：43</span>
-            <div>
-              <span>+3493 eFil</span>
-              <p>+3493 CRFI</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- <div class="items">
-      <div class="title">CRFI 投资</div>
-      <div class="item" v-for="item in 3" :key="item">
-        <div class="date">
-          <span class="text">30日</span>
-          <p class="date-bg">eFile</p>
-        </div>
-        <div class="item-content">
-          <div class="price">
-            <h5>CRFI:2.4$</h5>
-            <h4 class="number">1500.00</h4>
-          </div>
-          <div class="income">
-            <span>[到期时间]09：43</span>
-            <div>
-              <span>+3493 eFil</span>
-              <p>+3493 CRFI</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    </div>
+
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
         <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
@@ -169,29 +161,12 @@
           <div class="footer-btn" @click="showMask = false">
             {{ $t('cancel') }}
           </div>
-          <div class="footer-btn" @click="handleChangeRate">
+          <div class="footer-btn" @click="handleRate">
             {{ $t('confirm') }}
           </div>
         </div>
       </div>
     </van-overlay>
-    <!-- <van-popup v-model="show">
-      <div class="filed">
-        <div class="filed-title">修改利率</div>
-        <van-field
-          class="filed-input"
-          placeholder="请填写利率"
-          border
-          v-model="CRFL"
-        />
-        <van-field
-          class="filed-input"
-          placeholder="请填写利率"
-          border
-          v-model="CRFL"
-        />
-      </div>
-    </van-popup> -->
   </div>
 </template>
 
@@ -206,17 +181,20 @@ export default {
   data() {
     return {
       showMask: false,
+      isDemand: false,
       curItem: null,
       CRFL: '',
       efil: '',
       value: '',
-      list: [],
     }
   },
   computed: {
-    fdList() {
-      console.log('fdList', this.$store.state.fdList)
-      let list = this.$store.state.fdList
+    eFilList() {
+      console.log('eFilList', this.$store.state.eFilList)
+      let list = this.$store.state.eFilList
+      let tmp = []
+      console.log(list.length)
+      // console.log('ldkfdlfkd', list)
       list.forEach(element => {
         // element.show = false
         let {
@@ -227,20 +205,13 @@ export default {
           Type,
           deleteFlag,
         } = element
-        console.log(
-          Days,
-          EFilInterestRate,
-          FDInterestRate,
-          ID,
-          Type,
-          deleteFlag,
-        )
+
         EFilInterestRate = EFilInterestRate * 100
         EFilInterestRate = utils.fromWei(EFilInterestRate.toString())
 
         FDInterestRate = FDInterestRate * 100
         FDInterestRate = utils.fromWei(FDInterestRate.toString())
-        this.list.push({
+        tmp.push({
           Days,
           EFilInterestRate,
           FDInterestRate,
@@ -248,11 +219,44 @@ export default {
           Type,
           deleteFlag,
         })
-        console.log('dflkdfld', this.list)
+        console.log('eFilList', list)
       })
-      this.curItem = this.list[0]
 
-      return this.$store.state.fdList
+      return tmp
+    },
+    fdList() {
+      let list = this.$store.state.fdList
+      let tmp = []
+      list.forEach(element => {
+        // element.show = false
+        let {
+          Days,
+          EFilInterestRate,
+          FDInterestRate,
+          ID,
+          Type,
+          deleteFlag,
+        } = element
+        EFilInterestRate = EFilInterestRate * 100
+        EFilInterestRate = utils.fromWei(EFilInterestRate.toString())
+
+        FDInterestRate = FDInterestRate * 100
+        FDInterestRate = utils.fromWei(FDInterestRate.toString())
+        tmp.push({
+          Days,
+          EFilInterestRate,
+          FDInterestRate,
+          ID,
+          Type,
+          deleteFlag,
+        })
+        console.log(tmp)
+      })
+      // this.curItem = list[0]
+
+      console.log('length', tmp.length, tmp)
+
+      return tmp
     },
   },
   mounted() {},
@@ -263,10 +267,11 @@ export default {
     },
     handleEdit(item) {
       console.log('item', item)
-      let { ID, EFilInterestRate, FDInterestRate } = this.curItem
+      this.curItem = item
+      let { Days = undefined, EFilInterestRate, FDInterestRate } = this.curItem
       this.CRFL = FDInterestRate
       this.efil = EFilInterestRate
-
+      this.isDemand = !Days
       this.curItem = item
       this.showMask = true
       // if (item.show) {
@@ -277,13 +282,23 @@ export default {
       // item.show = !item.show
       // console.log('item', item)
     },
+    // 更改利率
+    handleRate() {
+      console.log(this.isDemand, this.curItem)
+      if (this.isDemand) {
+        this.handleDemandRate()
+      } else {
+        this.handleChangeRate()
+      }
+    },
     handleDemandRate() {
-      // let { ID } = this.curItem
+      let { Type } = this.curItem
       this.ChangeDemandRate({
-        ID: 0,
-        fd: 0.1,
-        efil: 0.1,
+        ID: Type,
+        fd: this.CRFL,
+        efil: this.efil,
       })
+      this.showMask = false
     },
     handleChangeRate() {
       let { ID, EFilInterestRate, FDInterestRate } = this.curItem
@@ -305,21 +320,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.content {
+  width: 634px;
+  margin: 0 auto;
+  padding-top: 260px;
+  // background: #fff;
+}
 .charge {
   display: flex;
   align-items: center;
-  margin-top: 12px;
+  padding: 24px 0;
+  background: #fff;
   border: 1px solid #63c2cd;
+  border-radius: 10px;
   padding: 8px;
   font-size: 12px;
   &-btn {
     width: 100px;
   }
 }
+.charge-title {
+  background: #fff;
+  border-bottom: 1px solid #63c2cd;
+  padding: 20px 50px;
+  border-radius: 10px;
+  font-family: PingFang SC;
+  font-weight: 600;
+  font-size: 30px;
+  text-align: left;
+  color: #63c2cd;
+}
 .items {
   width: 634px;
-  margin: 0 auto 40px;
+  margin: 24px auto 40px;
   background: #fff;
+
   border-radius: 10px;
   text-align: left;
   font-size: 31px;

@@ -1,24 +1,26 @@
 <template>
   <div class="home" ref="form" label-width="80px">
     <BaseHeader title="overview">
-      <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
-      <span class="text">
-        {{ $t('exchangeDesc') }}
-      </span>
-    </BaseHeader>
-    <!-- <div class="header">
-      <div class="header-top">
-        {{ $t('overview') }}
-        <span>...</span>
-      </div>
-      <div class="header-address">
+      <div class="user">
+        <h5 class="title">{{ $t('fileconinAddress') }}</h5>
         <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
-        <span class="text"
-          >转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil</span
+        <div class="text">
+          {{ $t('exchangeDesc') }}
+        </div>
+        <h5 class="title">{{ $t('invite') }}</h5>
+        <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
+        <div class="text">
+          {{ $t('inviteText') }}
+        </div>
+        <div
+          class="tag-read copy"
+          :data-clipboard-text="userAddress"
+          @click="copy"
         >
+          {{ $t('copy') }}
+        </div>
       </div>
-    </div> -->
-
+    </BaseHeader>
     <div class="content">
       <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
@@ -31,7 +33,7 @@
             {{ $t('eFilDesc') }}
           </span>
           <div class="btn" @click="showMask = true">
-            1{{ $t('repurchase') }}
+            {{ $t('repurchase') }}
           </div>
         </div>
       </div>
@@ -134,6 +136,7 @@
 
 <script>
 import Contract from '@/plugin/eth'
+import Clipboard from 'clipboard'
 import { mapActions } from 'vuex'
 // @ is an alias to /src
 export default {
@@ -147,6 +150,9 @@ export default {
     }
   },
   computed: {
+    userAddress() {
+      return this.$store.state.userAddress
+    },
     balance() {
       return this.$store.state.balance
     },
@@ -164,14 +170,28 @@ export default {
     },
   },
   async mounted() {
-    this.initData()
-    this.ethereum()
-    window.ethereum.on('accountsChanged', account => {})
+    // this.ethereum()
+    // window.ethereum.on('accountsChanged', account => {})
     // this.getUser()
   },
 
   methods: {
     ...mapActions(['initData', 'Repurchase']),
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        this.$toast(this.$t('copy'))
+        console.log('复制成功')
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
     handleRepurchase() {
       this.Repurchase({
         value: 1,
@@ -272,21 +292,40 @@ export default {
   height: 100%;
 }
 
+.user {
+  // margin-top: 42px;
+  padding: 14px;
+  .title {
+    margin-bottom: 24px;
+    font-size: 20px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
+    color: #707070;
+    text-align: left;
+  }
+  .text {
+    margin-bottom: 40px;
+    font-size: 18px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
+    color: #707070;
+  }
+}
+
 .flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .content {
-  padding-top: 100px;
-  padding: 100px 58px;
+  padding: 340px 58px 48px;
   .title {
     margin: 32px 0;
-    font-size: 31px;
-    font-family: PingFang SC;
-    font-weight: 500;
-    color: #000000;
+    font-size: 32px;
+    font-family: PingFangSC-Light, PingFang SC;
+    font-weight: 300;
     text-align: left;
+    color: #707070;
   }
   .item {
     background: #fff;
@@ -311,9 +350,10 @@ export default {
       width: 312px;
       height: 56px;
       line-height: 56px;
-      font-size: 26px;
-      font-family: PingFang SC;
-      font-weight: 300;
+      font-size: 16px;
+      font-family: PingFangSC-Semibold, PingFang SC;
+      font-weight: 600;
+      color: #707070;
       text-align: left;
       font-weight: bold;
     }
@@ -423,5 +463,17 @@ export default {
   line-height: 84px;
   background: #eee;
   margin-bottom: 20px;
+}
+.copy {
+  width: 140px;
+  height: 46px;
+  line-height: 46px;
+  background: linear-gradient(90deg, #63c2cd 0%, #25aab9 100%);
+  border-radius: 13px;
+  margin: 0 auto;
+  font-family: PingFangSC-Light, PingFang SC;
+  font-weight: 300;
+  color: #ffffff;
+  font-size: 18px;
 }
 </style>

@@ -1,16 +1,35 @@
 <template>
   <div class="header">
+    <div class="header-user">
+      <span>{{ userAddress.slice(0, 18) }}</span>
+      <span class="header-user-btn" @click="ethereum">
+        {{ $t('connect') }}
+      </span>
+    </div>
     <div class="header-top">
       {{ $t(title) }}
-      <span @click="handleClick">...</span>
+      <van-icon class="icon" @click="showLang = true" name="weapp-nav" />
     </div>
     <div class="header-address">
       <slot></slot>
     </div>
+    <van-action-sheet
+      v-model="show"
+      :title="$t('selectUser')"
+      :actions="actions"
+      @select="onSelect"
+    />
+    <van-action-sheet
+      v-model="showLang"
+      :title="$t('selectLang')"
+      :actions="lang"
+      @select="onSelect"
+    />
   </div>
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex'
 export default {
   name: 'BaseHeader',
   props: {
@@ -20,12 +39,47 @@ export default {
     },
   },
   data() {
-    return {}
+    return {
+      show: false,
+      showLang: false,
+      lang: [
+        {
+          name: '中文',
+          lang: 'cn',
+        },
+        {
+          name: '英文',
+          lang: 'en',
+        },
+      ],
+      actions: [{ name: '选项一' }, { name: '选项二' }, { name: '选项三' }],
+    }
+  },
+  computed: {
+    userAddress() {
+      return this.$store.state.userAddress
+    },
   },
   methods: {
-    handleClick() {
-      this.$i18n.locale = 'cn'
+    ...mapMutations(['setUserAddress']),
+    ...mapActions(['initData']),
+    async ethereum() {
+      console.log('dfd')
+      let accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      })
+      if (accounts.length > 0) {
+        this.setUserAddress(accounts[0])
+        this.initData()
+      }
     },
+    onSelect(action) {
+      console.log(action)
+      this.$i18n.locale = action.lang
+      localStorage.setItem('lang', action.lang)
+      this.showLang = false
+    },
+    handleClick() {},
   },
 }
 </script>
@@ -37,28 +91,47 @@ export default {
 }
 .header {
   position: relative;
+  background: linear-gradient(180deg, #63c2cd 0%, #25aab9 100%);
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  padding-bottom: 42px;
+  font-size: 10px;
+  &-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    color: #fff;
+    &-btn {
+      border: 1px solid #ccc;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+  }
   &-top {
     position: relative;
-    background: #47b7c4;
-    height: 140px;
-    padding-top: 24px;
-    border-bottom-left-radius: 32px;
-    border-bottom-right-radius: 32px;
+    // padding-top: 24px;
+    padding: 20px 0;
+
     color: #fff;
     font-size: 32px;
-    span {
+    .icon {
       position: absolute;
-      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 24px;
     }
   }
   &-address {
     position: absolute;
-    top: 80px;
-    left: 58px;
-    right: 58px;
+    top: 174px;
+    // width: 680px;
+    left: 56px;
+    right: 56px;
+    // left: 58px;
+    // right: 58px;
     background: #fff;
     border-radius: 16px;
-    padding-top: 56px;
     padding-bottom: 12px;
     color: #808080;
     font-size: 32px;
