@@ -9,10 +9,10 @@
           <van-field
             class="price-input"
             border
-            v-model="value"
+            v-model="affRate"
             placeholder="请输入eFil数量"
           />
-          <van-button class="charge-btn" @click="handleCharge">
+          <van-button class="charge-btn" @click="handleAffRate">
             {{ $t('edit') }}
           </van-button>
         </div>
@@ -39,21 +39,24 @@
     <div class="content">
       <!-- 重置 -->
       <div class="charge-title">
-        <span> {{ $t('charge') }} eFil</span>
+        <span>
+          {{ $t('charge') }} eFil {{ $t('interestPool') }}
+          {{ systemInfo.efilInterestPool | decimals }}</span
+        >
       </div>
       <div class="charge">
         <van-field
           class="price-input"
+          placeholder="请输入eFil数量"
           border
           v-model="value"
-          placeholder="请输入eFil数量"
         />
         <van-button class="charge-btn" @click="handleCharge">
           {{ $t('charge') }}
         </van-button>
       </div>
       <div class="items">
-        <h4 class="title">CRFI {{ $t('investment') }}{{ fdList.length }}</h4>
+        <h4 class="title">CRFI {{ $t('investment') }}</h4>
         <div class="item" v-for="item in fdList" :key="item.date">
           <div class="date">
             {{ item.Days || $t('current') }}
@@ -182,6 +185,7 @@ export default {
     return {
       showMask: false,
       isDemand: false,
+      affRate: '0',
       curItem: null,
       CRFL: '',
       efil: '',
@@ -189,6 +193,9 @@ export default {
     }
   },
   computed: {
+    systemInfo() {
+      return this.$store.state.systemInfo
+    },
     eFilList() {
       console.log('eFilList', this.$store.state.eFilList)
       let list = this.$store.state.eFilList
@@ -259,9 +266,19 @@ export default {
       return tmp
     },
   },
+  watch: {
+    systemInfo(val) {
+      this.affRate = utils.fromWei(this.systemInfo.affRate) * 100
+    },
+  },
   mounted() {},
   methods: {
-    ...mapActions(['charge', 'ChangePackageRate', 'ChangeDemandRate']),
+    ...mapActions([
+      'charge',
+      'ChangeAffRate',
+      'ChangePackageRate',
+      'ChangeDemandRate',
+    ]),
     handleCharge() {
       this.charge({ value: this.value })
     },
@@ -290,6 +307,12 @@ export default {
       } else {
         this.handleChangeRate()
       }
+    },
+    handleAffRate() {
+      console.log(this.affRate)
+      this.ChangeAffRate({
+        value: this.affRate,
+      })
     },
     handleDemandRate() {
       let { Type } = this.curItem

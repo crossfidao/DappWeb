@@ -65,7 +65,7 @@
         <div class="items-content">
           <div class="border items-item">
             <span class="text">CRFI {{ $t('assets') }}</span>
-            <p class="number">{{ balance.CRFI | decimals }}</p>
+            <p class="number">{{ balance.fd | decimals }}</p>
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} CRFI</span>
@@ -318,7 +318,7 @@ export default {
   align-items: center;
 }
 .content {
-  padding: 340px 58px 48px;
+  padding: 380px 58px 48px;
   .title {
     margin: 32px 0;
     font-size: 32px;

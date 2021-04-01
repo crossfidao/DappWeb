@@ -31,6 +31,10 @@ export default new Vuex.Store({
   state: {
     showLoading: false,
     userAddress: '',
+    systemInfo: {
+      affRate: '0',
+      efilInterestPool: '0',
+    },
     balance: {
       CRFI: 0,
       efil: 0,
@@ -38,6 +42,14 @@ export default new Vuex.Store({
       fdInterest: 0,
       watlletCRFI: 0,
       watlletefil: 0,
+    },
+    userInfo: {
+      id: '0',
+      admin: false,
+      fd: '0',
+      efil: '0',
+      efilInterest: '0',
+      fdInterest: '0',
     },
     userList: [],
     userDemandList: [],
@@ -131,11 +143,17 @@ export default new Vuex.Store({
     setLoading(state, value) {
       state.showLoading = value
     },
+    setSystemInfo(state, data) {
+      state.systemInfo = data
+    },
     setUserAddress(state, value) {
       console.log('userAddress', value)
       state.userAddress = value
     },
     setCorsslend(state, data) {},
+    setUserInfo(state, data) {
+      state.userInfo = data
+    },
     setBalance(state, data) {
       state.balance = data
     },
@@ -161,6 +179,19 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async ChangeAffRate({ state, commit, dispatch }, data) {
+      commit('setLoading', true)
+      let { value } = data
+      value = utils.toWei(value.toString()) / 100
+      try {
+        await corsslend.executeContract(
+          'ChangeAffRate',
+          [value.toString()],
+          state.userAddress,
+        )
+      } catch (e) {}
+      commit('setLoading', false)
+    },
     // 修改利率
     async ChangePackageRate({ state, commit, dispatch }, data) {
       commit('setLoading', true)
@@ -294,24 +325,35 @@ export default new Vuex.Store({
       }
 
       console.log('initData')
-      let accounts = ['df']
-      // let accounts = await window.ethereum.request({
-      //   method: 'eth_requestAccounts',
-      // })
-
       let address = state.userAddress
-
+      let systemInfo = await corsslend.callContract('GetSystemInfo', [])
+      let { affRate, efilInterestPool } = systemInfo
+      console.log('systemInfo', systemInfo)
+      commit('setSystemInfo', {
+        affRate,
+        efilInterestPool,
+      })
       let res = await corsslend.callContract('GetInvestInfo', [0, address])
-      let { admin, CRFI, efil, efilInterest, fdInterest } = res
+      let { id, admin, fd, efil, efilInterest, fdInterest } = res
+
+      commit('setUserInfo', {
+        id,
+        admin,
+        fd,
+        efil,
+        efilInterest,
+        fdInterest,
+      })
       // if (admin) {
       //   router.replace('/admin')
       // }
       // 获取余额
+      // TODO: //efilInterestPoo
       let watlletCRFI = await fdContract.callContract('balanceOf', [address])
       let watlletefil = await eFileContract.callContract('balanceOf', [address])
       commit('setBalance', {
         admin,
-        CRFI,
+        fd,
         efil,
         watlletCRFI,
         watlletefil,
@@ -376,7 +418,12 @@ export default new Vuex.Store({
           FDInterestRate: FDInterestRate1,
           EFilInterestRate: EFilInterestRate1,
         },
-        { ...list1.demandFD, Type: 0, FDInterestRate, EFilInterestRate },
+        {
+          ...list1.demandFD,
+          Type: 0,
+          FDInterestRate,
+          EFilInterestRate,
+        },
       ])
     },
   },

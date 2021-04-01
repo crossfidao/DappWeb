@@ -9,7 +9,7 @@ const cn = {
   overview: '账户总览',
   depositCoins: '存币挖矿',
   selectUser: '选择用户',
-  selectLang: '选择用户',
+  selectLang: '选择语言',
   copy: '复制',
   copyText: '复制成功',
 
@@ -48,6 +48,8 @@ const cn = {
 
   // assets
   // maturity: '到期资产',
+  interestAssets: '利息',
+  expireAssets: '到期投资',
   income: '当前可提取收益',
   currentInvest: '活期投资',
   fast: '一键赎回',
@@ -57,6 +59,7 @@ const cn = {
   interestRate: '利率配置',
   inviteRate: '推荐人返利比例',
   rate: '利率',
+  interestPool: '利息池',
 
   time: '日',
 

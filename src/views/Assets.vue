@@ -10,21 +10,21 @@
       <div class="income">
         <div class="income-title">
           <span class="circle"></span>
-          <span>每日利息</span>
+          <span>{{ $t('interestAssets') }}</span>
         </div>
         <div class="income-item">
-          <span>CRFI: 38171</span>
-          <span>eFil: 38171</span>
+          <span>CRFI: {{ userInfo.fdInterest | decimals }}</span>
+          <span>eFil: {{ userInfo.efilInterest | decimals }}</span>
         </div>
       </div>
       <div class="income">
         <div class="income-title">
           <span class="circle"></span>
-          <span>每日利息</span>
+          <span>{{ $t('expireAssets') }}</span>
         </div>
         <div class="income-item">
-          <span>CRFI: 38171</span>
-          <span>eFil: 38171</span>
+          <span>CRFI: {{ userInfo.fd | decimals }}</span>
+          <span>eFil: {{ userInfo.efil | decimals }}</span>
         </div>
       </div>
       <div class="item" v-for="item in expireList" :key="item.ID">
@@ -47,7 +47,7 @@
           </h4>
           <div class="item-income">
             <span>+{{ getValue(item, 1) }} eFil</span>
-            <p>+{{ getValue(item) }} CRFI</p>
+            <p v-if="item.Type != 1">+{{ getValue(item) }} CRFI</p>
           </div>
         </div>
       </div>
@@ -111,7 +111,7 @@
           </div>
           <div class="item-income">
             <span>+{{ getValue(item, 1) }} eFil</span>
-            <p>+{{ getValue(item) }} CRFI</p>
+            <!-- <p>+{{ getValue(item) }} CRFI</p> -->
           </div>
         </div>
       </div>
@@ -158,6 +158,9 @@ export default {
     }
   },
   computed: {
+    userInfo() {
+      return this.$store.state.userInfo
+    },
     expireList() {
       let arr = []
       let now = parseInt(new Date().getTime() / 1000)
