@@ -3,12 +3,12 @@
     <BaseHeader title="overview">
       <div class="user">
         <h5 class="title">{{ $t('fileconinAddress') }}</h5>
-        <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
+        <h4>{{ userAddress.slice(0, 18) }}</h4>
         <div class="text">
           {{ $t('exchangeDesc') }}
         </div>
         <h5 class="title">{{ $t('invite') }}</h5>
-        <h4>adkfdklfjdlskfjdslfdlfkdlf</h4>
+        <h4>{{ userAddress.slice(0, 18) }}</h4>
         <div class="text">
           {{ $t('inviteText') }}
         </div>
@@ -26,7 +26,7 @@
       <div class="item">
         <div class="number-box flex">
           <span class="text border">eFile</span>
-          <div class="number">{{ balance.watlletCRFI | decimals }}</div>
+          <div class="number">{{ balance.watlletefil | decimals }}</div>
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
@@ -41,7 +41,7 @@
       <div class="item">
         <div class="number-box flex">
           <span class="text border">CRFI</span>
-          <div class="number">{{ balance.watlletefil | decimals }}</div>
+          <div class="number">{{ balance.watlletCRFI | decimals }}</div>
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
@@ -85,6 +85,7 @@
             class="field"
             center
             clearable
+            type="number"
             v-model="value"
             :placeholder="$t('eFilPlaceholder')"
           />
@@ -92,7 +93,7 @@
             class="field"
             center
             clearable
-            v-model="value"
+            v-model="fileCoin"
             :placeholder="$t('FilecoinPlaceholder')"
           />
         </div>
@@ -138,6 +139,7 @@
 import Contract from '@/plugin/eth'
 import Clipboard from 'clipboard'
 import { mapActions } from 'vuex'
+import BigNumber from 'bignumber.js'
 // @ is an alias to /src
 export default {
   name: 'Home',
@@ -147,6 +149,7 @@ export default {
       showMask: false,
       fdBalance: 0,
       value: '',
+      fileCoin: '',
     }
   },
   computed: {
@@ -181,7 +184,6 @@ export default {
       var clipboard = new Clipboard('.tag-read')
       clipboard.on('success', e => {
         this.$toast(this.$t('copy'))
-        console.log('复制成功')
         // 释放内存
         clipboard.destroy()
       })
@@ -194,8 +196,12 @@ export default {
     },
     handleRepurchase() {
       this.Repurchase({
-        value: 1,
+        value: this.value,
+        fileCoin: this.fileCoin,
       })
+      this.value = ''
+      this.fileCoin = ''
+      this.showMask = false
     },
     async getUser() {
       let accounts = await window.ethereum.request({

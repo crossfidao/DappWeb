@@ -159,6 +159,7 @@ export default {
   },
   computed: {
     userInfo() {
+      console.log(this.$store.state.userInfo)
       return this.$store.state.userInfo
     },
     expireList() {

@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Contract from '@/plugin/eth'
 import router from '@/router'
+import i18n from '@/i18n/i18n'
+import Contract from '@/plugin/eth'
+import BigNumber from 'bignumber.js'
+
+import { Toast } from 'vant'
 import { abi } from '@/plugin/abi'
 import { fdAbi } from '@/plugin/fdAbi'
 import { coinAbi } from '@/plugin/coinAbi'
@@ -9,7 +13,7 @@ import detectEthereumProvider from '@metamask/detect-provider'
 
 Vue.use(Vuex)
 
-let corsslendAddress = '0x1ccbf9217c06a641e88059578b5bf984e21f11ff'
+let corsslendAddress = '0xab915f72990abe85edcfc4a53dd8fe96fb0b1893'
 
 let corsslend = new Contract({
   address: corsslendAddress,
@@ -18,14 +22,25 @@ let corsslend = new Contract({
 
 let utils = corsslend.web3.utils
 let fdContract = new Contract({
-  address: '0xff37a57b8d373518abe222db1077ed9a968a5fdf',
+  address: '0x8d9002adfc6b2c51c71eb1902d56f25ac9cf270e',
   abi: fdAbi,
 })
 
 let eFileContract = new Contract({
-  address: '0xa7b3058152165c72a4dd7c4812c5964f1c26f00d',
+  address: '0x51e617f4205450dc7c34aaeff1b21852cbf3c2bc',
   abi: coinAbi,
 })
+
+eFileContract.contract.events
+  .BurnedFDEfil({
+    fromBlock: 0,
+  })
+  .on('connected', function(subscriptionId) {})
+  .on('data', function(event) {
+    console.log('eventData', event) // same results as the optional callback above
+  })
+  .on('changed', function(event) {})
+  .on('error', function(error, receipt) {})
 
 export default new Vuex.Store({
   state: {
@@ -33,15 +48,16 @@ export default new Vuex.Store({
     userAddress: '',
     systemInfo: {
       affRate: '0',
+      fdInterestPool: '',
       efilInterestPool: '0',
     },
     balance: {
-      CRFI: 0,
-      efil: 0,
-      efilInterest: 0,
-      fdInterest: 0,
-      watlletCRFI: 0,
-      watlletefil: 0,
+      CRFI: '0',
+      efil: '0',
+      efilInterest: '0',
+      fdInterest: '0',
+      watlletCRFI: '0',
+      watlletefil: '0',
     },
     userInfo: {
       id: '0',
@@ -147,7 +163,6 @@ export default new Vuex.Store({
       state.systemInfo = data
     },
     setUserAddress(state, value) {
-      console.log('userAddress', value)
       state.userAddress = value
     },
     setCorsslend(state, data) {},
@@ -158,11 +173,9 @@ export default new Vuex.Store({
       state.balance = data
     },
     setFdList(state, data) {
-      console.log('fdList', data)
       state.fdList = data
     },
     setEFilList(state, data) {
-      console.log('efilList', data)
       state.eFilList = data
     },
     setDemandFD(state, data) {
@@ -179,8 +192,41 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 回购
+    async Repurchase({ state, commit, dispatch }, data) {
+      let { value, fileCoin = '1' } = data
+      let balanceEFil = new BigNumber(state.balance.watlletefil)
+      let balanceCRFI = new BigNumber(state.balance.watlletCRFI)
+      value = new BigNumber(utils.toWei(value.toString() || 0))
+      // 获取汇率
+      let res = await eFileContract.callContract('burnEFilRateFD', [])
+      let rate = utils.fromWei(res)
+
+      let fdValue = value.times(new BigNumber(utils.fromWei(res)))
+      if (balanceEFil.comparedTo(value) == -1) {
+        Toast(i18n.t('balanceToast'))
+        return
+      }
+
+      let betys = fdContract.web3.eth.abi.encodeParameter(
+        'bytes',
+        '0x4920686176652031303021',
+      )
+      console.log('betys', betys)
+      // 调用fd send
+      try {
+        await fdContract.executeContract(
+          'send',
+          ['0xa7b3058152165c72a4dd7c4812c5964f1c26f00d', fdValue, betys],
+          state.userAddress,
+        )
+        dispatch('initData')
+      } catch (e) {
+        console.log('error', e)
+        Toast('code: ' + e.code + 'messag: ' + e.message)
+      }
+    },
     async ChangeAffRate({ state, commit, dispatch }, data) {
-      commit('setLoading', true)
       let { value } = data
       value = utils.toWei(value.toString()) / 100
       try {
@@ -190,11 +236,9 @@ export default new Vuex.Store({
           state.userAddress,
         )
       } catch (e) {}
-      commit('setLoading', false)
     },
     // 修改利率
     async ChangePackageRate({ state, commit, dispatch }, data) {
-      commit('setLoading', true)
       let { ID, fd, efil } = data
       fd = utils.toWei(fd.toString()) / 100
       efil = utils.toWei(efil.toString()) / 100
@@ -204,8 +248,8 @@ export default new Vuex.Store({
           [ID, fd.toString(), efil.toString()],
           state.userAddress,
         )
+        dispatch('initData')
       } catch (e) {}
-      commit('setLoading', false)
     },
     // 修改活期利率
     //
@@ -219,20 +263,23 @@ export default new Vuex.Store({
           [ID, fd.toString(), efil.toString()],
           state.userAddress,
         )
+        dispatch('initData')
       } catch (e) {
         console.log(e)
       }
     },
-    // 回购
-    async Repurchase({ commit, dispatch }) {
-      // 调用fd send
-      let res = await eFileContract.callContract('burnEFilRateFD', [])
+
+    async WithdrawDemand({ state, commit, dispatch }) {
+      try {
+        await corsslend.executeContract('WithdrawDemand', [], state.userAddress)
+        dispatch('initData')
+      } catch (e) {}
     },
-    async WithdrawDemand({ state }) {
-      await corsslend.executeContract('WithdrawDemand', [], state.userAddress)
-    },
-    async Withdraw({ state }) {
+    async Withdraw({ state, dispatch }) {
       await corsslend.executeContract('Withdraw', [], state.userAddress)
+      dispatch('initData')
+      try {
+      } catch (e) {}
     },
     // 管理员充值
     async charge({ state, commit, dispatch }, data) {
@@ -255,13 +302,35 @@ export default new Vuex.Store({
         commit('setLoading', false)
       }
     },
+    async chargeCRFI({ state, commit, dispatch }, data) {
+      let { value } = data
+      let betys = fdContract.web3.eth.abi.encodeParameters(
+        ['uint256', 'uint256', 'address'],
+        [3, 0, '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87'],
+      )
+      value = utils.toWei(value)
+      commit('setLoading', true)
+      try {
+        await fdContract.executeContract(
+          'send',
+          [corsslendAddress, value, betys],
+          state.userAddress,
+        )
+        dispatch('initData')
+        commit('setLoading', false)
+      } catch (e) {
+        commit('setLoading', false)
+      }
+    },
     // 购买
     async buyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
+
       let isAddress = fdContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
+      console.log('inbiteAddress', inviteValue)
       let betys = fdContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
@@ -284,7 +353,7 @@ export default new Vuex.Store({
     },
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {
-      commit('setLoading', true)
+      // commit('setLoading', true)
       let { ID, Type, value, inviteValue } = data
       let isAddress = fdContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
@@ -299,7 +368,6 @@ export default new Vuex.Store({
       value = utils.toWei(value)
       commit('setLoading', true)
       let contract = Type == 0 ? fdContract : eFileContract
-
       try {
         await contract.executeContract(
           'send',
@@ -307,35 +375,21 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('initData')
-        commit('setLoading', false)
-      } catch (e) {
-        console.log('catcch', e)
-        commit('setLoading', false)
-      }
+      } catch (e) {}
     },
     async initData({ state, commit }) {
-      const provider = await detectEthereumProvider()
-
-      if (provider) {
-        // From now on, this should always be true:
-        // provider === window.ethereum
-        console.log(provider)
-      } else {
-        console.log('Please install MetaMask!')
-      }
-
       console.log('initData')
       let address = state.userAddress
       let systemInfo = await corsslend.callContract('GetSystemInfo', [])
-      let { affRate, efilInterestPool } = systemInfo
-      console.log('systemInfo', systemInfo)
+
+      let { affRate, efilInterestPool, fdInterestPool } = systemInfo
       commit('setSystemInfo', {
         affRate,
+        fdInterestPool,
         efilInterestPool,
       })
       let res = await corsslend.callContract('GetInvestInfo', [0, address])
       let { id, admin, fd, efil, efilInterest, fdInterest } = res
-
       commit('setUserInfo', {
         id,
         admin,
@@ -364,13 +418,13 @@ export default new Vuex.Store({
       // 获取列表
       let list = await corsslend.callContract('GetPackages', [])
       let { demandEFil, demandFD, financialPackages } = list
+      console.log('list', list)
       let list1 = await corsslend.callContract('GetInvestRecords', [address])
       let fdList = []
       let efilList = []
 
       financialPackages.forEach((element, index) => {
         let { Type } = element
-        console.log(index)
         if (Type == 0) {
           fdList.push(element)
         } else {
@@ -378,7 +432,6 @@ export default new Vuex.Store({
         }
       })
       fdList.unshift(demandFD)
-      console.log(fdList)
       efilList.unshift(demandEFil)
 
       commit('setFdList', fdList)
@@ -399,13 +452,13 @@ export default new Vuex.Store({
 
       let FDInterestRate1 =
         demandEFil.NewFDInterestRate == 0
-          ? demandFD.FDInterestRate
-          : demandFD.NewFDInterestRate
+          ? demandEFil.FDInterestRate
+          : demandEFil.NewFDInterestRate
 
       let EFilInterestRate1 =
         demandEFil.NewEFilInterestRate == 0
-          ? demandFD.EFilInterestRate
-          : demandFD.NewEFilInterestRate
+          ? demandEFil.EFilInterestRate
+          : demandEFil.NewEFilInterestRate
 
       commit('setDemandEFil', {
         ...demandEFil,

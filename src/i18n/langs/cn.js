@@ -68,6 +68,7 @@ const cn = {
   config: '配置',
 
   // toast
+  balanceToast: '余额不足，请确认后重新输入',
   toast: '请输入要购买的数量',
   empty: '暂无数据',
 

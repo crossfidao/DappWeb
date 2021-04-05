@@ -55,6 +55,24 @@
           {{ $t('charge') }}
         </van-button>
       </div>
+      <!-- 充值CRFI -->
+      <div class="charge-title">
+        <span>
+          {{ $t('charge') }} CRFI {{ $t('interestPool') }}
+          {{ systemInfo.fdInterestPool | decimals }}</span
+        >
+      </div>
+      <div class="charge">
+        <van-field
+          class="price-input"
+          placeholder="请输入CRFI数量"
+          border
+          v-model="CRFIValue"
+        />
+        <van-button class="charge-btn" @click="handleChargeCRFI">
+          {{ $t('charge') }}
+        </van-button>
+      </div>
       <div class="items">
         <h4 class="title">CRFI {{ $t('investment') }}</h4>
         <div class="item" v-for="item in fdList" :key="item.date">
@@ -190,6 +208,7 @@ export default {
       CRFL: '',
       efil: '',
       value: '',
+      CRFIValue: '',
     }
   },
   computed: {
@@ -197,11 +216,8 @@ export default {
       return this.$store.state.systemInfo
     },
     eFilList() {
-      console.log('eFilList', this.$store.state.eFilList)
       let list = this.$store.state.eFilList
       let tmp = []
-      console.log(list.length)
-      // console.log('ldkfdlfkd', list)
       list.forEach(element => {
         // element.show = false
         let {
@@ -226,7 +242,6 @@ export default {
           Type,
           deleteFlag,
         })
-        console.log('eFilList', list)
       })
 
       return tmp
@@ -257,12 +272,7 @@ export default {
           Type,
           deleteFlag,
         })
-        console.log(tmp)
       })
-      // this.curItem = list[0]
-
-      console.log('length', tmp.length, tmp)
-
       return tmp
     },
   },
@@ -275,6 +285,7 @@ export default {
   methods: {
     ...mapActions([
       'charge',
+      'chargeCRFI',
       'ChangeAffRate',
       'ChangePackageRate',
       'ChangeDemandRate',
@@ -282,8 +293,11 @@ export default {
     handleCharge() {
       this.charge({ value: this.value })
     },
+    // 充值CRFI
+    handleChargeCRFI() {
+      this.chargeCRFI({ value: this.CRFIValue })
+    },
     handleEdit(item) {
-      console.log('item', item)
       this.curItem = item
       let { Days = undefined, EFilInterestRate, FDInterestRate } = this.curItem
       this.CRFL = FDInterestRate
@@ -297,11 +311,9 @@ export default {
       //   item.show = true
       // }
       // item.show = !item.show
-      // console.log('item', item)
     },
     // 更改利率
     handleRate() {
-      console.log(this.isDemand, this.curItem)
       if (this.isDemand) {
         this.handleDemandRate()
       } else {
@@ -309,7 +321,6 @@ export default {
       }
     },
     handleAffRate() {
-      console.log(this.affRate)
       this.ChangeAffRate({
         value: this.affRate,
       })
@@ -326,7 +337,6 @@ export default {
     handleChangeRate() {
       let { ID, EFilInterestRate, FDInterestRate } = this.curItem
 
-      console.log(this.CRFL, this.efil, this.curItem)
       if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
         this.$toast('请填写0-100的数字')
         return

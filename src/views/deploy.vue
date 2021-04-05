@@ -424,7 +424,6 @@ export default {
       var erc1820Tx = new Tx(erc1820rawData)
       var msgHash = erc1820Tx.hash(false)
       let web3 = new Web3(window.web3.currentProvider)
-      console.log(web3)
       var senderPubKey = util.ecrecover(
         msgHash,
         27,
@@ -440,7 +439,6 @@ export default {
           value: '80000000000000000',
         })
         .then(res => {
-          console.log('send', res)
           web3.eth.sendSignedTransaction(erc1820rawData, function(err, hash) {
             if (!err) console.log('hash', hash)
             else console.log(123, err)

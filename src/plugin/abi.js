@@ -511,6 +511,11 @@ export const abi = [
                name: 'efilInterestPool',
                type: 'uint256',
              },
+             {
+               internalType: 'uint256',
+               name: 'fdInterestPool',
+               type: 'uint256',
+             },
            ],
            stateMutability: 'view',
            type: 'function',

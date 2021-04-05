@@ -64,7 +64,6 @@ export default {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData']),
     async ethereum() {
-      console.log('dfd')
       let accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
@@ -74,7 +73,6 @@ export default {
       }
     },
     onSelect(action) {
-      console.log(action)
       this.$i18n.locale = action.lang
       localStorage.setItem('lang', action.lang)
       this.showLang = false

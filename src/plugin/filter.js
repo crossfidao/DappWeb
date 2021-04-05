@@ -11,7 +11,10 @@ Vue.filter('date', value => {
 })
 
 Vue.filter('decimals', value => {
-  return parseFloat(utils.fromWei(value.toString())).toFixed(2)
+  value = value || '0'
+  // return value
+  // .toFixed(9)
+  return parseFloat(utils.fromWei(value.toString()))
 })
 
 Vue.filter('rate', value => {

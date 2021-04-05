@@ -18,16 +18,13 @@ export default {
     },
   },
   async mounted() {
-    console.log(ethereum.isConnected())
     if (ethereum.isConnected()) {
       // let res = await window.ethereum.request({
       //   method: 'eth_requestAccounts',
       // })
-      // console.log(res)
       // this.initData()
     }
     ethereum.on('accountsChanged', accounts => {
-      console.log(accounts)
       this.setUserAddress(accounts[0])
       this.initData()
       // Handle the new accounts, or lack thereof.
@@ -38,10 +35,6 @@ export default {
       // Correctly handling chain changes can be complicated.
       // We recommend reloading the page unless you have good reason not to.
       window.location.reload()
-    })
-
-    ethereum.on('connect', handler => {
-      console.log('123', handler)
     })
   },
   methods: {

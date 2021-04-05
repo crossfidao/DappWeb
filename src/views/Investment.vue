@@ -227,7 +227,6 @@ export default {
       return num
     },
     fdList() {
-      console.log('fdList', this.$store.state.fdList)
       return this.$store.state.fdList
     },
     efilList() {
@@ -250,7 +249,6 @@ export default {
         return
       }
       if (this.isDemand) {
-        console.log('demand', this.isDemand)
         this.demandBuyCoin({
           ...this.curItem,
           value: this.value,
@@ -268,7 +266,6 @@ export default {
     },
     async handleBuy(data) {
       let { Days } = data
-      console.log(Days)
 
       this.isDemand = !Days
       this.showMask = true
@@ -276,7 +273,6 @@ export default {
     },
     // 活期
     async handleDemandBuy(data) {
-      console.log('活期', data)
       this.showMask = true
       this.isDemand = true
       this.curItem = data
@@ -328,6 +324,9 @@ export default {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 173px;
     height: 60px;
     line-height: 60px;
@@ -365,6 +364,9 @@ export default {
       font-weight: 500;
       color: #000000;
       .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         background: #63c2cd;
         margin-top: 64px;
         width: 96px;
