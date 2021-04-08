@@ -14,7 +14,7 @@ Vue.filter('decimals', value => {
   value = value || '0'
   // return value
   // .toFixed(9)
-  return parseFloat(utils.fromWei(value.toString()))
+  return parseFloat(utils.fromWei(value.toString())).toFixed(5)
 })
 
 Vue.filter('rate', value => {

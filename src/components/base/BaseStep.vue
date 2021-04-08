@@ -19,7 +19,7 @@
     <div class="text-box">
       <div class="text" v-for="(item, index) in text" :key="getSymbol(index)">
         <p class="title">{{ $t(item.title) }}</p>
-        <p>{{ $t(item.desc) }}</p>
+        <p>{{ $t(item.desc) }}1</p>
       </div>
     </div>
   </div>
@@ -86,27 +86,27 @@ export default {
   display: flex;
   position: relative;
   width: 100%;
-  margin: 24px auto 26px;
+  margin: 12px auto 13px;
   // padding: 0 24px;
   .line-box {
     position: relative;
     width: 100%;
-    height: 5px;
+    height: 2px;
     background: #ccc;
   }
   .line {
     position: absolute;
     width: 33%;
-    height: 5px;
+    height: 2px;
     background: #2ab2d0;
   }
   .circle {
     position: absolute;
-    top: -8px;
-    width: 20px;
-    height: 20px;
+    top: -4px;
+    width: 10px;
+    height: 10px;
     background: #ccc;
-    border-radius: 10px;
+    border-radius: 5px;
     transform: translateX(-50%);
   }
   .active {
@@ -127,12 +127,12 @@ export default {
   // left: 0;
   // top: 40px;
   flex: 1;
-  font-size: 16px;
+  font-size: 8px;
   font-family: PingFangSC-Light, PingFang SC;
   font-weight: 300;
   color: #707070;
   .title {
-    margin-bottom: 30px;
+    margin-bottom: 15px;
     font-size: 10px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;

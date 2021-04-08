@@ -55,7 +55,11 @@ export default class Contract {
     }
   }
   async executeContract(methods, args, address) {
-    console.log(methods, args)
+    console.log(methods, args, store.state.showLoading)
+    let isLoading = store.state.showLoading
+    if (isLoading) {
+      return false
+    }
     store.commit('setLoading', true)
     return new Promise(async (resolve, reject) => {
       // console.log(methods, args)

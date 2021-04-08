@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <van-overlay :show="showLoading" @click="show = false">
+    <!-- <van-overlay :show="showLoading" @click="show = false">
       <van-loading class="loading" size="24px" color="#fff" vertical>
         loading...
       </van-loading>
-    </van-overlay>
+    </van-overlay> -->
     <router-view />
   </div>
 </template>
@@ -18,6 +18,7 @@ export default {
     },
   },
   async mounted() {
+    this.ethereum()
     if (ethereum.isConnected()) {
       // let res = await window.ethereum.request({
       //   method: 'eth_requestAccounts',
@@ -40,6 +41,15 @@ export default {
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData']),
+    async ethereum() {
+      let accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      })
+      if (accounts.length > 0) {
+        this.setUserAddress(accounts[0])
+        this.initData()
+      }
+    },
   },
 }
 </script>

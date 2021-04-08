@@ -1,73 +1,83 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
-const en = {
+const cn = {
   // base
-  assets: '资产',
-  cancel: '取消',
-  confirm: '确定',
+  assets: 'assets',
+  cancel: 'cancel',
+  confirm: 'confirm',
   // title
-  overview: '账户总览',
-  depositCoins: '存币挖矿dfdfd',
-  selectUser: '选择用户',
+  connect: 'connect wallet',
+  overview: 'account overview',
+  depositCoins: 'deposit coins',
+  selectUser: 'select User',
+  selectLang: 'select Language',
+  copy: 'copy',
+  copyText: 'copied',
 
   // home
-  fileconinAddress: 'Filecoin地址',
-  invite: '我的推荐码',
-  inviteText: '邀请他人投资eFil产品并填写您的推荐码可获得返利',
-  exchangeDesc: '转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil',
-  wallet: '钱包',
-  contract: '合约',
-  repurchase: '回购',
-  withdraw: '可提现',
-  eFilDesc: 'eFil 可由 1:1 的 Filecoin 兑换获得',
-  FDDesc: 'CRFI 可由控股和挖矿获得',
-  eFilPlaceholder: '请输入您要售出的eFil数目',
-  invitePlaceholder: '请输入您的推荐人地址',
-  FilecoinPlaceholder: '请输入您自己的Filecoin地址',
-  mining: '存币挖矿 获取利息',
+  fileconinAddress: 'Filecoin address',
+  invite: 'my promo code',
+  inviteText:
+    'get rewarded by inviting the others to invest on cFil with your promo code',
+  exchangeDesc:
+    'Filecoin transfered to this address will be automatically redeemed to cFil in 1:1 ratio',
+  wallet: 'wallet',
+  contract: 'contract',
+  repurchase: 'repurchase',
+  withdraw: 'withdraw',
+  eFilDesc: 'eFil can be redeemed in 1:1 ratio by Filecoin',
+  FDDesc: 'CRFI can be obtained by staking and mining',
+  eFilPlaceholder: 'please input your eFil selling amount',
+  invitePlaceholder: 'please input your recommender address',
+  FilecoinPlaceholder: 'Please in your Filecoin address',
+  mining: 'deposit coins for extra interest',
 
   // investment
-  current: '活期',
-  buy: '购买',
-  buyProduct: '购买产品',
-  interest: '立即计息',
-  withtraw: '本息可提现',
-  date: '当前时间',
-  cycle: '30/天/60天/90天',
-  maturity: '所选周期24*3600秒后',
-  desc: '本息可提现',
-  buyPlaceholder: '请输入要购买的数量',
+  current: 'current',
+  buy: 'buy',
+  buyProduct: 'buy product',
+  interest: 'interest',
+  withtraw: 'withdraw',
+  date: 'current time',
+  cycle: '30/day/60day/90day',
+  maturity: '24*3600s after the selected cycle',
+  desc: 'withdrawable',
+  buyPlaceholder: 'please input your buyin amount',
 
-  position: '我的持仓',
-  redemption: '当前有 {value} 款产品可赎回',
-  investment: '投资',
-  annualized: '本期年化',
+  position: 'my position',
+  redemption: '{value} value product could be redeemed currently',
+  investment: 'investment',
+  annualized: 'annualized',
 
   // assets
-  // maturity: '到期资产',
-  income: '当前可提取收益',
-  currentInvest: '活期投资',
-  fast: '一键赎回',
-  expireDate: '到期时间',
+  // maturity: 'maturity',
+  interestAssets: 'interest assets',
+  expireAssets: 'expire assets',
+  income: 'income',
+  currentInvest: 'current invest',
+  fast: 'fast',
+  expireDate: 'expire date',
 
   // admin
-  interestRate: '利率配置',
-  inviteText: '推荐人返利比例',
-  rate: '利率',
+  interestRate: 'interest rate',
+  inviteRate: 'invite rate',
+  rate: 'rate',
+  interestPool: 'interest pool',
 
-  time: '日',
+  time: 'day',
 
-  charge: '充值',
-  edit: '修改',
-  config: '配置',
+  charge: 'charge',
+  edit: 'edit',
+  config: 'configuration',
 
   // toast
-  toast: '请输入要购买的数量',
-  empty: '暂无数据',
+  balanceToast: 'insufficient balance, please input after double check',
+  toast: 'please input the amount of your buyin',
+  empty: 'empty',
 
   message: {
-    name: '张三',
+    name: 'Alice',
   },
   ...enLocale,
 }
 
-export default en
+export default cn

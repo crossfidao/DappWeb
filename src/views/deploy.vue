@@ -25,7 +25,11 @@ export default {
       web3: null,
     }
   },
-  mounted() {
+  async mounted() {
+    console.log('dfd', window.ethereum)
+    let accounts = await window.ethereum.request({
+      method: 'eth_requestAccounts',
+    })
     let abi = [
       {
         inputs: [
@@ -434,7 +438,7 @@ export default {
       var singleUseAddr1 = util.pubToAddress(senderPubKey)
       web3.eth
         .sendTransaction({
-          from: '0x5E95DbE6dd707B988e6CC2396b3F75a4Ea0afd0C',
+          from: '0x64867b8089141A579dC8d19fD7B8A6EE42218056',
           to: singleUseAddr1.toString('hex'),
           value: '80000000000000000',
         })

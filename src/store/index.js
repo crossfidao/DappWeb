@@ -13,7 +13,7 @@ import detectEthereumProvider from '@metamask/detect-provider'
 
 Vue.use(Vuex)
 
-let corsslendAddress = '0xab915f72990abe85edcfc4a53dd8fe96fb0b1893'
+let corsslendAddress = '0x7117983d3be99e1cbe296dfeaf034c91db3cd02b'
 
 let corsslend = new Contract({
   address: corsslendAddress,
@@ -22,12 +22,12 @@ let corsslend = new Contract({
 
 let utils = corsslend.web3.utils
 let fdContract = new Contract({
-  address: '0x8d9002adfc6b2c51c71eb1902d56f25ac9cf270e',
+  address: '0xa7b3058152165c72a4dd7c4812c5964f1c26f00d',
   abi: fdAbi,
 })
 
 let eFileContract = new Contract({
-  address: '0x51e617f4205450dc7c34aaeff1b21852cbf3c2bc',
+  address: '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
   abi: coinAbi,
 })
 
@@ -336,7 +336,6 @@ export default new Vuex.Store({
         [0, ID, invite],
       )
       value = utils.toWei(value)
-      commit('setLoading', true)
       let contract = Type == 0 ? fdContract : eFileContract
 
       try {

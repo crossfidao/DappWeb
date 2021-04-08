@@ -245,7 +245,7 @@ export default {
       let value =
         ((parseFloat(this.$utils.fromWei(Amount)) * parseFloat(rate)) / 365) *
         parseInt(Days)
-      return value.toFixed(2)
+      return value.toFixed(5)
     },
     async handleBuy() {
       let betys = this.$CRFI.web3.eth.abi.encodeParameter('uint256', '0')
@@ -265,82 +265,82 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 .title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #63c2cd;
-  padding: 20px 50px;
+  padding: 10px 25px;
   font-family: PingFang SC;
   font-weight: 600;
-  font-size: 24px;
+  font-size: 12px;
   color: #63c2cd;
   .btn {
     background: #56bdc9;
     color: #fff;
-    border-radius: 20px;
-    padding: 4px 20px;
+    border-radius: 10px;
+    padding: 2px 10px;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 12px;
   }
 }
 .income {
-  margin-bottom: 24px;
-  padding: 0 42px;
+  margin-bottom: 12px;
+  padding: 0 21px;
   &-title {
     display: flex;
     align-items: center;
-    margin-bottom: 30px;
-    font-size: 20px;
+    margin-bottom: 15px;
+    font-size: 10px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: #707070;
     .circle {
-      width: 4px;
-      height: 4px;
+      width: 2px;
+      height: 2px;
       background: #707070;
-      margin-right: 8px;
+      margin-right: 4px;
     }
   }
   &-item {
     display: flex;
-    margin-right: 24px;
+    margin-right: 12px;
 
     border-bottom: 1px solid #dfdfdf;
-    padding-bottom: 24px;
+    padding-bottom: 12px;
     font-size: 10px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: #000000;
     span {
-      margin-right: 24px;
+      margin-right: 12px;
     }
   }
 }
 .items {
-  width: 634px;
+  width: 317px;
   margin: 0 auto 40px;
   background: #fff;
-  padding-bottom: 24px;
-  border-radius: 10px;
+  padding-bottom: 12px;
+  border-radius: 5px;
   text-align: left;
-  font-size: 31px;
+  font-size: 15px;
   .item {
     display: flex;
     align-items: center;
-    margin: 0px 50px;
-    padding: 30px 0;
+    margin: 0px 25px;
+    padding: 15px 0;
     border-bottom: 1px solid #eee;
 
     .date1 {
-      width: 94px;
-      height: 94px;
-      line-height: 94px;
-      margin-right: 18px;
+      width: 47px;
+      height: 47px;
+      line-height: 47px;
+      margin-right: 9px;
       border: 1px solid #bae3f9;
-      border-radius: 20px;
+      border-radius: 10px;
       text-align: center;
       font-size: 17px;
       font-family: PingFang SC;
@@ -351,23 +351,23 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      width: 94px;
-      height: 94px;
-      margin-right: 18px;
+      width: 47px;
+      height: 47px;
+      margin-right: 9px;
       text-align: center;
       font-size: 17px;
       font-family: PingFang SC;
       font-weight: 600;
       color: #ffffff;
       &-bg {
-        height: 36px;
+        height: 18px;
         background: #63c2cd;
-        border-bottom-left-radius: 16px;
-        border-bottom-right-radius: 16px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
       }
       .text {
         flex: 1;
-        font-size: 33px;
+        font-size: 16px;
         font-family: PingFang SC;
         font-weight: 600;
         color: #000000;
@@ -383,37 +383,37 @@ export default {
 
       &-date {
         display: inline-block;
-        margin-top: 12px;
-        font-size: 8px;
+        margin-top: 6px;
+        font-size: 4px;
         font-family: PingFangSC-Light, PingFang SC;
         font-weight: 300;
         color: #707070;
       }
     }
     .item-income {
-      font-size: 8px;
+      font-size: 4px;
       font-family: PingFangSC-Light, PingFang SC;
       font-weight: 300;
       color: #707070;
     }
     .number {
-      font-size: 32px;
+      font-size: 16px;
       font-family: PingFang SC;
       font-weight: 600;
       color: #000000;
     }
     .income {
-      font-size: 14px;
+      font-size: 10px;
       color: #96a5bf;
     }
   }
 }
 .empty {
   text-align: center;
-  margin-top: 24px;
+  margin-top: 12px;
   font-size: 12px;
 }
 .mr-t {
-  margin-top: 390px;
+  margin-top: 195px;
 }
 </style>

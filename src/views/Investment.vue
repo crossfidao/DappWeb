@@ -239,10 +239,22 @@ export default {
       return this.$store.state.demandEFil
     },
   },
-  mounted() {},
+  mounted() {
+    console.log('ieofiekdlfk')
+    let invite = this.getQueryString('invite') || ''
+    this.inviteValue = invite
+    console.log(123213213, invite)
+  },
   methods: {
     ...mapActions(['buyCoin', 'demandBuyCoin']),
-
+    getQueryString(name) {
+      let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      let r = window.location.search.substr(1).match(reg)
+      if (r != null) {
+        return decodeURIComponent(r[2])
+      }
+      return null
+    },
     handleConfirm() {
       if (!this.value) {
         this.$toast(this.$t('toast'))
@@ -287,37 +299,37 @@ export default {
 
 <style scoped lang="scss">
 .step-box {
-  padding: 44px 0;
+  padding: 22px 0;
   border-bottom: 1px solid #9cd8df;
 }
 .header-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 40px 48px;
-  font-size: 30px;
+  margin: 20px 24px;
+  font-size: 15px;
   color: #63c2cd;
 }
 .desc {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   color: #96a5bf;
-  font-size: 22px;
+  font-size: 11px;
 }
 .mr-t {
-  margin-top: 550px;
+  margin-top: 275px;
 }
 .content {
-  padding-top: 520px;
-  padding-bottom: 24px;
+  padding-top: 260px;
+  padding-bottom: 12px;
 }
 .items {
   position: relative;
   background: #fff;
-  margin: 0 42px 90px;
-  padding-top: 100px;
-  padding-bottom: 42px;
-  border-radius: 12px;
-  font-size: 25px;
+  margin: 0 21px 45px;
+  padding-top: 50px;
+  padding-bottom: 21px;
+  border-radius: 6px;
+  font-size: 12px;
   .title {
     position: absolute;
     top: 0px;
@@ -327,19 +339,19 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 173px;
-    height: 60px;
-    line-height: 60px;
+    // width: 173px;
+    height: 30px;
+    line-height: 30px;
     background: #63c2cd;
-    border-radius: 32px;
-    font-size: 30px;
+    border-radius: 16px;
+    font-size: 15px;
     color: #fff;
     font-weight: bold;
   }
   .item-box {
     display: flex;
-    margin-bottom: 40px;
-    height: 148px;
+    margin-bottom: 10px;
+    height: 74px;
     background-size: cover;
   }
   .flex-start {
@@ -352,14 +364,14 @@ export default {
     position: relative;
     display: flex;
     text-align: center;
-    width: 620px;
-    height: 148px;
+    width: 310px;
+    height: 74px;
     &-content {
-      width: 440px;
+      width: 220px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 30px;
+      font-size: 15px;
       font-family: PingFang SC;
       font-weight: 500;
       color: #000000;
@@ -368,43 +380,43 @@ export default {
         align-items: center;
         justify-content: center;
         background: #63c2cd;
-        margin-top: 64px;
-        width: 96px;
-        border-radius: 32px;
-        font-size: 24px;
-        height: 42px;
-        line-height: 42px;
+        margin-top: 32px;
+        width: 48px;
+        border-radius: 16px;
+        font-size: 12px;
+        height: 21px;
+        line-height: 21px;
         color: #fff;
       }
 
       .name {
-        margin-top: 12px;
-        padding-left: 42px;
+        margin-top: 6px;
+        padding-left: 21px;
       }
       .text {
-        margin-top: 24px;
+        margin-top: 12px;
         display: block;
-        font-size: 22px;
+        font-size: 11px;
         font-family: PingFang SC;
         font-weight: 300;
         color: #96a5bf;
       }
     }
     .content-left {
-      margin-left: 160px;
+      margin-left: 80px;
     }
     .date {
       position: absolute;
-      bottom: 24px;
-      font-size: 44px;
+      bottom: 12px;
+      font-size: 22px;
       font-family: PingFang SC;
       font-weight: 600;
       color: #27abba;
       &-left {
-        left: 24px;
+        left: 12px;
       }
       &-right {
-        right: 24px;
+        right: 12px;
       }
     }
   }
@@ -417,7 +429,7 @@ export default {
   // right: 0;
   // background: rgba(0, 0, 0, 0.6);
   &-content {
-    width: 620px;
+    width: 310px;
     // height: 400px;
 
     position: absolute;
@@ -426,39 +438,39 @@ export default {
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: #fff;
-    border-radius: 32px;
-    padding-bottom: 24px;
-    font-size: 30px;
+    border-radius: 16px;
+    padding-bottom: 12px;
+    font-size: 15px;
     color: #63c2cd;
   }
   &-title {
-    padding: 24px 0;
+    padding: 12px 0;
   }
   .footer {
     display: flex;
     justify-content: center;
     &-btn {
-      width: 174px;
-      height: 64px;
-      margin: 0 27px;
-      line-height: 64px;
+      width: 87px;
+      height: 32px;
+      margin: 0 14px;
+      line-height: 32px;
       background: #63c2cd;
       color: #fff;
-      font-size: 30px;
-      border-radius: 32px;
+      font-size: 15px;
+      border-radius: 16px;
     }
   }
 }
 .form {
-  padding: 0 32px;
+  padding: 0 16px;
 }
 .field {
-  height: 84px;
-  line-height: 84px;
+  height: 42px;
+  line-height: 42px;
   background: #eee;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .mr-t {
-  padding-top: 550px;
+  padding-top: 2750px;
 }
 </style>

@@ -354,87 +354,87 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  width: 634px;
+  width: 317px;
   margin: 0 auto;
-  padding-top: 260px;
+  padding-top: 130px;
   // background: #fff;
 }
 .charge {
   display: flex;
   align-items: center;
-  padding: 24px 0;
+  padding: 12px 0;
   background: #fff;
   border: 1px solid #63c2cd;
-  border-radius: 10px;
-  padding: 8px;
-  font-size: 12px;
+  border-radius: 5px;
+  padding: 4px;
+  font-size: 6px;
   &-btn {
-    width: 100px;
+    width: 50px;
   }
 }
 .charge-title {
   background: #fff;
   border-bottom: 1px solid #63c2cd;
-  padding: 20px 50px;
-  border-radius: 10px;
+  padding: 10px 25px;
+  border-radius: 5px;
   font-family: PingFang SC;
   font-weight: 600;
-  font-size: 30px;
+  font-size: 15px;
   text-align: left;
   color: #63c2cd;
 }
 .items {
-  width: 634px;
-  margin: 24px auto 40px;
+  width: 317px;
+  margin: 12px auto 20px;
   background: #fff;
 
-  border-radius: 10px;
+  border-radius: 5px;
   text-align: left;
-  font-size: 31px;
+  font-size: 15px;
   .title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #63c2cd;
-    padding: 20px 50px;
+    padding: 10px 25px;
     font-family: PingFang SC;
     font-weight: 600;
     color: #63c2cd;
     .btn {
       background: #56bdc9;
       color: #fff;
-      border-radius: 20px;
-      padding: 4px 20px;
+      border-radius: 10px;
+      padding: 2px 10px;
       font-weight: normal;
-      font-size: 18px;
+      font-size: 9px;
     }
   }
   .item {
     display: flex;
     align-items: center;
-    margin: 0px 50px;
-    padding: 30px 0;
+    margin: 0px 25px;
+    padding: 15px 0;
     border-bottom: 1px solid #eee;
     .date {
       display: flex;
       flex-direction: column;
-      width: 94px;
-      height: 94px;
-      margin-right: 18px;
+      width: 47px;
+      height: 47px;
+      margin-right: 9px;
       text-align: center;
-      font-size: 17px;
+      font-size: 10px;
       font-family: PingFang SC;
       font-weight: 600;
       color: #ffffff;
       &-bg {
-        height: 36px;
+        height: 18px;
         background: #63c2cd;
         border-bottom-left-radius: 16px;
         border-bottom-right-radius: 16px;
       }
       .text {
         flex: 1;
-        font-size: 33px;
+        font-size: 16px;
         font-family: PingFang SC;
         font-weight: 600;
         color: #000000;
@@ -452,32 +452,32 @@ export default {
     .price {
       justify-content: flex-start;
 
-      margin-bottom: 12px;
+      margin-bottom: 6px;
       &-title {
-        width: 120px;
+        width: 60px;
       }
       &-text {
         // width: 160px;
-        margin: 0 16px;
+        margin: 0 8px;
       }
       &-input {
-        width: 160px;
+        width: 80px;
         border: 1px solid #ebedf0;
-        margin: 0 16px;
+        margin: 0 8px;
       }
     }
     .number {
-      font-size: 44px;
+      font-size: 22px;
       font-family: PingFang SC;
       font-weight: 600;
       color: #000000;
     }
     .income {
-      font-size: 14px;
+      font-size: 10px;
       color: #96a5bf;
     }
     &-btn {
-      padding: 4px 12px;
+      padding: 2px 6px;
       border-radius: 5px;
     }
   }
@@ -490,46 +490,46 @@ export default {
   // right: 0;
   // background: rgba(0, 0, 0, 0.6);
   &-content {
-    width: 620px;
-    height: 400px;
+    width: 310px;
+    height: 200px;
     position: absolute;
     z-index: 99;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: #fff;
-    border-radius: 32px;
-    font-size: 30px;
+    border-radius: 16px;
+    font-size: 15px;
     color: #63c2cd;
   }
   &-title {
-    padding: 24px 0;
+    padding: 12px 0;
   }
   .footer {
     display: flex;
     justify-content: center;
     &-btn {
-      width: 174px;
-      height: 64px;
-      margin: 0 27px;
-      line-height: 64px;
+      width: 87px;
+      height: 32px;
+      margin: 0 14px;
+      line-height: 32px;
       background: #63c2cd;
       color: #fff;
-      font-size: 30px;
-      border-radius: 32px;
+      font-size: 15px;
+      border-radius: 16px;
     }
   }
 }
 .form {
-  padding: 0 32px;
+  padding: 0 16px;
 }
 .field {
-  height: 84px;
-  line-height: 84px;
+  height: 42px;
+  line-height: 42px;
   background: #eee;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .mr-t {
-  margin-top: 200px;
+  margin-top: 100px;
 }
 </style>
