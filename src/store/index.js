@@ -1,9 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import router from '@/router'
+import axios from 'axios'
 import i18n from '@/i18n/i18n'
 import Contract from '@/plugin/eth'
 import BigNumber from 'bignumber.js'
+var ethUtil = require('ethereumjs-util')
+var sigUtil = require('eth-sig-util')
+console.log(ethUtil)
 
 import { Toast } from 'vant'
 import { abi } from '@/plugin/abi'
@@ -46,6 +50,7 @@ export default new Vuex.Store({
   state: {
     showLoading: false,
     userAddress: '',
+    FilAddr: '',
     systemInfo: {
       affRate: '0',
       fdInterestPool: '',
@@ -165,6 +170,9 @@ export default new Vuex.Store({
     setUserAddress(state, value) {
       state.userAddress = value
     },
+    setFileAddr(state, value) {
+      state.FilAddr = value
+    },
     setCorsslend(state, data) {},
     setUserInfo(state, data) {
       state.userInfo = data
@@ -192,6 +200,118 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 签名
+    sign({ state, commit }) {
+      var msgHash = ethUtil.keccak256('hello')
+
+      console.log(msgHash, state.userAddress, eFileContract.web3.eth)
+      let timestamp = parseInt(new Date().getTime() / 1000)
+      web3.currentProvider.sendAsync(
+        {
+          method: 'net_version',
+          params: [],
+          jsonrpc: '2.0',
+        },
+        function(err, result) {
+          const netId = result.result
+          const msgParams = JSON.stringify({
+            types: {
+              Challenge: [
+                { name: 'address', type: 'address' },
+                { name: 'timestamp', type: 'uint256' },
+              ],
+              EIP712Domain: [
+                { name: 'name', type: 'string' },
+                { name: 'chainId', type: 'uint256' },
+                { name: 'version', type: 'string' },
+                { name: 'salt', type: 'string' },
+              ],
+            },
+            primaryType: 'Challenge',
+            domain: {
+              name: 'CrossFI_ETHChallenger',
+              version: '1.0',
+              chainId: 654321,
+              salt: 'asasdfiuosicvuxzoiv',
+            },
+            message: {
+              address: state.userAddress,
+              timestamp,
+            },
+          })
+
+          let from = state.userAddress
+
+          var params = [from, msgParams]
+          console.dir(params)
+          var method = 'eth_signTypedData_v3'
+
+          web3.currentProvider.sendAsync(
+            {
+              method,
+              params,
+              from,
+            },
+            function(err, result) {
+              if (err) return console.dir(err)
+              if (result.error) {
+                alert(result.error.message)
+              }
+              if (result.error) return console.error('ERROR', result)
+              console.log('TYPED SIGNED:' + JSON.stringify(result.result))
+              console.log('TYPED SIGNED:' + result.result.substring(2))
+              const signature = result.result.substring(2)
+
+              // sendToServerForVerification(signature)
+              axios
+                .get('http://10.255.3.147:9980/get_addr', {
+                  params: {
+                    eth_addr: state.userAddress,
+                    signed: signature,
+                    timestamp: timestamp,
+                  },
+                })
+                .then(function(response) {
+                  console.log('succ', response)
+                  let {
+                    data: {
+                      result: { FilAddr },
+                    },
+                  } = response
+                  commit('setFileAddr', FilAddr)
+                  console.log(FilAddr)
+                })
+                .catch(function(error) {
+                  console.log(error)
+                })
+              const recovered = sigUtil.recoverTypedSignature({
+                data: JSON.parse(msgParams),
+                sig: result.result,
+              })
+              console.log(
+                'recovered',
+                recovered,
+                ethUtil.toChecksumAddress(recovered),
+                ethUtil.toChecksumAddress(from),
+              )
+              if (
+                ethUtil.toChecksumAddress(recovered) ===
+                ethUtil.toChecksumAddress(from)
+              ) {
+                // alert('Successfully ecRecovered signer as ' + from)
+              } else {
+                alert(
+                  'Failed to verify signer when comparing ' +
+                    result +
+                    ' to ' +
+                    from,
+                )
+              }
+            },
+          )
+        },
+      )
+    },
     // 回购
     async Repurchase({ state, commit, dispatch }, data) {
       let { value, fileCoin = '1' } = data
@@ -389,6 +509,7 @@ export default new Vuex.Store({
       })
       let res = await corsslend.callContract('GetInvestInfo', [0, address])
       let { id, admin, fd, efil, efilInterest, fdInterest } = res
+      console.log('userInfo', res)
       commit('setUserInfo', {
         id,
         admin,

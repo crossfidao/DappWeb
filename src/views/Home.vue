@@ -4,8 +4,8 @@
       <div class="user">
         <h5 class="title">{{ $t('fileconinAddress') }}</h5>
         <h4 class="address">
-          <!-- {{ address }}  -->
-          testing...
+          {{ FileAddr }}
+          <!-- testing... -->
         </h4>
         <div class="text">
           {{ $t('exchangeDesc') }}
@@ -30,6 +30,7 @@
     <div class="content">
       <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
+        <div class="sign" @click="sign">SIGN</div>
         <div class="number-box flex">
           <span class="text border">eFile</span>
           <div class="number">{{ balance.watlletefil | decimals }}</div>
@@ -159,6 +160,9 @@ export default {
     }
   },
   computed: {
+    FileAddr() {
+      return this.$store.state.FilAddr
+    },
     userAddress() {
       return this.$store.state.userAddress
     },
@@ -195,7 +199,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['initData', 'Repurchase']),
+    ...mapActions(['initData', 'Repurchase', 'sign']),
     getQueryString(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
       let r = window.location.search.substr(1).match(reg)

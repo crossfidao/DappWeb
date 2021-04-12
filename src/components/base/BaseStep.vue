@@ -19,7 +19,7 @@
     <div class="text-box">
       <div class="text" v-for="(item, index) in text" :key="getSymbol(index)">
         <p class="title">{{ $t(item.title) }}</p>
-        <p>{{ $t(item.desc) }}1</p>
+        <p>{{ $t(item.desc) }}</p>
       </div>
     </div>
   </div>
