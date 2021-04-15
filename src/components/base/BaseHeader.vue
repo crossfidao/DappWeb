@@ -1,19 +1,54 @@
 <template>
   <div class="header">
     <div class="header-user">
-      <span>{{ address }}</span>
+      <div class="logo">
+        <img src="../../assets/images/logo.png" alt="" class="title-logo" />
+        <span>{{ address }}</span>
+      </div>
       <span v-show="showLoading">pending</span>
-      <span class="header-user-btn" @click="ethereum">
-        {{ !userAddress ? $t('connect') : '已连接' }}
-      </span>
+      <div class="right">
+        <span class="header-user-btn" @click="ethereum">
+          {{ !userAddress ? $t('connect') : '已连接' }}
+        </span>
+        <span class="header-user-btn" @click="handleApp">
+          {{ $t('application') }}
+        </span>
+        <van-icon class="icon" @click="showpop = true" name="weapp-nav" />
+      </div>
     </div>
     <div class="header-top">
       {{ $t(title) }}
-      <van-icon class="icon" @click="showLang = true" name="weapp-nav" />
     </div>
     <div class="header-address">
       <slot></slot>
     </div>
+    <van-popup
+      round
+      overlay-class="dfkdslfdl"
+      v-model="showpop"
+      position="right"
+      :style="{ height: '100%', width: '162px' }"
+    >
+      <div class="pop">
+        <div class="pop-menu">
+          <div class="pop-menu-item">{{ $t('description') }}</div>
+          <div class="pop-menu-item">{{ $t('link') }}</div>
+          <div class="pop-menu-item">{{ $t('safe') }}</div>
+          <div class="pop-menu-item">{{ $t('borrow') }}</div>
+        </div>
+
+        <div class="lang">
+          <div
+            class="lang-item"
+            v-for="item in lang"
+            :key="item.name"
+            @click="onSelect(item.lang)"
+          >
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+    </van-popup>
     <van-action-sheet
       v-model="show"
       :title="$t('selectUser')"
@@ -42,6 +77,7 @@ export default {
   },
   data() {
     return {
+      showpop: false,
       show: false,
       showLang: false,
       lang: [
@@ -70,7 +106,8 @@ export default {
     },
     address() {
       return (
-        this.userAddress.slice(0, 16) + '...' + this.userAddress.slice(30, 42)
+        this.userAddress.slice(0, 16) + '...'
+        // + this.userAddress.slice(30, 42)
       )
     },
   },
@@ -86,12 +123,15 @@ export default {
         this.initData()
       }
     },
-    onSelect(action) {
-      this.$i18n.locale = action.lang
-      localStorage.setItem('lang', action.lang)
-      this.showLang = false
+    onSelect(lang) {
+      this.$i18n.locale = lang
+      localStorage.setItem('lang', lang)
+      this.showpop = false
     },
     handleClick() {},
+    handleApp() {
+      this.$router.push('/apply')
+    },
   },
 }
 </script>
@@ -114,9 +154,22 @@ export default {
     align-items: center;
     padding: 12px;
     color: #fff;
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    .title-logo {
+      width: 34px;
+      height: 34px;
+      margin-right: 10px;
+    }
+    .right {
+      display: flex;
+      align-items: center;
+    }
     &-btn {
-      border: 1px solid #ccc;
-      padding: 4px 12px;
+      // border: 1px solid #ccc;
+      padding-right: 12px;
       border-radius: 20px;
     }
   }
@@ -144,11 +197,42 @@ export default {
     // right: 58px;
     background: #fff;
     border-radius: 16px;
-    padding-bottom: 12px;
+    // padding-bottom: 12px;
     color: #808080;
     font-size: 16px;
     .text {
       font-size: 18px;
+    }
+  }
+}
+
+.pop {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  &-menu {
+    flex: 1;
+    padding-top: 120px;
+    text-align: left;
+    &-item {
+      width: 100px;
+      height: 46px;
+      line-height: 46px;
+      margin: 0 auto 0px;
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #45b6c3;
+      border-bottom: 2px solid #45b6c3;
+    }
+  }
+  .lang {
+    font-size: 12px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #45b6c3;
+    &-item {
+      margin-bottom: 24px;
     }
   }
 }

@@ -2,11 +2,23 @@
   <div class="home" ref="form" label-width="80px">
     <BaseHeader title="overview">
       <div class="user">
-        <h5 class="title">{{ $t('fileconinAddress') }}</h5>
-        <h4 class="address">
-          {{ FileAddr }}
-          <!-- testing... -->
+        <h5 class="title">
+          <span>{{ $t('fileconinAddress') }}</span>
+        </h5>
+        <h4 class="address" v-if="FileAddr" style="margin-bottom: 8px">
+          {{ userFileAddr }}
         </h4>
+        <h4 class="copy" v-else style="margin-bottom: 8px" @click="login">
+          {{ $t('login') }}
+        </h4>
+        <div
+          v-if="FileAddr"
+          class="tag-read copy"
+          :data-clipboard-text="FileAddr"
+          @click="copy"
+        >
+          {{ $t('copy') }}
+        </div>
         <div class="text">
           {{ $t('exchangeDesc') }}
         </div>
@@ -25,12 +37,15 @@
         >
           {{ $t('copy') }}
         </div>
+        <div class="aff">
+          <span class="aff-label">{{ $t('myAff') }}</span>
+          <span class="aff-price">{{ balance.totalAffFD | decimals }} FD</span>
+        </div>
       </div>
     </BaseHeader>
     <div class="content">
       <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
-        <div class="sign" @click="sign">SIGN</div>
         <div class="number-box flex">
           <span class="text border">eFile</span>
           <div class="number">{{ balance.watlletefil | decimals }}</div>
@@ -62,11 +77,11 @@
         <div class="items-content">
           <div class="border items-item">
             <span class="text">eFil {{ $t('assets') }}</span>
-            <p class="number">{{ balance.efil | decimals }}</p>
+            <p class="number">{{ balance.efil | decimals }}a</p>
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} eFil</span>
-            <p class="number1">{{ balance.efilInterest | decimals }}</p>
+            <p class="number1">{{ balance.totalEfil | decimals }}s</p>
           </div>
         </div>
         <div class="items-content">
@@ -76,7 +91,7 @@
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} CRFI</span>
-            <p class="number1">{{ balance.fdInterest | decimals }}</p>
+            <p class="number1">{{ balance.totalFD | decimals }}</p>
           </div>
         </div>
       </div>
@@ -87,6 +102,16 @@
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
         <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
+        <div class="mask-desc">
+          <span
+            >eFil {{ $t('balance') }}:
+            {{ balance.watlletefil | decimals }}</span
+          >
+          <span
+            >CRFI {{ $t('balance') }}:
+            {{ balance.watlletCRFI | decimals }}</span
+          >
+        </div>
         <div class="form">
           <van-field
             class="field"
@@ -163,6 +188,9 @@ export default {
     FileAddr() {
       return this.$store.state.FilAddr
     },
+    userFileAddr() {
+      return this.FileAddr.slice(0, 12) + '...' + this.FileAddr.slice(30, 41)
+    },
     userAddress() {
       return this.$store.state.userAddress
     },
@@ -172,7 +200,6 @@ export default {
       )
     },
     inviteLink() {
-      console.log('host', location)
       let { origin } = location
       return origin + '?invite=' + this.userAddress
     },
@@ -185,6 +212,7 @@ export default {
     fdTotal() {
       return this.$store.getters.fdTotal
     },
+
     efilWithdrawable() {
       return this.$store.getters.efilWithdrawable
     },
@@ -199,7 +227,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['initData', 'Repurchase', 'sign']),
+    ...mapActions(['initData', 'Repurchase', 'login']),
     getQueryString(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
       let r = window.location.search.substr(1).match(reg)
@@ -349,13 +377,37 @@ export default {
   }
 }
 
+.aff {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 48px;
+  margin-top: 20px;
+  border-top: 1px solid #28abba;
+  font-size: 10px;
+  color: #707070;
+  font-family: PingFangSC-Light, PingFang SC;
+  font-weight: 300;
+  color: #707070;
+  &-label {
+    width: 110px;
+    text-align: left;
+  }
+  &-price {
+    font-family: PingFangSC-Semibold, PingFang SC;
+    font-weight: 600;
+    color: #707070;
+    font-size: 16px;
+  }
+}
+
 .flex {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .content {
-  padding: 190px 29px 24px;
+  padding: 300px 29px 24px;
   .title {
     margin: 16px 0;
     font-size: 16px;
@@ -455,31 +507,43 @@ export default {
 }
 
 .mask {
-  // position: fixed;
-  // top: 0;
-  // bottom: 0;
-  // left: 0;
-  // right: 0;
-  // background: rgba(0, 0, 0, 0.6);
   &-content {
-    width: 310px;
-    height: 200px;
+    width: 320px;
     position: absolute;
     z-index: 99;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: #fff;
-    border-radius: 16px;
+    padding-bottom: 20px;
     font-size: 15px;
     color: #63c2cd;
+    border-radius: 8px;
+    border: 1px solid #26aab9;
   }
   &-title {
     padding: 12px 0;
   }
+  &-desc {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 20px;
+    font-size: 10px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #707070;
+    span {
+      width: 128px;
+      background: #f0f0f0;
+      padding: 4px 4px;
+      border-radius: 8px;
+    }
+  }
   .footer {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
     &-btn {
       width: 87px;
       height: 32px;
@@ -493,7 +557,7 @@ export default {
   }
 }
 .form {
-  padding: 0 32px;
+  padding: 0 20px;
 }
 .field {
   height: 42px;

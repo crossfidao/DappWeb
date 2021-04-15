@@ -10,13 +10,20 @@
       <div class="income">
         <div class="income-title">
           <span class="circle"></span>
-          <span>{{ $t('interestAssets') }}</span>
+          <span>{{ $t('dailyInterest') }}</span>
         </div>
         <div class="income-item">
+          <span class="income-item-name">{{ $t('demandInterest') }}</span>
+          <span>CRFI: {{ userInfo.fdDemandInterest | decimals }}</span>
+          <span>eFil: {{ userInfo.efilDemandInterest | decimals }}</span>
+        </div>
+        <div class="income-item">
+          <span class="income-item-name">{{ $t('periodicInterest') }}</span>
           <span>CRFI: {{ userInfo.fdInterest | decimals }}</span>
           <span>eFil: {{ userInfo.efilInterest | decimals }}</span>
         </div>
       </div>
+
       <div class="income">
         <div class="income-title">
           <span class="circle"></span>
@@ -159,7 +166,7 @@ export default {
   },
   computed: {
     userInfo() {
-      console.log(this.$store.state.userInfo)
+      console.log(12323, this.$store.state.balance)
       return this.$store.state.userInfo
     },
     expireList() {
@@ -288,7 +295,8 @@ export default {
 }
 .income {
   margin-bottom: 12px;
-  padding: 0 21px;
+  margin: 0 21px 12px;
+  border-bottom: 1px solid #dfdfdf;
   &-title {
     display: flex;
     align-items: center;
@@ -308,12 +316,15 @@ export default {
     display: flex;
     margin-right: 12px;
 
-    border-bottom: 1px solid #dfdfdf;
     padding-bottom: 12px;
     font-size: 10px;
     font-family: PingFangSC-Semibold, PingFang SC;
     font-weight: 600;
     color: #000000;
+    &-name {
+      color: #707070;
+      font-size: 8px;
+    }
     span {
       margin-right: 12px;
     }
@@ -364,6 +375,7 @@ export default {
         background: #63c2cd;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
+        font-size: 10px;
       }
       .text {
         flex: 1;

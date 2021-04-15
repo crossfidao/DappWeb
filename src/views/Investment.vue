@@ -11,91 +11,7 @@
       <div class="desc">{{ $t('redemption', { value: userLen }) }}</div>
     </BaseHeader>
 
-    <!-- 活期 -->
     <div class="content">
-      <!-- <div class="items">
-        <h4 class="title">FD 活期 {{ $t('investment') }}</h4>
-        <div
-          class="item-box"
-          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-          v-for="(item, index) in demandFD"
-          :key="item.ID"
-        >
-          <div class="item" :style="getStyle(index)">
-            <div
-              class="item-content "
-              :class="index % 2 == 0 ? 'content-left' : ''"
-            >
-              <div class="name">
-                <h5 class="">
-                  CRFI:{{
-                    item.NewFDInterestRate != 0
-                      ? item.NewFDInterestRate
-                      : item.FDInterestRate | rate
-                  }}% eFil:
-                  {{
-                    item.NewEFilInterestRate != 0
-                      ? item.NewFDInterestRate
-                      : item.EFilInterestRate | rate
-                  }}%
-                </h5>
-                <span class="text">{{ $t('annualized') }}</span>
-              </div>
-              <div class="btn" @click="handleDemandBuy(item)">
-                {{ $t('buy') }}
-              </div>
-            </div>
-            <span
-              class="date"
-              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-            >
-              {{ item.Days }}{{ $t('time') }}
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="items">
-        <h4 class="title">eFil 活期 {{ $t('investment') }}</h4>
-        <div
-          class="item-box"
-          :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-          v-for="(item, index) in demandEFil"
-          :key="item.ID"
-        >
-          <div class="item" :style="getStyle(index)">
-            <div
-              class="item-content "
-              :class="index % 2 == 0 ? 'content-left' : ''"
-            >
-              <div class="name">
-                <h5 class="">
-                  CRFI:{{
-                    item.NewFDInterestRate != 0
-                      ? item.NewFDInterestRate
-                      : item.FDInterestRate | rate
-                  }}% eFil:
-                  {{
-                    item.NewEFilInterestRate != 0
-                      ? item.NewFDInterestRate
-                      : item.EFilInterestRate | rate
-                  }}%
-                </h5>
-                <span class="text">{{ $t('annualized') }}</span>
-              </div>
-              <div class="btn" @click="handleDemandBuy(item)">
-                {{ $t('buy') }}
-              </div>
-            </div>
-            <span
-              class="date"
-              :class="index % 2 == 0 ? 'date-left' : 'date-right'"
-            >
-              {{ item.Days }}{{ $t('time') }}
-            </span>
-          </div>
-        </div>
-      </div> -->
-
       <div class="items">
         <h4 class="title">eFil {{ $t('investment') }}</h4>
         <div
@@ -110,11 +26,15 @@
               :class="index % 2 == 0 ? 'content-left' : ''"
             >
               <div class="name">
+                <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
                   CRFI:{{ item.FDInterestRate | rate }}% eFil:
                   {{ item.EFilInterestRate | rate }}%
                 </h5>
-                <span class="text">{{ $t('annualized') }}</span>
+                <span class="name-number text">
+                  {{ $t('deposited') }}:
+                  {{ item.deposited || 0 | decimals }} eFil
+                </span>
               </div>
               <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
             </div>
@@ -144,11 +64,15 @@
               :class="index % 2 == 0 ? 'content-left' : ''"
             >
               <div class="name">
+                <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
                   CRFI:{{ item.FDInterestRate | rate }}% eFil:
                   {{ item.EFilInterestRate | rate }}%
                 </h5>
-                <span class="text">{{ $t('annualized') }}</span>
+                <span class="name-number text">
+                  {{ $t('deposited') }}:
+                  {{ item.deposited || 0 | decimals }} CRFI
+                </span>
               </div>
               <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
             </div>
@@ -169,6 +93,16 @@
       <div class="mask-content">
         <h4 class="mask-title">{{ $t('buy') }}</h4>
         <div class="form">
+          <div class="mask-desc">
+            <span
+              >eFil {{ $t('balance') }}:
+              {{ balance.watlletefil | decimals }}</span
+            >
+            <span
+              >CRFI {{ $t('balance') }}:
+              {{ balance.watlletCRFI | decimals }}</span
+            >
+          </div>
           <van-field
             class="field"
             center
@@ -214,6 +148,9 @@ export default {
     }
   },
   computed: {
+    balance() {
+      return this.$store.state.balance
+    },
     userLen() {
       let list = this.$store.state.userList
       let now = parseInt(new Date().getTime() / 1000)
@@ -392,11 +329,12 @@ export default {
       .name {
         margin-top: 6px;
         padding-left: 21px;
+        text-align: left;
+        font-size: 11px;
       }
       .text {
-        margin-top: 12px;
+        // margin-top: 12px;
         display: block;
-        font-size: 11px;
         font-family: PingFang SC;
         font-weight: 300;
         color: #96a5bf;
@@ -422,33 +360,43 @@ export default {
   }
 }
 .mask {
-  // position: fixed;
-  // top: 0;
-  // bottom: 0;
-  // left: 0;
-  // right: 0;
-  // background: rgba(0, 0, 0, 0.6);
   &-content {
-    width: 310px;
-    // height: 400px;
-
+    width: 320px;
     position: absolute;
     z-index: 99;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
     background: #fff;
-    border-radius: 16px;
-    padding-bottom: 12px;
+    padding-bottom: 20px;
     font-size: 15px;
     color: #63c2cd;
+    border-radius: 8px;
+    border: 1px solid #26aab9;
   }
   &-title {
     padding: 12px 0;
   }
+  &-desc {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    // padding: 0 20px;
+    font-size: 10px;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #707070;
+    span {
+      width: 128px;
+      background: #f0f0f0;
+      padding: 4px;
+      border-radius: 8px;
+    }
+  }
   .footer {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
     &-btn {
       width: 87px;
       height: 32px;

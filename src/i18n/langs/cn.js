@@ -1,5 +1,34 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
+  // 新增
+  login: '登录',
+  application: '借币申请',
+  balance: '余额',
+  deposited: '已存入量',
+  lend: '借币申请',
+  mailForApply: 'Mail For Apply',
+  filecoin: 'Filecoin Received',
+  day: '天',
+  annualizedRate: '年化利率',
+  applyText1: 'Please mail with the following content ',
+  applyText2: 'Mail to: crfi@crossfidao.com',
+
+  nodeNumber: 'Filecoin节点编号',
+  totalPower: '目前总存力',
+  demand: 'Filecoin预计需求量',
+  deadline: '借贷期限',
+  company: '申请公司全称',
+  email: '联系邮箱',
+  name: '负责人姓名',
+  receiveAddress: 'Receive Address(Filecoin Only)',
+  description: '操作说明',
+  link: '官网链接',
+  safe: '安全审计',
+  borrow: '借贷Filecoin',
+  dailyInterest: '每日利息',
+  demandInterest: '活期利息',
+  periodicInterest: '定期利息',
+
   // base
   assets: '资产',
   cancel: '取消',
@@ -16,6 +45,7 @@ const cn = {
   // home
   fileconinAddress: 'Filecoin地址',
   invite: '我的推荐码',
+  myAff: '我的推广收益',
   inviteText: '邀请他人投资eFil产品并填写您的推荐码可获得返利',
   exchangeDesc: '转入该地址的 Filecoin 将自动以 1:1 的比例兑换为 eFil',
   wallet: '钱包',

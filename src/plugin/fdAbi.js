@@ -1,8 +1,6 @@
 export const fdAbi = [
          {
            inputs: [
-             { internalType: 'string', name: 'name_', type: 'string' },
-             { internalType: 'string', name: 'symbol_', type: 'string' },
              {
                internalType: 'address[]',
                name: 'defaultOperators_',
@@ -247,7 +245,7 @@ export const fdAbi = [
          {
            inputs: [
              {
-               internalType: 'enum ERC777.Erc777ModeType',
+               internalType: 'enum CRFI.Erc777ModeType',
                name: 'mode',
                type: 'uint8',
              },
@@ -394,7 +392,7 @@ export const fdAbi = [
            name: 'erc777Mode',
            outputs: [
              {
-               internalType: 'enum ERC777.Erc777ModeType',
+               internalType: 'enum CRFI.Erc777ModeType',
                name: '',
                type: 'uint8',
              },
@@ -417,17 +415,6 @@ export const fdAbi = [
            name: 'isOperatorFor',
            outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
            stateMutability: 'view',
-           type: 'function',
-         },
-         {
-           inputs: [
-             { internalType: 'address', name: 'account', type: 'address' },
-             { internalType: 'uint256', name: 'amount', type: 'uint256' },
-             { internalType: 'bytes', name: 'userData', type: 'bytes' },
-           ],
-           name: 'mint',
-           outputs: [],
-           stateMutability: 'nonpayable',
            type: 'function',
          },
          {
