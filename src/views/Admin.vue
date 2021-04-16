@@ -10,7 +10,7 @@
             class="price-input"
             border
             v-model="affRate"
-            placeholder="请输入eFil数量"
+            placeholder="请输入cfil数量"
           />
           <van-button class="charge-btn" @click="handleAffRate">
             {{ $t('edit') }}
@@ -40,14 +40,14 @@
       <!-- 重置 -->
       <div class="charge-title">
         <span>
-          {{ $t('charge') }} eFil {{ $t('interestPool') }}
+          {{ $t('charge') }} cfil {{ $t('interestPool') }}
           {{ systemInfo.efilInterestPool | decimals }}</span
         >
       </div>
       <div class="charge">
         <van-field
           class="price-input"
-          placeholder="请输入eFil数量"
+          placeholder="请输入cfil数量"
           border
           v-model="value"
         />
@@ -85,7 +85,7 @@
                 {{ $t('time') }}
               </template>
             </span>
-            <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'eFil' }}</p>
+            <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cfil' }}</p>
           </div>
           <div class="item-content">
             <div class="price">
@@ -97,7 +97,7 @@
               <span>%</span>
             </div>
             <div class="price">
-              <h5 class="price-title">eFil {{ $t('rate') }}:</h5>
+              <h5 class="price-title">cfil {{ $t('rate') }}:</h5>
               <span class="price-text">
                 {{ item.EFilInterestRate }}
               </span>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <div class="items">
-        <h4 class="title">eFil {{ $t('investment') }}</h4>
+        <h4 class="title">cfil {{ $t('investment') }}</h4>
         <div class="item" v-for="item in eFilList" :key="item.date">
           <div class="date">
             {{ item.Days || $t('current') }}
@@ -127,7 +127,7 @@
                 {{ $t('time') }}
               </template>
             </span>
-            <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'eFil' }}</p>
+            <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cfil' }}</p>
           </div>
           <div class="item-content">
             <div class="price">
@@ -139,7 +139,7 @@
               <span>%</span>
             </div>
             <div class="price">
-              <h5 class="price-title">eFil {{ $t('rate') }}:</h5>
+              <h5 class="price-title">cfil {{ $t('rate') }}:</h5>
               <span class="price-text">
                 {{ item.EFilInterestRate }}
               </span>

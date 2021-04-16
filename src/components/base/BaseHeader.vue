@@ -1,10 +1,10 @@
 <template>
   <div class="header">
     <div class="header-user">
-      <div class="logo">
+      <router-link to="/" tag="div" class="logo">
         <img src="../../assets/images/logo.png" alt="" class="title-logo" />
         <span>{{ address }}</span>
-      </div>
+      </router-link>
       <span v-show="showLoading">pending</span>
       <div class="right">
         <span class="header-user-btn" @click="ethereum">
@@ -160,7 +160,7 @@ export default {
     }
     .title-logo {
       width: 34px;
-      height: 34px;
+      height: 30px;
       margin-right: 10px;
     }
     .right {

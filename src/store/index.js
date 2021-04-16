@@ -261,7 +261,8 @@ export default new Vuex.Store({
 
               // sendToServerForVerification(signature)
               axios
-                .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
+                .get('https://clserver.mm.comeonbtc.com:8443', {
+                  // .get('http://10.255.3.147:9980/get_addr', {
                   params: {
                     eth_addr: state.userAddress,
                     signed: signature,
@@ -407,13 +408,13 @@ export default new Vuex.Store({
     },
     // 管理员充值
     async charge({ state, commit, dispatch }, data) {
+      console.log('cfil')
       let { value } = data
       let betys = fdContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [2, 0, '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87'],
       )
       value = utils.toWei(value)
-      commit('setLoading', true)
       try {
         await eFileContract.executeContract(
           'send',
@@ -421,10 +422,7 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('initData')
-        commit('setLoading', false)
-      } catch (e) {
-        commit('setLoading', false)
-      }
+      } catch (e) {}
     },
     async chargeCRFI({ state, commit, dispatch }, data) {
       let { value } = data
@@ -433,7 +431,6 @@ export default new Vuex.Store({
         [3, 0, '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87'],
       )
       value = utils.toWei(value)
-      commit('setLoading', true)
       try {
         await fdContract.executeContract(
           'send',
@@ -441,10 +438,7 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('initData')
-        commit('setLoading', false)
-      } catch (e) {
-        commit('setLoading', false)
-      }
+      } catch (e) {}
     },
     // 购买
     async buyCoin({ state, commit, dispatch }, data) {
@@ -469,14 +463,10 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('initData')
-        commit('setLoading', false)
-      } catch (e) {
-        commit('setLoading', false)
-      }
+      } catch (e) {}
     },
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {
-      // commit('setLoading', true)
       let { ID, Type, value, inviteValue } = data
       let isAddress = fdContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
@@ -541,6 +531,7 @@ export default new Vuex.Store({
       // TODO: //efilInterestPoo
       let watlletCRFI = await fdContract.callContract('balanceOf', [address])
       let watlletefil = await eFileContract.callContract('balanceOf', [address])
+      console.log(watlletCRFI, watlletefil)
       let BN = utils.BN
       let totalEfil = new BN(efilDemandInterest).add(new BN(efilInterest))
       let totalFD = new BN(fdDemandInterest).add(new BN(fdInterest))

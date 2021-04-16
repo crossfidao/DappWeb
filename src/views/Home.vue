@@ -39,7 +39,9 @@
         </div>
         <div class="aff">
           <span class="aff-label">{{ $t('myAff') }}</span>
-          <span class="aff-price">{{ balance.totalAffFD | decimals }} FD</span>
+          <span class="aff-price"
+            >{{ balance.totalAffFD | decimals }} CRFI</span
+          >
         </div>
       </div>
     </BaseHeader>
@@ -47,7 +49,7 @@
       <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
         <div class="number-box flex">
-          <span class="text border">eFile</span>
+          <span class="text border">cfil</span>
           <div class="number">{{ balance.watlletefil | decimals }}</div>
         </div>
         <div class="btn-box flex">
@@ -76,12 +78,12 @@
       <div class="items">
         <div class="items-content">
           <div class="border items-item">
-            <span class="text">eFil {{ $t('assets') }}</span>
-            <p class="number">{{ balance.efil | decimals }}a</p>
+            <span class="text">cfil {{ $t('assets') }}</span>
+            <p class="number">{{ balance.efil | decimals }}</p>
           </div>
           <div class="items-item">
-            <span class="text"> {{ $t('withdraw') }} eFil</span>
-            <p class="number1">{{ balance.totalEfil | decimals }}s</p>
+            <span class="text"> {{ $t('withdraw') }} cfil</span>
+            <p class="number1">{{ balance.totalEfil | decimals }}</p>
           </div>
         </div>
         <div class="items-content">
@@ -104,7 +106,7 @@
         <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
         <div class="mask-desc">
           <span
-            >eFil {{ $t('balance') }}:
+            >cfil {{ $t('balance') }}:
             {{ balance.watlletefil | decimals }}</span
           >
           <span
@@ -407,7 +409,7 @@ export default {
   align-items: center;
 }
 .content {
-  padding: 300px 29px 24px;
+  padding: 320px 29px 24px;
   .title {
     margin: 16px 0;
     font-size: 16px;

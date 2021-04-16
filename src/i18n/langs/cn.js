@@ -2,10 +2,12 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
   // 新增
   login: '登录',
-  application: '借币申请',
+  application: '借贷',
   balance: '余额',
+  investment: '定期投资',
+  connected: '已连接',
   deposited: '已存入量',
-  lend: '借币申请',
+  lend: '借贷',
   mailForApply: 'Mail For Apply',
   filecoin: 'Filecoin Received',
   day: '天',
@@ -73,7 +75,7 @@ const cn = {
 
   position: '我的持仓',
   redemption: '当前有 {value} 款产品可赎回',
-  investment: '投资',
+
   annualized: '本期年化',
 
   // assets
