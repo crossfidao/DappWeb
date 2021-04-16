@@ -7,7 +7,6 @@ import Contract from '@/plugin/eth'
 import BigNumber from 'bignumber.js'
 var ethUtil = require('ethereumjs-util')
 var sigUtil = require('eth-sig-util')
-console.log(ethUtil)
 
 import { Toast } from 'vant'
 import { abi } from '@/plugin/abi'
@@ -35,16 +34,14 @@ let eFileContract = new Contract({
   abi: coinAbi,
 })
 
-eFileContract.contract.events
-  .BurnedCRFIEfil({
-    fromBlock: 0,
-  })
-  .on('connected', function(subscriptionId) {})
-  .on('data', function(event) {
-    console.log('eventData', event) // same results as the optional callback above
-  })
-  .on('changed', function(event) {})
-  .on('error', function(error, receipt) {})
+// eFileContract.contract.events
+//   .BurnedCRFIEfil({
+//     fromBlock: 0,
+//   })
+//   .on('connected', function(subscriptionId) {})
+//   .on('data', function(event) {})
+//   .on('changed', function(event) {})
+//   .on('error', function(error, receipt) {})
 
 export default new Vuex.Store({
   state: {
@@ -240,7 +237,6 @@ export default new Vuex.Store({
           let from = state.userAddress
 
           var params = [from, msgParams]
-          console.dir(params)
           var method = 'eth_signTypedData_v3'
 
           web3.currentProvider.sendAsync(
@@ -255,8 +251,8 @@ export default new Vuex.Store({
                 alert(result.error.message)
               }
               if (result.error) return console.error('ERROR', result)
-              console.log('TYPED SIGNED:' + JSON.stringify(result.result))
-              console.log('TYPED SIGNED:' + result.result.substring(2))
+              // console.log('TYPED SIGNED:' + JSON.stringify(result.result))
+              // console.log('TYPED SIGNED:' + result.result.substring(2))
               const signature = result.result.substring(2)
 
               // sendToServerForVerification(signature)
@@ -270,7 +266,6 @@ export default new Vuex.Store({
                   },
                 })
                 .then(function(response) {
-                  console.log('succ', response)
                   let {
                     data: {
                       result: { FilAddr },
@@ -278,7 +273,6 @@ export default new Vuex.Store({
                   } = response
                   commit('setFileAddr', FilAddr)
                   localStorage.setItem(state.userAddress, FilAddr)
-                  console.log(FilAddr)
                 })
                 .catch(function(error) {
                   console.log(error)
@@ -287,12 +281,12 @@ export default new Vuex.Store({
                 data: JSON.parse(msgParams),
                 sig: result.result,
               })
-              console.log(
-                'recovered',
-                recovered,
-                ethUtil.toChecksumAddress(recovered),
-                ethUtil.toChecksumAddress(from),
-              )
+              // console.log(
+              //   'recovered',
+              //   recovered,
+              //   ethUtil.toChecksumAddress(recovered),
+              //   ethUtil.toChecksumAddress(from),
+              // )
               if (
                 ethUtil.toChecksumAddress(recovered) ===
                 ethUtil.toChecksumAddress(from)
@@ -323,9 +317,7 @@ export default new Vuex.Store({
       value = new BigNumber(utils.toWei(value.toString() || 0))
       // 获取汇率
       let res = await eFileContract.callContract('burnEFilRateCRFI', [])
-      console.log(res)
       let rate = utils.fromWei(res)
-      console.log('Repurchase', value, fileCoin, res, rate)
 
       let fdValue = value.times(new BigNumber(utils.fromWei(res)))
       if (balanceEFil.comparedTo(value) == -1) {
@@ -333,12 +325,10 @@ export default new Vuex.Store({
         return
       }
       let betys1 = utils.utf8ToHex(fileCoin)
-      console.log('betys1', betys1)
       let betys = fdContract.web3.eth.abi.encodeParameters(
         ['string'],
         [fileCoin],
       )
-      console.log('betys', betys)
       // 调用fd send
       try {
         await fdContract.executeContract(
@@ -408,7 +398,6 @@ export default new Vuex.Store({
     },
     // 管理员充值
     async charge({ state, commit, dispatch }, data) {
-      console.log('cfil')
       let { value } = data
       let betys = fdContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
@@ -448,7 +437,6 @@ export default new Vuex.Store({
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
-      console.log('inbiteAddress', inviteValue)
       let betys = fdContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
@@ -490,7 +478,6 @@ export default new Vuex.Store({
       } catch (e) {}
     },
     async initData({ state, commit }) {
-      console.log('initData')
       let address = state.userAddress
       let systemInfo = await corsslend.callContract('GetSystemInfo', [])
 
@@ -523,7 +510,6 @@ export default new Vuex.Store({
         fdInterest,
         totalAffFD,
       })
-      console.log('userInfo', totalAffFD, res)
       // if (admin) {
       //   router.replace('/admin')
       // }
@@ -531,7 +517,6 @@ export default new Vuex.Store({
       // TODO: //efilInterestPoo
       let watlletCRFI = await fdContract.callContract('balanceOf', [address])
       let watlletefil = await eFileContract.callContract('balanceOf', [address])
-      console.log(watlletCRFI, watlletefil)
       let BN = utils.BN
       let totalEfil = new BN(efilDemandInterest).add(new BN(efilInterest))
       let totalFD = new BN(fdDemandInterest).add(new BN(fdInterest))
@@ -551,10 +536,8 @@ export default new Vuex.Store({
       // 获取列表
       let list = await corsslend.callContract('GetPackages', [])
       let { demandEFil, demandFD, financialPackages } = list
-      console.log('list', list)
       let list1 = await corsslend.callContract('GetInvestRecords', [address])
       let records = list1.records
-      console.log('userInfo', list1, records)
       let fdList = []
       let efilList = []
       financialPackages.forEach((element, index) => {
@@ -565,7 +548,6 @@ export default new Vuex.Store({
             deposited = deposited.add(new BN(records[i].Amount))
           }
         }
-        console.log('total', deposited.toString())
 
         if (Type == 0) {
           fdList.push({
@@ -634,7 +616,6 @@ export default new Vuex.Store({
       ])
       // 获取 fileCoin 地址
       let fileCoin = localStorage.getItem(state.userAddress)
-      console.log('fileCoin', fileCoin)
       commit('setFileAddr', fileCoin)
     },
   },
