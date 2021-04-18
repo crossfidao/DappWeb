@@ -13,7 +13,7 @@
 
     <div class="content">
       <div class="items">
-        <h4 class="title">cfil {{ $t('investment') }}</h4>
+        <h4 class="title">cFil {{ $t('investment') }}</h4>
         <div
           class="item-box"
           :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
@@ -28,12 +28,12 @@
               <div class="name">
                 <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
-                  CRFI:{{ item.FDInterestRate | rate }}% cfil:
+                  CRFI:{{ item.FDInterestRate | rate }}% cFil:
                   {{ item.EFilInterestRate | rate }}%
                 </h5>
                 <span class="name-number text">
                   {{ $t('deposited') }}:
-                  {{ item.deposited || 0 | decimals }} cfil
+                  {{ item.deposited || 0 | decimals }} cFil
                 </span>
               </div>
               <div class="btn" @click="handleBuy(item)">{{ $t('buy') }}</div>
@@ -66,7 +66,7 @@
               <div class="name">
                 <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
-                  CRFI:{{ item.FDInterestRate | rate }}% cfil:
+                  CRFI:{{ item.FDInterestRate | rate }}% cFil:
                   {{ item.EFilInterestRate | rate }}%
                 </h5>
                 <span class="name-number text">
@@ -95,7 +95,7 @@
         <div class="form">
           <div class="mask-desc">
             <span
-              >cfil {{ $t('balance') }}:
+              >cFil {{ $t('balance') }}:
               {{ balance.watlletefil | decimals }}</span
             >
             <span

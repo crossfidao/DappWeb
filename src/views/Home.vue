@@ -49,7 +49,7 @@
       <h4 class="title">{{ $t('wallet') }}{{ $t('assets') }}</h4>
       <div class="item">
         <div class="number-box flex">
-          <span class="text border">cfil</span>
+          <span class="text border">cFil</span>
           <div class="number">{{ balance.watlletefil | decimals }}</div>
         </div>
         <div class="btn-box flex">
@@ -78,11 +78,11 @@
       <div class="items">
         <div class="items-content">
           <div class="border items-item">
-            <span class="text">cfil {{ $t('assets') }}</span>
+            <span class="text">cFil {{ $t('assets') }}</span>
             <p class="number">{{ balance.efil | decimals }}</p>
           </div>
           <div class="items-item">
-            <span class="text"> {{ $t('withdraw') }} cfil</span>
+            <span class="text"> {{ $t('withdraw') }} cFil</span>
             <p class="number1">{{ balance.totalEfil | decimals }}</p>
           </div>
         </div>
@@ -106,7 +106,7 @@
         <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
         <div class="mask-desc">
           <span
-            >cfil {{ $t('balance') }}:
+            >cFil {{ $t('balance') }}:
             {{ balance.watlletefil | decimals }}</span
           >
           <span
@@ -141,31 +141,6 @@
         </div>
       </div>
     </van-overlay>
-    <!-- <div class="mask" v-show="showMask">
-      <div class="mask-content">
-        <h4 class="mask-title">Filcoin 回购</h4>
-        <div class="form">
-          <van-field
-            class="field"
-            center
-            clearable
-            v-model="value"
-            placeholder="请输入您要售出的eFil数目"
-          />
-          <van-field
-            class="field"
-            center
-            clearable
-            v-model="value"
-            placeholder="请输入您自己的Filecoin地址"
-          />
-        </div>
-        <div class="footer">
-          <div class="footer-btn" @click="showMask = false">取消</div>
-          <div class="footer-btn">确定</div>
-        </div>
-      </div>
-    </div> -->
   </div>
 </template>
 

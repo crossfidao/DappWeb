@@ -15,12 +15,12 @@
         <div class="income-item">
           <span class="income-item-name">{{ $t('demandInterest') }}</span>
           <span>CRFI: {{ userInfo.fdDemandInterest | decimals }}</span>
-          <span>cfil: {{ userInfo.efilDemandInterest | decimals }}</span>
+          <span>cFil: {{ userInfo.efilDemandInterest | decimals }}</span>
         </div>
         <div class="income-item">
           <span class="income-item-name">{{ $t('periodicInterest') }}</span>
           <span>CRFI: {{ userInfo.fdInterest | decimals }}</span>
-          <span>cfil: {{ userInfo.efilInterest | decimals }}</span>
+          <span>cFil: {{ userInfo.efilInterest | decimals }}</span>
         </div>
       </div>
 
@@ -31,18 +31,18 @@
         </div>
         <div class="income-item">
           <span>CRFI: {{ userInfo.fd | decimals }}</span>
-          <span>cfil: {{ userInfo.efil | decimals }}</span>
+          <span>cFil: {{ userInfo.efil | decimals }}</span>
         </div>
       </div>
       <div class="item" v-for="item in expireList" :key="item.ID">
         <div class="date">
           <span class="text">{{ item.Days }}{{ $t('time') }}</span>
-          <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cfil' }}</p>
+          <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cFil' }}</p>
         </div>
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cfil:
+              CRFI:{{ item.FDInterestRate | rate }}% cFil:
               {{ item.EFilInterestRate | rate }}%
             </h5>
           </div>
@@ -53,7 +53,7 @@
             {{ item.Amount | decimals }}
           </h4>
           <div class="item-income">
-            <span>+{{ getValue(item, 1) }} cfil</span>
+            <span>+{{ getValue(item, 1) }} cFil</span>
             <p v-if="item.Type != 1">+{{ getValue(item) }} CRFI</p>
           </div>
         </div>
@@ -70,13 +70,13 @@
       <!-- <div>{{ userDemandList }}</div> -->
       <div class="item" v-for="item in userDemandList" :key="item.ID">
         <div class="date1">
-          {{ item.Type == 0 ? 'CRFI' : 'cfil' }}
+          {{ item.Type == 0 ? 'CRFI' : 'cFil' }}
           <!-- <p class="date-bg"></p> -->
         </div>
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cfil:
+              CRFI:{{ item.FDInterestRate | rate }}% cFil:
               {{ item.EFilInterestRate | rate }}%
             </h5>
           </div>
@@ -95,16 +95,16 @@
       </div>
     </div>
     <div class="items">
-      <div class="title">cfil {{ $t('investment') }}</div>
+      <div class="title">cFil {{ $t('investment') }}</div>
       <div class="item" v-for="item in efilList" :key="item">
         <div class="date">
           <span class="text">{{ item.Days }}{{ $t('time') }}</span>
-          <p class="date-bg">cfil</p>
+          <p class="date-bg">cFil</p>
         </div>
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cfil:
+              CRFI:{{ item.FDInterestRate | rate }}% cFil:
               {{ item.EFilInterestRate | rate }}%
             </h5>
             <span class="price-date"
@@ -117,7 +117,7 @@
             <h4 class="number">{{ item.Amount | decimals }}</h4>
           </div>
           <div class="item-income">
-            <span>+{{ getValue(item, 1) }} cfil</span>
+            <span>+{{ getValue(item, 1) }} cFil</span>
             <!-- <p>+{{ getValue(item) }} CRFI</p> -->
           </div>
         </div>
@@ -135,7 +135,7 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cfil:
+              CRFI:{{ item.FDInterestRate | rate }}% cFil:
               {{ item.EFilInterestRate | rate }}%
             </h5>
             <span class="price-date"
@@ -146,7 +146,7 @@
         <div class="item-income">
           <h4 class="number">{{ item.Amount | decimals }}</h4>
           <div>
-            <span>+{{ getValue(item, 1) }} cfil</span>
+            <span>+{{ getValue(item, 1) }} cFil</span>
             <p>+{{ getValue(item) }} CRFI</p>
           </div>
         </div>
