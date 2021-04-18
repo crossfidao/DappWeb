@@ -16,7 +16,7 @@ import detectEthereumProvider from '@metamask/detect-provider'
 
 Vue.use(Vuex)
 
-let corsslendAddress = '0x30c1508313d2a28782335386e6d36cb73d547886'
+let corsslendAddress = '0x2a338d355a7bb818630494206826f968ac261ab9'
 
 let corsslend = new Contract({
   address: corsslendAddress,
@@ -30,7 +30,7 @@ let fdContract = new Contract({
 })
 
 let eFileContract = new Contract({
-  address: '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
+  address: '0xfcbca4a78f057c10efae89389ed0dbd5209d8924',
   abi: coinAbi,
 })
 
@@ -257,7 +257,7 @@ export default new Vuex.Store({
 
               // sendToServerForVerification(signature)
               axios
-                .get('https://clserver.mm.comeonbtc.com:8443', {
+                .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
                   // .get('http://10.255.3.147:9980/get_addr', {
                   params: {
                     eth_addr: state.userAddress,
@@ -319,7 +319,11 @@ export default new Vuex.Store({
       let res = await eFileContract.callContract('burnEFilRateCRFI', [])
       let rate = utils.fromWei(res)
 
-      let fdValue = value.times(new BigNumber(utils.fromWei(res)))
+      let fdValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
+
+      console.log(123, fdValue)
+
+      // let fdValue = value.times(new BigNumber(utils.fromWei(res)))
       if (balanceEFil.comparedTo(value) == -1) {
         Toast(i18n.t('balanceToast'))
         return
@@ -333,7 +337,11 @@ export default new Vuex.Store({
       try {
         await fdContract.executeContract(
           'send',
-          ['0x1ccbf9217c06a641e88059578b5bf984e21f11ff', fdValue, betys1],
+          [
+            '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
+            fdValue.toString(),
+            betys1,
+          ],
           state.userAddress,
         )
         dispatch('initData')
