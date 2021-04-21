@@ -114,6 +114,9 @@
             {{ balance.watlletCRFI | decimals }}</span
           >
         </div>
+        <div class="mask-desc">
+          CRFI {{ $t('consume') }}: {{ fdValue | decimals }}
+        </div>
         <div class="form">
           <van-field
             class="field"
@@ -122,6 +125,7 @@
             type="number"
             v-model="value"
             :placeholder="$t('eFilPlaceholder')"
+            @input="handleInputChange"
           />
           <van-field
             class="field"
@@ -155,10 +159,11 @@ export default {
   components: {},
   data() {
     return {
-      showMask: false,
+      showMask: true,
       fdBalance: 0,
       value: '',
       fileCoin: '',
+      fdValue: '',
     }
   },
   computed: {
@@ -204,7 +209,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['initData', 'Repurchase', 'login']),
+    ...mapActions(['initData', 'Repurchase', 'login', 'ComputedCRFI']),
     getQueryString(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
       let r = window.location.search.substr(1).match(reg)
@@ -226,6 +231,11 @@ export default {
         // 释放内存
         clipboard.destroy()
       })
+    },
+    async handleInputChange(value) {
+      let res = await this.ComputedCRFI(value)
+      this.fdValue = res
+      console.log(res)
     },
     handleRepurchase() {
       this.Repurchase({

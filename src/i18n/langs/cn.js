@@ -30,6 +30,9 @@ const cn = {
   dailyInterest: '每日利息',
   demandInterest: '活期利息',
   periodicInterest: '定期利息',
+  minNumberToast: '最少回购 10 个 eFil',
+  consume: '需要消耗 CRFI',
+  toastFileCoin: 'file 地址不能为空',
 
   // base
   assets: '资产',
@@ -54,7 +57,7 @@ const cn = {
   contract: '合约',
   repurchase: '回购',
   withdraw: '可提现',
-  eFilDesc: 'cFil 可由 1:1 的 Filecoin 兑换获得',
+  eFilDesc: 'cFil 1:1 Filecoin 兑换',
   FDDesc: 'CRFI 可由控股和挖矿获得',
   eFilPlaceholder: '请输入您要售出的cFil数',
   invitePlaceholder: '请输入您的推荐人地址',

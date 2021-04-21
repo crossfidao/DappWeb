@@ -305,11 +305,26 @@ export default new Vuex.Store({
         },
       )
     },
+    // 计算 CRFI
+    async ComputedCRFI({ state, commit, dispatch }, value) {
+      if (value == '') {
+        return 0
+      }
+      // 获取汇率
+      value = new BigNumber(utils.toWei(value.toString() || 0))
+      let res = await eFileContract.callContract('burnEFilRateCRFI', [])
+      let fdValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
+      return fdValue.toString()
+    },
     // 回购
     async Repurchase({ state, commit, dispatch }, data) {
-      let { value, fileCoin = '0x00000000000' } = data
+      let { value, fileCoin = '' } = data
       if (value == '') {
         Toast(i18n.t('eFilPlaceholder'))
+        return
+      }
+      if (value < 10) {
+        Toast(i18n.t('minNumberToast'))
         return
       }
       let balanceEFil = new BigNumber(state.balance.watlletefil)
@@ -318,14 +333,21 @@ export default new Vuex.Store({
       // 获取汇率
       let res = await eFileContract.callContract('burnEFilRateCRFI', [])
       let rate = utils.fromWei(res)
-
       let fdValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
-
-      console.log(123, fdValue)
+      console.log('balance', fdValue.toString())
+      console.log(123, fdValue, utils.fromWei(fdValue.toString()))
+      // if (balanceCRFI.comparedTo(fdValue) == -1) {
+      //   Toast(i18n.t('balanceToast'))
+      //   return
+      // }
 
       // let fdValue = value.times(new BigNumber(utils.fromWei(res)))
       if (balanceEFil.comparedTo(value) == -1) {
         Toast(i18n.t('balanceToast'))
+        return
+      }
+      if (fileCoin == '') {
+        Toast(i18n.t('toastFileCoin'))
         return
       }
       let betys1 = utils.utf8ToHex(fileCoin)
