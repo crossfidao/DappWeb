@@ -3,8 +3,6 @@ import Web3 from 'web3'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
 
-console.log(new BigNumber('1e18'))
-
 let web3 = new Web3()
 let { utils } = web3
 
@@ -18,10 +16,8 @@ Vue.filter('decimals', value => {
 })
 
 Vue.filter('decimals1', value => {
-  console.log(typeof value, value)
   if (typeof value == 'object') {
   }
-  console.log(typeof value, value, new BigNumber(value))
   value = value || '0'
   return new BigNumber(value).div(new BigNumber(1e18))
   // return value

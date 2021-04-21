@@ -94,14 +94,14 @@
         <h4 class="mask-title">{{ $t('buy') }}</h4>
         <div class="form">
           <div class="mask-desc">
-            <span
-              >cFil {{ $t('balance') }}:
-              {{ balance.watlletefil | decimals }}</span
-            >
-            <span
-              >CRFI {{ $t('balance') }}:
-              {{ balance.watlletCRFI | decimals }}</span
-            >
+            <span v-show="curItem.Type == '1'">
+              cFil {{ $t('balance') }}:
+              {{ balance.watlletefil | decimals }}
+            </span>
+            <span v-show="curItem.Type == '0'">
+              CRFI {{ $t('balance') }}:
+              {{ balance.watlletCRFI | decimals }}
+            </span>
           </div>
           <van-field
             class="field"
@@ -110,13 +110,13 @@
             v-model="value"
             :placeholder="$t('buyPlaceholder')"
           />
-          <van-field
+          <!-- <van-field
             class="field"
             center
             clearable
             v-model="inviteValue"
             :placeholder="$t('invitePlaceholder')"
-          />
+          /> -->
         </div>
         <div class="footer">
           <div class="footer-btn" @click="showMask = false">
@@ -144,7 +144,9 @@ export default {
       isDemand: false,
       value: '',
       inviteValue: '',
-      curItem: null,
+      curItem: {
+        ID: 0,
+      },
     }
   },
   computed: {
@@ -177,10 +179,8 @@ export default {
     },
   },
   mounted() {
-    console.log('ieofiekdlfk')
     let invite = this.getQueryString('invite') || ''
     this.inviteValue = invite
-    console.log(123213213, invite)
   },
   methods: {
     ...mapActions(['buyCoin', 'demandBuyCoin']),
