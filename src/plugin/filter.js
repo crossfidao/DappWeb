@@ -26,6 +26,7 @@ Vue.filter('decimals1', value => {
 })
 
 Vue.filter('rate', value => {
+  value = value || '0'
   value = value * 100
   return utils.fromWei(value.toString())
 })

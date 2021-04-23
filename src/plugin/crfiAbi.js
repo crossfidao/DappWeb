@@ -1,4 +1,4 @@
-export const coinAbi = [
+export const crfiAbi = [
   {
     inputs: [
       {
@@ -6,7 +6,6 @@ export const coinAbi = [
         name: 'defaultOperators_',
         type: 'address[]',
       },
-      { internalType: 'address', name: 'CRFIAddr', type: 'address' },
     ],
     stateMutability: 'nonpayable',
     type: 'constructor',
@@ -90,31 +89,6 @@ export const coinAbi = [
       },
     ],
     name: 'Burned',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'bytes',
-        name: 'data',
-        type: 'bytes',
-      },
-    ],
-    name: 'BurnedCRFICFil',
     type: 'event',
   },
   {
@@ -263,16 +237,9 @@ export const coinAbi = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: 'rate', type: 'uint256' }],
-    name: 'ChangeBurnCFilRateCRFI',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [
       {
-        internalType: 'enum CFil.Erc777ModeType',
+        internalType: 'enum CRFI.Erc777ModeType',
         name: 'mode',
         type: 'uint8',
       },
@@ -384,13 +351,6 @@ export const coinAbi = [
   },
   {
     inputs: [],
-    name: 'burnCFilRateCRFI',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'decimals',
     outputs: [{ internalType: 'uint8', name: '', type: 'uint8' }],
     stateMutability: 'pure',
@@ -408,7 +368,7 @@ export const coinAbi = [
     name: 'erc777Mode',
     outputs: [
       {
-        internalType: 'enum CFil.Erc777ModeType',
+        internalType: 'enum CRFI.Erc777ModeType',
         name: '',
         type: 'uint8',
       },
@@ -431,17 +391,6 @@ export const coinAbi = [
     name: 'isOperatorFor',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: 'account', type: 'address' },
-      { internalType: 'uint256', name: 'amount', type: 'uint256' },
-      { internalType: 'bytes', name: 'userData', type: 'bytes' },
-    ],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -519,7 +468,7 @@ export const coinAbi = [
     ],
     name: 'tokensReceived',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'pure',
     type: 'function',
   },
   {

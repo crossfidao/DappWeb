@@ -50,7 +50,7 @@
       <div class="item">
         <div class="number-box flex">
           <span class="text border">cFil</span>
-          <div class="number">{{ balance.watlletefil | decimals }}</div>
+          <div class="number">{{ balance.watlletcfil | decimals }}</div>
         </div>
         <div class="btn-box flex">
           <span class="text-desc">
@@ -79,7 +79,7 @@
         <div class="items-content">
           <div class="border items-item">
             <span class="text">cFil {{ $t('assets') }}</span>
-            <p class="number">{{ balance.efil | decimals }}</p>
+            <p class="number">{{ balance.cfil | decimals }}</p>
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} cFil</span>
@@ -89,7 +89,7 @@
         <div class="items-content">
           <div class="border items-item">
             <span class="text">CRFI {{ $t('assets') }}</span>
-            <p class="number">{{ balance.fd | decimals }}</p>
+            <p class="number">{{ balance.crfi | decimals }}</p>
           </div>
           <div class="items-item">
             <span class="text"> {{ $t('withdraw') }} CRFI</span>
@@ -107,7 +107,7 @@
         <div class="mask-desc">
           <span
             >cFil {{ $t('balance') }}:
-            {{ balance.watlletefil | decimals }}</span
+            {{ balance.watlletcfil | decimals }}</span
           >
           <span
             >CRFI {{ $t('balance') }}:
@@ -115,7 +115,7 @@
           >
         </div>
         <div class="mask-desc">
-          CRFI {{ $t('consume') }}: {{ fdValue | decimals }}
+          CRFI {{ $t('consume') }}: {{ crfiValue | decimals }}
         </div>
         <div class="form">
           <van-field
@@ -159,11 +159,11 @@ export default {
   components: {},
   data() {
     return {
-      showMask: true,
-      fdBalance: 0,
+      showMask: false,
+      crfiBalance: 0,
       value: '',
       fileCoin: '',
-      fdValue: '',
+      crfiValue: '',
     }
   },
   computed: {
@@ -188,18 +188,18 @@ export default {
     balance() {
       return this.$store.state.balance
     },
-    efilTotal() {
-      return this.$store.getters.efilTotal
+    cfilTotal() {
+      return this.$store.getters.cfilTotal
     },
-    fdTotal() {
-      return this.$store.getters.fdTotal
+    crfiTotal() {
+      return this.$store.getters.crfiTotal
     },
 
-    efilWithdrawable() {
-      return this.$store.getters.efilWithdrawable
+    cfilWithdrawable() {
+      return this.$store.getters.cfilWithdrawable
     },
-    fdWithdrawable() {
-      return this.$store.getters.fdWithdrawable
+    crfiWithdrawable() {
+      return this.$store.getters.crfiWithdrawable
     },
   },
   async mounted() {
@@ -234,7 +234,7 @@ export default {
     },
     async handleInputChange(value) {
       let res = await this.ComputedCRFI(value)
-      this.fdValue = res
+      this.crfiValue = res
       console.log(res)
     },
     handleRepurchase() {
@@ -252,8 +252,8 @@ export default {
       })
       let { fromWei } = this.$CRFI.web3.utils
 
-      let fdBalance = await this.$CRFI.callContract('balanceOf', accounts)
-      this.fdBalance = fromWei(fdBalance)
+      let crfiBalance = await this.$CRFI.callContract('balanceOf', accounts)
+      this.crfiBalance = fromWei(crfiBalance)
     },
     async ethereum() {
       await window.ethereum.request({

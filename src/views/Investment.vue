@@ -17,7 +17,7 @@
         <div
           class="item-box"
           :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-          v-for="(item, index) in efilList"
+          v-for="(item, index) in cfilList"
           :key="item.ID"
         >
           <div class="item" :style="getStyle(index)">
@@ -28,8 +28,8 @@
               <div class="name">
                 <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
-                  CRFI:{{ item.FDInterestRate | rate }}% cFil:
-                  {{ item.EFilInterestRate | rate }}%
+                  CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+                  {{ item.CFilInterestRate | rate }}%
                 </h5>
                 <span class="name-number text">
                   {{ $t('deposited') }}:
@@ -55,7 +55,7 @@
         <div
           class="item-box"
           :class="index % 2 == 0 ? 'flex-start' : 'flex-end'"
-          v-for="(item, index) in fdList"
+          v-for="(item, index) in crfiList"
           :key="item.ID"
         >
           <div class="item" :style="getStyle(index)">
@@ -66,8 +66,8 @@
               <div class="name">
                 <span class="text">{{ $t('annualized') }}</span>
                 <h5 class="">
-                  CRFI:{{ item.FDInterestRate | rate }}% cFil:
-                  {{ item.EFilInterestRate | rate }}%
+                  CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+                  {{ item.CFilInterestRate | rate }}%
                 </h5>
                 <span class="name-number text">
                   {{ $t('deposited') }}:
@@ -96,7 +96,7 @@
           <div class="mask-desc">
             <span v-show="curItem.Type == '1'">
               cFil {{ $t('balance') }}:
-              {{ balance.watlletefil | decimals }}
+              {{ balance.watlletcfil | decimals }}
             </span>
             <span v-show="curItem.Type == '0'">
               CRFI {{ $t('balance') }}:
@@ -165,10 +165,11 @@ export default {
       })
       return num
     },
-    fdList() {
-      return this.$store.state.fdList
+    crfiList() {
+      console.log('list', this.$store.state.crfiList)
+      return this.$store.state.crfiList
     },
-    efilList() {
+    cfilList() {
       return this.$store.state.eFilList
     },
     demandFD() {

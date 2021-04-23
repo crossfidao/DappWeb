@@ -14,13 +14,13 @@
         </div>
         <div class="income-item">
           <span class="income-item-name">{{ $t('demandInterest') }}</span>
-          <span>CRFI: {{ userInfo.fdDemandInterest | decimals }}</span>
-          <span>cFil: {{ userInfo.efilDemandInterest | decimals }}</span>
+          <span>CRFI: {{ userInfo.crfiDemandInterest | decimals }}</span>
+          <span>cFil: {{ userInfo.cfilDemandInterest | decimals }}</span>
         </div>
         <div class="income-item">
           <span class="income-item-name">{{ $t('periodicInterest') }}</span>
-          <span>CRFI: {{ userInfo.fdInterest | decimals }}</span>
-          <span>cFil: {{ userInfo.efilInterest | decimals }}</span>
+          <span>CRFI: {{ userInfo.crfiInterest | decimals }}</span>
+          <span>cFil: {{ userInfo.cfilInterest | decimals }}</span>
         </div>
       </div>
 
@@ -30,8 +30,8 @@
           <span>{{ $t('expireAssets') }}</span>
         </div>
         <div class="income-item">
-          <span>CRFI: {{ userInfo.fd | decimals }}</span>
-          <span>cFil: {{ userInfo.efil | decimals }}</span>
+          <span>CRFI: {{ userInfo.crfi | decimals }}</span>
+          <span>cFil: {{ userInfo.cfil | decimals }}</span>
         </div>
       </div>
       <div class="item" v-for="item in expireList" :key="item.ID">
@@ -42,8 +42,8 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cFil:
-              {{ item.EFilInterestRate | rate }}%
+              CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+              {{ item.CFilInterestRate | rate }}%
             </h5>
           </div>
         </div>
@@ -76,8 +76,8 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cFil:
-              {{ item.EFilInterestRate | rate }}%
+              CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+              {{ item.CFilInterestRate | rate }}%
             </h5>
           </div>
         </div>
@@ -96,7 +96,7 @@
     </div>
     <div class="items">
       <div class="title">cFil {{ $t('investment') }}</div>
-      <div class="item" v-for="item in efilList" :key="item">
+      <div class="item" v-for="item in cfilList" :key="item">
         <div class="date">
           <span class="text">{{ item.Days }}{{ $t('time') }}</span>
           <p class="date-bg">cFil</p>
@@ -104,8 +104,8 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cFil:
-              {{ item.EFilInterestRate | rate }}%
+              CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+              {{ item.CFilInterestRate | rate }}%
             </h5>
             <span class="price-date"
               >[{{ $t('expireDate') }}] {{ item.EndTime | format }}</span
@@ -122,12 +122,12 @@
           </div>
         </div>
       </div>
-      <div class="empty" v-if="efilList.length == 0">{{ $t('empty') }}</div>
+      <div class="empty" v-if="cfilList.length == 0">{{ $t('empty') }}</div>
     </div>
     <div class="items ">
       <div class="title">CRFI {{ $t('investment') }}</div>
       <!-- TODO: 时间 -->
-      <div class="item" v-for="item in fdList" :key="item.ID">
+      <div class="item" v-for="item in crfiList" :key="item.ID">
         <div class="date">
           <span class="text">{{ item.Days }}{{ $t('time') }}</span>
           <p class="date-bg">CRFI</p>
@@ -135,8 +135,8 @@
         <div class="item-content">
           <div class="price">
             <h5>
-              CRFI:{{ item.FDInterestRate | rate }}% cFil:
-              {{ item.EFilInterestRate | rate }}%
+              CRFI:{{ item.CRFIInterestRate | rate }}% cFil:
+              {{ item.CFilInterestRate | rate }}%
             </h5>
             <span class="price-date"
               >[{{ $t('expireDate') }}] {{ item.EndTime | format }}</span
@@ -151,7 +151,7 @@
           </div>
         </div>
       </div>
-      <div class="empty" v-if="fdList.length == 0">{{ $t('empty') }}</div>
+      <div class="empty" v-if="crfiList.length == 0">{{ $t('empty') }}</div>
     </div>
   </div>
 </template>
@@ -181,7 +181,7 @@ export default {
       })
       return arr
     },
-    fdList() {
+    crfiList() {
       let arr = []
       let now = parseInt(new Date().getTime() / 1000)
       let list = this.$store.state.userList
@@ -193,7 +193,7 @@ export default {
       })
       return arr
     },
-    efilList() {
+    cfilList() {
       let arr = []
       let now = parseInt(new Date().getTime() / 1000)
       let list = this.$store.state.userList
@@ -221,7 +221,7 @@ export default {
     ...mapActions(['Withdraw', 'WithdrawDemand']),
     async load() {
       let list = await this.$corsslend.callContract('GetInvesterRecords', [
-        '0x5E95DbE6dd707B988e6CC2396b3F75a4Ea0afd0C',
+        '0x5E95DbE6dd707B988e6CC2396b3F75a4Ea0acrfi0C',
       ])
       let now = parseInt(new Date().getTime() / 1000)
 
@@ -231,20 +231,20 @@ export default {
           this.expireList.push(element)
         } else {
           if (Type == 0) {
-            this.fdList.push(element)
+            this.crfiList.push(element)
           } else {
-            this.efilList.push(element)
+            this.cfilList.push(element)
           }
         }
       })
     },
     getValue(data, type = 0) {
-      let { Amount, FDInterestRate, EFilInterestRate, Days } = data
+      let { Amount, CRFIInterestRate, CFilInterestRate, Days } = data
       let rate = 0
       if (type == 0) {
-        rate = FDInterestRate
+        rate = CRFIInterestRate
       } else {
-        rate = EFilInterestRate
+        rate = CFilInterestRate
       }
 
       rate = this.$utils.fromWei(rate.toString())
@@ -296,7 +296,7 @@ export default {
 .income {
   margin-bottom: 12px;
   margin: 0 21px 12px;
-  border-bottom: 1px solid #dfdfdf;
+  border-bottom: 1px solid #dcrficrfif;
   &-title {
     display: flex;
     align-items: center;

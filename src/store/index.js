@@ -10,13 +10,13 @@ var sigUtil = require('eth-sig-util')
 
 import { Toast } from 'vant'
 import { abi } from '@/plugin/abi'
-import { fdAbi } from '@/plugin/fdAbi'
+import { crfiAbi } from '@/plugin/crfiAbi'
 import { coinAbi } from '@/plugin/coinAbi'
 import detectEthereumProvider from '@metamask/detect-provider'
 
 Vue.use(Vuex)
 
-let corsslendAddress = '0x2a338d355a7bb818630494206826f968ac261ab9'
+let corsslendAddress = '0x1988a7f9cdc295eafadd599a3e629c2410c45845'
 
 let corsslend = new Contract({
   address: corsslendAddress,
@@ -24,13 +24,13 @@ let corsslend = new Contract({
 })
 
 let utils = corsslend.web3.utils
-let fdContract = new Contract({
-  address: '0xa7b3058152165c72a4dd7c4812c5964f1c26f00d',
-  abi: fdAbi,
+let crfiContract = new Contract({
+  address: '0xfc1b3c404c962ea27eb722b5afc50257619a88c2',
+  abi: crfiAbi,
 })
 
 let eFileContract = new Contract({
-  address: '0xfcbca4a78f057c10efae89389ed0dbd5209d8924',
+  address: '0x17c65b5840e10db0ec2f0e132371d31d280eba72',
   abi: coinAbi,
 })
 
@@ -50,34 +50,34 @@ export default new Vuex.Store({
     FilAddr: '',
     systemInfo: {
       affRate: '0',
-      fdInterestPool: '',
-      efilInterestPool: '0',
+      crfiInterestPool: '',
+      cfilInterestPool: '0',
     },
     balance: {
       CRFI: '0',
-      efil: '0',
-      efilInterest: '0',
-      fdInterest: '0',
+      cfil: '0',
+      cfilInterest: '0',
+      crfiInterest: '0',
       watlletCRFI: '0',
-      watlletefil: '0',
+      watlletcfil: '0',
     },
     userInfo: {
       id: '0',
       admin: false,
-      fd: '0',
-      efil: '0',
-      efilInterest: '0',
-      fdInterest: '0',
+      crfi: '0',
+      cfil: '0',
+      cfilInterest: '0',
+      crfiInterest: '0',
     },
     userList: [],
     userDemandList: [],
     demandFD: [],
     demandEFil: [],
-    fdList: [],
+    crfiList: [],
     eFilList: [],
   },
   getters: {
-    efilWithdrawable: state => {
+    cfilWithdrawable: state => {
       let number = 0
       let now = parseInt(new Date().getTime() / 1000)
       state.userList.forEach(e => {
@@ -98,7 +98,7 @@ export default new Vuex.Store({
       })
       return parseFloat(number).toFixed(2)
     },
-    fdWithdrawable: state => {
+    crfiWithdrawable: state => {
       let number = 0
       let now = parseInt(new Date().getTime() / 1000)
       state.userList.forEach(e => {
@@ -119,7 +119,7 @@ export default new Vuex.Store({
       })
       return parseFloat(number).toFixed(2)
     },
-    efilTotal: state => {
+    cfilTotal: state => {
       let number = 0
 
       state.userList.forEach(e => {
@@ -138,7 +138,7 @@ export default new Vuex.Store({
       })
       return parseFloat(number).toFixed(2)
     },
-    fdTotal: state => {
+    crfiTotal: state => {
       let number = 0
       state.userList.forEach(e => {
         let { Amount, Type, EFilInterestRate, FDInterestRate } = e
@@ -178,10 +178,11 @@ export default new Vuex.Store({
       state.balance = data
     },
     setFdList(state, data) {
-      state.fdList = data
+      state.crfiList = data
     },
     setEFilList(state, data) {
       state.eFilList = data
+      console.log('dfdlfkd', data)
     },
     setDemandFD(state, data) {
       state.demandFD = [data]
@@ -313,8 +314,8 @@ export default new Vuex.Store({
       // 获取汇率
       value = new BigNumber(utils.toWei(value.toString() || 0))
       let res = await eFileContract.callContract('burnEFilRateCRFI', [])
-      let fdValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
-      return fdValue.toString()
+      let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
+      return crfiValue.toString()
     },
     // 回购
     async Repurchase({ state, commit, dispatch }, data) {
@@ -327,21 +328,21 @@ export default new Vuex.Store({
         Toast(i18n.t('minNumberToast'))
         return
       }
-      let balanceEFil = new BigNumber(state.balance.watlletefil)
+      let balanceEFil = new BigNumber(state.balance.watlletcfil)
       let balanceCRFI = new BigNumber(state.balance.watlletCRFI)
       value = new BigNumber(utils.toWei(value.toString() || 0))
       // 获取汇率
       let res = await eFileContract.callContract('burnEFilRateCRFI', [])
       let rate = utils.fromWei(res)
-      let fdValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
-      console.log('balance', fdValue.toString())
-      console.log(123, fdValue, utils.fromWei(fdValue.toString()))
-      // if (balanceCRFI.comparedTo(fdValue) == -1) {
+      let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
+      console.log('balance', crfiValue.toString())
+      console.log(123, crfiValue, utils.fromWei(crfiValue.toString()))
+      // if (balanceCRFI.comparedTo(crfiValue) == -1) {
       //   Toast(i18n.t('balanceToast'))
       //   return
       // }
 
-      // let fdValue = value.times(new BigNumber(utils.fromWei(res)))
+      // let crfiValue = value.times(new BigNumber(utils.fromWei(res)))
       if (balanceEFil.comparedTo(value) == -1) {
         Toast(i18n.t('balanceToast'))
         return
@@ -351,17 +352,17 @@ export default new Vuex.Store({
         return
       }
       let betys1 = utils.utf8ToHex(fileCoin)
-      let betys = fdContract.web3.eth.abi.encodeParameters(
+      let betys = crfiContract.web3.eth.abi.encodeParameters(
         ['string'],
         [fileCoin],
       )
-      // 调用fd send
+      // 调用crfi send
       try {
-        await fdContract.executeContract(
+        await crfiContract.executeContract(
           'send',
           [
             '0x1ccbf9217c06a641e88059578b5bf984e21f11ff',
-            fdValue.toString(),
+            crfiValue.toString(),
             betys1,
           ],
           state.userAddress,
@@ -384,13 +385,13 @@ export default new Vuex.Store({
     },
     // 修改利率
     async ChangePackageRate({ state, commit, dispatch }, data) {
-      let { ID, fd, efil } = data
-      fd = utils.toWei(fd.toString()) / 100
-      efil = utils.toWei(efil.toString()) / 100
+      let { ID, crfi, cfil } = data
+      crfi = utils.toWei(crfi.toString()) / 100
+      cfil = utils.toWei(cfil.toString()) / 100
       try {
         await corsslend.executeContract(
           'ChangePackageRate',
-          [ID, fd.toString(), efil.toString()],
+          [ID, crfi.toString(), cfil.toString()],
           state.userAddress,
         )
         dispatch('initData')
@@ -399,13 +400,13 @@ export default new Vuex.Store({
     // 修改活期利率
     //
     async ChangeDemandRate({ state, commit, dispatch }, data) {
-      let { ID, fd, efil } = data
-      fd = utils.toWei(fd.toString()) / 100
-      efil = utils.toWei(efil.toString()) / 100
+      let { ID, crfi, cfil } = data
+      crfi = utils.toWei(crfi.toString()) / 100
+      cfil = utils.toWei(cfil.toString()) / 100
       try {
         await corsslend.executeContract(
           'ChangeDemandRate',
-          [ID, fd.toString(), efil.toString()],
+          [ID, crfi.toString(), cfil.toString()],
           state.userAddress,
         )
         dispatch('initData')
@@ -429,7 +430,7 @@ export default new Vuex.Store({
     // 管理员充值
     async charge({ state, commit, dispatch }, data) {
       let { value } = data
-      let betys = fdContract.web3.eth.abi.encodeParameters(
+      let betys = crfiContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [2, 0, '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87'],
       )
@@ -445,13 +446,13 @@ export default new Vuex.Store({
     },
     async chargeCRFI({ state, commit, dispatch }, data) {
       let { value } = data
-      let betys = fdContract.web3.eth.abi.encodeParameters(
+      let betys = crfiContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [3, 0, '0x97b19d507f9acce9ae4c1d3af4c5393d11698b87'],
       )
       value = utils.toWei(value)
       try {
-        await fdContract.executeContract(
+        await crfiContract.executeContract(
           'send',
           [corsslendAddress, value, betys],
           state.userAddress,
@@ -463,16 +464,16 @@ export default new Vuex.Store({
     async buyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
 
-      let isAddress = fdContract.web3.utils.isAddress(inviteValue)
+      let isAddress = crfiContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
-      let betys = fdContract.web3.eth.abi.encodeParameters(
+      let betys = crfiContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
       )
       value = utils.toWei(value)
-      let contract = Type == 0 ? fdContract : eFileContract
+      let contract = Type == 0 ? crfiContract : eFileContract
 
       try {
         await contract.executeContract(
@@ -486,18 +487,18 @@ export default new Vuex.Store({
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
-      let isAddress = fdContract.web3.utils.isAddress(inviteValue)
+      let isAddress = crfiContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
-      let betys = fdContract.web3.eth.abi.encodeParameters(
+      let betys = crfiContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
         [1, parseInt(Type), invite],
       )
       // 0x97b19d507f9acce9ae4c1d3af4c5393d11698b87
 
       value = utils.toWei(value)
-      let contract = Type == 0 ? fdContract : eFileContract
+      let contract = Type == 0 ? crfiContract : eFileContract
       try {
         await contract.executeContract(
           'send',
@@ -510,66 +511,67 @@ export default new Vuex.Store({
     async initData({ state, commit }) {
       let address = state.userAddress
       let systemInfo = await corsslend.callContract('GetSystemInfo', [])
-
-      let { affRate, efilInterestPool, fdInterestPool } = systemInfo
+      let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
       commit('setSystemInfo', {
         affRate,
-        fdInterestPool,
-        efilInterestPool,
+        crfiInterestPool,
+        cfilInterestPool,
       })
       let res = await corsslend.callContract('GetInvestInfo', [0, address])
+
       let {
         id,
         admin,
-        fd,
-        efil,
-        efilInterest,
-        efilDemandInterest,
-        fdInterest,
-        fdDemandInterest,
+        crfi,
+        cfil,
+        cfilInterest,
+        cfilDemandInterest,
+        crfiInterest,
+        crfiDemandInterest,
         totalAffFD,
       } = res
       commit('setUserInfo', {
         id,
         admin,
-        fd,
-        efil,
-        efilInterest,
-        fdDemandInterest,
-        efilDemandInterest,
-        fdInterest,
+        crfi,
+        cfil,
+        cfilInterest,
+        crfiDemandInterest,
+        cfilDemandInterest,
+        crfiInterest,
         totalAffFD,
       })
       // if (admin) {
       //   router.replace('/admin')
       // }
       // 获取余额
-      // TODO: //efilInterestPoo
-      let watlletCRFI = await fdContract.callContract('balanceOf', [address])
-      let watlletefil = await eFileContract.callContract('balanceOf', [address])
+      // TODO: //cfilInterestPoo
+      let watlletCRFI = await crfiContract.callContract('balanceOf', [address])
+      let watlletcfil = await eFileContract.callContract('balanceOf', [address])
       let BN = utils.BN
-      let totalEfil = new BN(efilDemandInterest).add(new BN(efilInterest))
-      let totalFD = new BN(fdDemandInterest).add(new BN(fdInterest))
+      let totalEfil = new BN(cfilDemandInterest).add(new BN(cfilInterest))
+      let totalFD = new BN(crfiDemandInterest).add(new BN(crfiInterest))
       commit('setBalance', {
         admin,
-        fd,
+        crfi,
         totalFD,
-        efil,
+        cfil,
         totalEfil,
         watlletCRFI,
-        watlletefil,
-        efilInterest,
-        fdInterest,
+        watlletcfil,
+        cfilInterest,
+        crfiInterest,
         totalAffFD,
       })
 
       // 获取列表
       let list = await corsslend.callContract('GetPackages', [])
-      let { demandEFil, demandFD, financialPackages } = list
+      let { demandCRFI, demandCFil, financialPackages } = list
       let list1 = await corsslend.callContract('GetInvestRecords', [address])
+      console.log('debug', list1)
       let records = list1.records
-      let fdList = []
-      let efilList = []
+      let crfiList = []
+      let cfilList = []
       financialPackages.forEach((element, index) => {
         let { Type, ID } = element
         let deposited = new BN(0)
@@ -580,54 +582,54 @@ export default new Vuex.Store({
         }
 
         if (Type == 0) {
-          fdList.push({
+          crfiList.push({
             ...element,
             deposited: deposited,
           })
         } else {
-          efilList.push({
+          cfilList.push({
             ...element,
             deposited: deposited,
           })
         }
       })
-      fdList.unshift({
-        ...demandFD,
-        deposited: list1.demandFD.Amount,
+      crfiList.unshift({
+        ...demandCRFI,
+        deposited: list1.demandCRFI.Amount,
       })
-      efilList.unshift({
-        ...demandEFil,
-        deposited: list1.demandEFil.Amount,
+      cfilList.unshift({
+        ...demandCFil,
+        deposited: list1.demandCFil.Amount,
       })
-
-      commit('setFdList', fdList)
-      commit('setEFilList', efilList)
+      console.log('eFilList', cfilList)
+      commit('setFdList', crfiList)
+      commit('setEFilList', cfilList)
       commit('setDemandFD', {
-        ...demandFD,
+        ...demandCRFI,
       })
 
       let FDInterestRate =
-        demandFD.NewFDInterestRate == 0
-          ? demandFD.FDInterestRate
-          : demandFD.NewFDInterestRate
+        demandCRFI.NewFDInterestRate == 0
+          ? demandCRFI.FDInterestRate
+          : demandCRFI.NewFDInterestRate
 
       let EFilInterestRate =
-        demandFD.NewEFilInterestRate == 0
-          ? demandFD.EFilInterestRate
-          : demandFD.NewEFilInterestRate
+        demandCRFI.NewEFilInterestRate == 0
+          ? demandCRFI.EFilInterestRate
+          : demandCRFI.NewEFilInterestRate
 
       let FDInterestRate1 =
-        demandEFil.NewFDInterestRate == 0
-          ? demandEFil.FDInterestRate
-          : demandEFil.NewFDInterestRate
+        demandCFil.NewFDInterestRate == 0
+          ? demandCFil.FDInterestRate
+          : demandCFil.NewFDInterestRate
 
       let EFilInterestRate1 =
-        demandEFil.NewEFilInterestRate == 0
-          ? demandEFil.EFilInterestRate
-          : demandEFil.NewEFilInterestRate
+        demandCFil.NewEFilInterestRate == 0
+          ? demandCFil.EFilInterestRate
+          : demandCFil.NewEFilInterestRate
 
       commit('setDemandEFil', {
-        ...demandEFil,
+        ...demandCFil,
       })
       commit('setUserList', list1.records)
       commit('setUserDemandList', [

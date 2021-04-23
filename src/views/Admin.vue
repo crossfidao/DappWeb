@@ -23,7 +23,7 @@
       <div class="charge-title">
         <span>
           {{ $t('charge') }} cFil {{ $t('interestPool') }}
-          {{ systemInfo.efilInterestPool | decimals }}</span
+          {{ systemInfo.cfilInterestPool | decimals }}</span
         >
       </div>
       <div class="charge">
@@ -41,7 +41,7 @@
       <div class="charge-title">
         <span>
           {{ $t('charge') }} CRFI {{ $t('interestPool') }}
-          {{ systemInfo.fdInterestPool | decimals }}</span
+          {{ systemInfo.crfiInterestPool | decimals }}</span
         >
       </div>
       <div class="charge">
@@ -57,7 +57,7 @@
       </div>
       <div class="items">
         <h4 class="title">CRFI {{ $t('investment') }}</h4>
-        <div class="item" v-for="item in fdList" :key="item.date">
+        <div class="item" v-for="item in crfiList" :key="item.date">
           <div class="date">
             {{ item.Days || $t('current') }}
 
@@ -73,7 +73,7 @@
             <div class="price">
               <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
               <span class="price-text" v-if="!item.show">
-                {{ item.FDInterestRate }}
+                {{ item.CRFIInterestRate }}
               </span>
 
               <span>%</span>
@@ -115,7 +115,7 @@
             <div class="price">
               <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
               <span class="price-text" v-if="!item.show">
-                {{ item.FDInterestRate }}
+                {{ item.CRFIInterestRate }}
               </span>
 
               <span>%</span>
@@ -156,7 +156,7 @@
             class="field"
             center
             clearable
-            v-model="efil"
+            v-model="cfil"
             placeholder="请填写cFil利率（%）"
           />
         </div>
@@ -188,7 +188,7 @@ export default {
       affRate: '0',
       curItem: null,
       CRFL: '',
-      efil: '',
+      cfil: '',
       value: '',
       CRFIValue: '',
     }
@@ -199,27 +199,28 @@ export default {
     },
     eFilList() {
       let list = this.$store.state.eFilList
+      console.log('list', list)
       let tmp = []
       list.forEach(element => {
         // element.show = false
         let {
           Days,
-          EFilInterestRate,
-          FDInterestRate,
+          CFilInterestRate,
+          CRFIInterestRate,
           ID,
           Type,
           deleteFlag,
         } = element
 
-        EFilInterestRate = EFilInterestRate * 100
-        EFilInterestRate = utils.fromWei(EFilInterestRate.toString())
+        CFilInterestRate = CFilInterestRate * 100
+        CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
 
-        FDInterestRate = FDInterestRate * 100
-        FDInterestRate = utils.fromWei(FDInterestRate.toString())
+        CRFIInterestRate = CRFIInterestRate * 100
+        CRFIInterestRate = utils.fromWei(CRFIInterestRate.toString())
         tmp.push({
           Days,
-          EFilInterestRate,
-          FDInterestRate,
+          CFilInterestRate,
+          CRFIInterestRate,
           ID,
           Type,
           deleteFlag,
@@ -228,28 +229,29 @@ export default {
 
       return tmp
     },
-    fdList() {
-      let list = this.$store.state.fdList
+    crfiList() {
+      let list = this.$store.state.crfiList
+
       let tmp = []
       list.forEach(element => {
         // element.show = false
         let {
           Days,
-          EFilInterestRate,
-          FDInterestRate,
+          CFilInterestRate,
+          CRFIInterestRate,
           ID,
           Type,
           deleteFlag,
         } = element
-        EFilInterestRate = EFilInterestRate * 100
-        EFilInterestRate = utils.fromWei(EFilInterestRate.toString())
+        CFilInterestRate = CFilInterestRate * 100
+        CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
 
-        FDInterestRate = FDInterestRate * 100
-        FDInterestRate = utils.fromWei(FDInterestRate.toString())
+        CRFIInterestRate = CRFIInterestRate * 100
+        CRFIInterestRate = utils.fromWei(CRFIInterestRate.toString())
         tmp.push({
           Days,
-          EFilInterestRate,
-          FDInterestRate,
+          CFilInterestRate,
+          CRFIInterestRate,
           ID,
           Type,
           deleteFlag,
@@ -281,9 +283,13 @@ export default {
     },
     handleEdit(item) {
       this.curItem = item
-      let { Days = undefined, EFilInterestRate, FDInterestRate } = this.curItem
-      this.CRFL = FDInterestRate
-      this.efil = EFilInterestRate
+      let {
+        Days = undefined,
+        EFilInterestRate,
+        CRFIInterestRate,
+      } = this.curItem
+      this.CRFL = CRFIInterestRate
+      this.cfil = EFilInterestRate
       this.isDemand = !Days
       this.curItem = item
       this.showMask = true
@@ -311,13 +317,13 @@ export default {
       let { Type } = this.curItem
       this.ChangeDemandRate({
         ID: Type,
-        fd: this.CRFL,
-        efil: this.efil,
+        crfi: this.CRFL,
+        cfil: this.cfil,
       })
       this.showMask = false
     },
     handleChangeRate() {
-      let { ID, EFilInterestRate, FDInterestRate } = this.curItem
+      let { ID, EFilInterestRate, CRFIInterestRate } = this.curItem
 
       if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
         this.$toast('请填写0-100的数字')
@@ -325,8 +331,8 @@ export default {
       }
       this.ChangePackageRate({
         ID,
-        fd: this.CRFL,
-        efil: this.efil,
+        crfi: this.CRFL,
+        cfil: this.cfil,
       })
       this.showMask = false
     },
