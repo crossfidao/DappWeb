@@ -1,5 +1,29 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
+  // menubar
+  dashboard: 'Dashboard',
+  cFILInvest: 'cFIL Invest',
+  CRFIInvest: 'CRFI Invest',
+  wallet: 'Wallet', // ? 保留关键字
+  aaa: 'Wallet',
+
+  // home
+  filStatistics: 'FIL Statistics',
+  crfiStatistics: 'CRFI Statistics',
+  fileCoinDepositTotal: 'Filecoin Deposit Total',
+
+  // CFIL
+  cFILInvestment: 'cFIL Investment',
+  totalDeposit: 'Total Deposit',
+
+  // Wallet
+  walletBalance: 'Wallet Balance',
+  balance: 'Balance',
+  swap: 'SWAP',
+  stake: 'Stake',
+  myPositions: 'My Positions',
+  profit: 'Profit',
+
   // base
   assets: 'assets',
   cancel: 'cancel',
@@ -20,7 +44,6 @@ const cn = {
     'get rewarded by inviting the others to invest on cFil with your promo code',
   exchangeDesc:
     'Filecoin transfered to this address will be automatically redeemed to cFil in 1:1 ratio',
-  wallet: 'wallet',
   contract: 'contract',
   repurchase: 'repurchase',
   withdraw: 'withdraw',

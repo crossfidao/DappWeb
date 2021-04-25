@@ -7,6 +7,32 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'Layout',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/Layout.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Home',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/v2/Home.vue'),
+      },
+      {
+        path: 'CFIL',
+        name: 'CFIL',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/v2/CFIL.vue'),
+      },
+      {
+        path: 'wallet',
+        name: 'Wallet',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/v2/Wallet.vue'),
+      },
+    ],
+  },
+  {
+    path: '/home',
     name: 'Home',
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/Home.vue'),
