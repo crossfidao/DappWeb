@@ -7,6 +7,13 @@ const cn = {
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
 
+  // Header
+  staking: 'Staking',
+  aboutCrossFi: 'About CrossFi',
+  auditReport: 'Audit Report',
+  supportCenter: 'Support Center',
+  referralRewards: 'Referral Rewards',
+
   // home
   filStatistics: 'FIL Statistics',
   crfiStatistics: 'CRFI Statistics',

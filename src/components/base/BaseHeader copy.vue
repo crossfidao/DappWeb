@@ -7,47 +7,34 @@
       </router-link>
       <span v-show="showLoading">pending</span>
       <div class="right">
-        <!-- <span class="header-user-btn" @click="ethereum">
+        <span class="header-user-btn" @click="ethereum">
           {{ !userAddress ? $t('connect') : '已连接' }}
         </span>
         <span class="header-user-btn" @click="handleApp">
           {{ $t('application') }}
-        </span> -->
-        <van-icon name="wap-nav" size="28" @click="showpop = true" />
+        </span>
+        <van-icon class="icon" @click="showpop = true" name="weapp-nav" />
       </div>
     </div>
+    <div class="header-top">
+      {{ $t(title) }}
+    </div>
+    <div class="header-address">
+      <slot></slot>
+    </div>
     <van-popup
-      :overlay="false"
-      closeable
-      close-icon="wap-nav"
+      round
       overlay-class="dfkdslfdl"
-      overlay-style="background: red"
       v-model="showpop"
       position="right"
-      :style="{ height: '100%', width: '273px' }"
+      :style="{ height: '100%', width: '162px' }"
     >
       <div class="pop">
         <div class="pop-menu">
-          <div class="pop-menu-item">
-            <van-icon name="arrow-left" />
-            <span class="text">{{ $t('staking') }}</span>
-          </div>
-          <div class="pop-menu-item">
-            <van-icon name="arrow-left" />
-            <span class="text">{{ $t('aboutCrossFi') }}</span>
-          </div>
-          <div class="pop-menu-item">
-            <van-icon name="arrow-left" />
-            <span class="text">{{ $t('auditReport') }}</span>
-          </div>
-          <div class="pop-menu-item">
-            <van-icon name="arrow-left" />
-            <span class="text">{{ $t('supportCenter') }}</span>
-          </div>
-          <div class="pop-menu-item">
-            <van-icon name="arrow-left" />
-            <span class="text">{{ $t('referralRewards') }}</span>
-          </div>
+          <div class="pop-menu-item">{{ $t('description') }}</div>
+          <div class="pop-menu-item">{{ $t('link') }}</div>
+          <div class="pop-menu-item">{{ $t('safe') }}</div>
+          <div class="pop-menu-item">{{ $t('borrow') }}</div>
         </div>
 
         <div class="lang">
@@ -219,11 +206,6 @@ export default {
   }
 }
 
-/deep/ .van-popup {
-  background: #1f8aff;
-  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  color: #fff;
-}
 .pop {
   height: 100%;
   display: flex;
@@ -233,30 +215,22 @@ export default {
     padding-top: 120px;
     text-align: left;
     &-item {
-      display: flex;
-      align-items: center;
-      width: 227px;
-      height: 36px;
-
-      background: #2c3446;
-      margin: 0 auto 20px;
-      border-radius: 10px;
-      padding: 0 20px;
-      font-size: 15px;
-      font-family: Montserrat;
-      font-weight: 400;
-      line-height: 19px;
-      color: #ffffff;
-      opacity: 1;
-      .text {
-        margin-left: 20px;
-      }
+      width: 100px;
+      height: 46px;
+      line-height: 46px;
+      margin: 0 auto 0px;
+      font-size: 16px;
+      font-family: PingFangSC-Medium, PingFang SC;
+      font-weight: 500;
+      color: #45b6c3;
+      border-bottom: 2px solid #45b6c3;
     }
   }
   .lang {
     font-size: 12px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
+    color: #45b6c3;
     &-item {
       margin-bottom: 24px;
     }
