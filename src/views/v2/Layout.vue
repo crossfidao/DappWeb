@@ -27,6 +27,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: #2c3546;
   .content {
     flex: 1;
     overflow: auto;

@@ -24,6 +24,12 @@ const routes = [
           import(/* webpackChunkName: "about" */ '../views/v2/CFIL.vue'),
       },
       {
+        path: 'CRFI',
+        name: 'CRFI',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/v2/CRFI.vue'),
+      },
+      {
         path: 'wallet',
         name: 'Wallet',
         component: () =>

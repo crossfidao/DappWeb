@@ -1,16 +1,18 @@
 <template>
-  <div class="footer">
-    <router-link
-      tag="div"
-      :to="item.path"
-      class="item"
-      v-for="item in tabs"
-      :key="item.name"
-    >
-      <!-- <i class="icon">icon</i> -->
-      <van-icon name="chat-o" size="18" />
-      <p class="item-name">{{ $t(item.name) }}</p>
-    </router-link>
+  <div class="box">
+    <div class="footer">
+      <router-link
+        tag="div"
+        :to="item.path"
+        class="item"
+        v-for="item in tabs"
+        :key="item.name"
+      >
+        <i class="icon" :class="item.icon"></i>
+        <!-- <van-icon name="chat-o" size="18" /> -->
+        <p class="item-name">{{ $t(item.name) }}</p>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -30,14 +32,17 @@ export default {
         {
           name: 'dashboard',
           path: '/',
+          icon: 'dashboard',
         },
         {
           name: 'cFILInvest',
           path: '/CFIL',
+          icon: 'cFIL',
         },
         {
           name: 'CRFIInvest',
-          path: '/cfri',
+          path: '/CRFI',
+          icon: 'CRFI',
         },
         {
           name: 'aaa',
@@ -50,11 +55,18 @@ export default {
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData']),
+    getStyle(item) {
+      return `background: url('../../assets/icon/${item.icon}.png') no-repeat`
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.box {
+  background: transparent;
+  padding-top: 12px;
+}
 .footer {
   width: 375px;
   height: 91px;
@@ -70,11 +82,12 @@ export default {
   font-family: Segoe UI;
   color: #999999;
   // letter-spacing: 10px;
-  opacity: 1;
 
   .item {
     display: flex;
+
     flex-direction: column;
+    align-items: center;
     justify-content: center;
     width: 64px;
     height: 64px;
@@ -82,13 +95,33 @@ export default {
     &-name {
       margin-top: 8px;
     }
+    .icon {
+      width: 18px;
+      height: 18px;
+      background-size: cover;
+    }
+    .cFIL {
+      background-image: url('../../assets/icon/cFIL.png');
+    }
+    .CRFI {
+      background-image: url('../../assets/icon/CRFI.png');
+    }
   }
 }
 
 .router-link-exact-active {
+  position: relative;
+  z-index: 99;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   background: #2786ff;
   margin-bottom: 40px;
   color: #fff;
+  .icon {
+    width: 26px !important;
+    height: 26px !important;
+  }
+  .cFIL {
+    background-image: url('../../assets/icon/cFIL-active.png') !important;
+  }
 }
 </style>

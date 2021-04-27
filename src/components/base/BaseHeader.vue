@@ -150,13 +150,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home {
-  background: #eee;
-  height: 100%;
-}
 .header {
   position: relative;
-  background: linear-gradient(180deg, #63c2cd 0%, #25aab9 100%);
+  background: transparent;
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
   padding-bottom: 21px;
@@ -208,7 +204,6 @@ export default {
     right: 28px;
     // left: 58px;
     // right: 58px;
-    background: #fff;
     border-radius: 16px;
     // padding-bottom: 12px;
     color: #808080;
