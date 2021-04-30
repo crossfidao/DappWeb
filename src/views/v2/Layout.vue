@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <BaseHeader />
     <router-view class="content" />
     <BaseFooter></BaseFooter>
   </div>

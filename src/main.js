@@ -10,6 +10,7 @@ import '@/plugin/filter.js'
 Vue.config.productionTip = false
 import '@/components/index'
 
+import 'normalize.css'
 import 'amfe-flexible'
 import './assets/scss/common.scss'
 import Vant from 'vant'

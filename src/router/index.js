@@ -38,6 +38,30 @@ const routes = [
     ],
   },
   {
+    path: '/staking',
+    name: 'Staking',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/Staking.vue'),
+  },
+  {
+    path: '/staking1',
+    name: 'Staking1',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/Staking1.vue'),
+  },
+  {
+    path: '/reward',
+    name: 'Reward',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/Reward.vue'),
+  },
+  {
+    path: '/swap',
+    name: 'Swap',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/Swap.vue'),
+  },
+  {
     path: '/home',
     name: 'Home',
     component: () =>

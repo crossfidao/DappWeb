@@ -1,9 +1,9 @@
 <template>
-  <div class="header">
+  <div class="header" :style="'background:' + color">
     <div class="header-user">
       <router-link to="/" tag="div" class="logo">
         <img src="../../assets/images/logo.png" alt="" class="title-logo" />
-        <span>{{ address }}</span>
+        <!-- <span>{{ address }}</span> -->
       </router-link>
       <span v-show="showLoading">pending</span>
       <div class="right">
@@ -83,6 +83,10 @@ import { mapActions, mapMutations } from 'vuex'
 export default {
   name: 'BaseHeader',
   props: {
+    color: {
+      type: String,
+      default: 'transparent',
+    },
     title: {
       type: String,
       default: 'depositCoins',
@@ -155,21 +159,21 @@ export default {
   background: transparent;
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
-  padding-bottom: 21px;
+  // padding-bottom: 21px;
   font-size: 10px;
   &-user {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px;
+    padding: 16px;
     color: #fff;
     .logo {
       display: flex;
       align-items: center;
     }
     .title-logo {
-      width: 34px;
-      height: 30px;
+      width: 42px;
+      height: 42px;
       margin-right: 10px;
     }
     .right {

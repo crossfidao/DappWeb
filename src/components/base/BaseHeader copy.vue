@@ -148,31 +148,31 @@ export default {
   border-bottom-right-radius: 32px;
   padding-bottom: 21px;
   font-size: 10px;
-  &-user {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px;
-    color: #fff;
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-    .title-logo {
-      width: 34px;
-      height: 30px;
-      margin-right: 10px;
-    }
-    .right {
-      display: flex;
-      align-items: center;
-    }
-    &-btn {
-      // border: 1px solid #ccc;
-      padding-right: 12px;
-      border-radius: 20px;
-    }
-  }
+  // &-user {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   padding: 32px;
+  //   color: #fff;
+  //   .logo {
+  //     display: flex;
+  //     align-items: center;
+  //   }
+  //   .title-logo {
+  //     width: 64px;
+  //     height: 64px;
+  //     margin-right: 10px;
+  //   }
+  //   .right {
+  //     display: flex;
+  //     align-items: center;
+  //   }
+  //   &-btn {
+  //     // border: 1px solid #ccc;
+  //     padding-right: 12px;
+  //     border-radius: 20px;
+  //   }
+  // }
   &-top {
     position: relative;
     // padding-top: 24px;

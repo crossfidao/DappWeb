@@ -22,6 +22,9 @@ const cn = {
   // CFIL
   cFILInvestment: 'cFIL Investment',
   totalDeposit: 'Total Deposit',
+  purchase: 'Purchase',
+  purchaseAmount: 'Purchase Amount',
+  day: 'Day',
 
   // Wallet
   walletBalance: 'Wallet Balance',
@@ -30,6 +33,41 @@ const cn = {
   stake: 'Stake',
   myPositions: 'My Positions',
   profit: 'Profit',
+
+  // stake
+  stake: 'Stake',
+  staking: 'Staking',
+  sFILAssets: 'sFIL Assets',
+  pledge: 'Pledge',
+  borrow: 'Borrow',
+  loanApy: 'Loan APY',
+  paymentDue: 'Payment Due',
+  pledgeRate: 'Pledge Rate',
+  repay: 'Repay',
+  market: 'Market',
+  totalsFIL: 'Total sFIL',
+  totalHashrate: 'Total Hashrate',
+  cFILLoan: 'cFIL Loan',
+  stakePlaceholder: 'Please input the loan amount',
+  max: 'MAX',
+  availableMarket: 'Available Market',
+  confirm: 'Confirm',
+  totalIssue: 'Total Issue',
+  name: 'Name',
+  email: 'Email',
+  company: 'Company',
+  nodeNumber: 'Node Number',
+
+  // rewards
+  referralRewards: 'Referral Rewards',
+  claim: 'Claim',
+  claimedRewards: 'Claimed Rewards',
+
+  // swap
+  filSwap: 'FIL SWAP',
+  copy: 'Copy',
+  swapPlaceholder: 'Please input the amount',
+  addressPlaceholder: 'Please input your filecoin address',
 
   // base
   assets: 'assets',

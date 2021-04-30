@@ -1,10 +1,11 @@
 <template>
   <div class="container">
+    <BaseHeader />
     <h4 class="title">{{ $t('walletBalance') }}</h4>
     <div class="content">
       <div class="balance-item bg1">
         <div class="balance-item-left">
-          <p class="logo">logo</p>
+          <p class="icon cFIL"></p>
           <p>cFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
@@ -13,7 +14,7 @@
       </div>
       <div class="balance-item bg2">
         <div class="balance-item-left">
-          <p class="logo">logo</p>
+          <p class="icon CRFI"></p>
           <p>cFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
@@ -21,12 +22,14 @@
       </div>
       <div class="balance-item bg3">
         <div class="balance-item-left">
-          <p class="logo">logo</p>
+          <p class="icon CRFI"></p>
           <p>cFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
         <p class="balance">99999999.999</p>
-        <p class="balance-item-btn">{{ $t('stake') }}</p>
+        <router-link tag="p" to="/staking" class="balance-item-btn">
+          {{ $t('stake') }}
+        </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
       <div class="item" v-for="item in 3" :key="item">
@@ -84,6 +87,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  color: #fff;
   .content {
     flex: 1;
   }
@@ -201,5 +205,19 @@ export default {
       opacity: 1;
     }
   }
+}
+
+.icon {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+}
+.cFIL {
+  background: url('../../assets/icon/cFIL-wallet.png') no-repeat;
+  background-size: cover;
+}
+.CRFI {
+  background: url('../../assets/icon/CRFI-wallet.png') no-repeat;
+  background-size: cover;
 }
 </style>
