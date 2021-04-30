@@ -74,6 +74,10 @@
           <span class="item-content">213213.232</span>
         </div>
         <div class="item">
+          <span class="item-label">{{ $t('newProfit') }}:</span>
+          <span class="item-content">213213.232</span>
+        </div>
+        <div class="item">
           <span class="item-label">{{ $t('paymentDue') }}:</span>
           <span class="item-content">213213.232</span>
         </div>
