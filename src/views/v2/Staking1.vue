@@ -18,7 +18,7 @@
             class="field"
             center
             clearable
-            v-model="value"
+            v-model="params.name"
             :placeholder="$t('purchaseAmount')"
           />
         </div>
@@ -28,7 +28,7 @@
             class="field"
             center
             clearable
-            v-model="value"
+            v-model="params.email"
             :placeholder="$t('purchaseAmount')"
           />
         </div>
@@ -38,7 +38,7 @@
             class="field"
             center
             clearable
-            v-model="value"
+            v-model="params.company"
             :placeholder="$t('purchaseAmount')"
           />
         </div>
@@ -48,12 +48,12 @@
             class="field"
             center
             clearable
-            v-model="value"
+            v-model="params.nodeNumber"
             :placeholder="$t('purchaseAmount')"
           />
         </div>
         <div class="item-btn">
-          <span class="btn">{{ $t('confirm') }}</span>
+          <span class="btn" @click="handleStaking">{{ $t('confirm') }}</span>
         </div>
       </div>
     </div>
@@ -67,6 +67,12 @@ export default {
     return {
       showMask: false,
       currentRate: 0,
+      params: {
+        name: '',
+        email: '',
+        company: '',
+        nodeNumber: '',
+      },
     }
   },
   computed: {
@@ -80,7 +86,10 @@ export default {
   async mounted() {},
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['initData', 'applyStaking']),
+    async handleStaking() {
+      await this.applyStaking(JSON.stringify(this.params))
+    },
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']

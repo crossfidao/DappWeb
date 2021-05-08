@@ -51,11 +51,12 @@ export default class Contract {
     try {
       return await this.contract.methods[methods](...args).call()
     } catch (e) {
+      console.log('error', e)
       Toast(e.message)
     }
   }
   async executeContract(methods, args, address) {
-    console.log(methods, args, store.state.showLoading)
+    console.log(methods, args, address)
     let isLoading = store.state.showLoading
     if (isLoading) {
       return false
@@ -78,6 +79,7 @@ export default class Contract {
           store.commit('setLoading', false)
           resolve()
         } catch (e) {
+          console.log(e)
           Toast(e)
           store.commit('setLoading', false)
           reject()

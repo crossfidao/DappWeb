@@ -2,30 +2,34 @@
   <div class="item" @click.capture="showMask = true" :style="getStyle(index)">
     <div class="item-title">
       <span>APY</span>
-      <span class="item-date">On Demand</span>
+      <span class="item-date">
+        {{ info.Days != 0 ? info.Days + ' ' + $t('day') : $t('onDemand') }}
+      </span>
     </div>
     <div class="item-rate">
       <span class="icon CRFI"></span>
-      <span>CRFI: 2.8%</span>
+      <span>CRFI: {{ info.CRFIInterestRate | rate }}%</span>
       <span>+</span>
       <span class="icon cFIL"></span>
-      <span>CFIL: 2.8%</span>
+      <span>CFIL: {{ info.CFilInterestRate | rate }}%</span>
     </div>
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
-      <p>1232323 cFIL</p>
+      <p>cFIL</p>
     </div>
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
         <h4 class="mask-title">{{ $t('purchase') }}</h4>
         <div class="mask-text">
-          <p>90 {{ $t('day') }}</p>
+          <p>
+            {{ info.Days != 0 ? info.Days + ' ' + $t('day') : 'On Demand' }}
+          </p>
           <div class="mask-rate">
             <span class="icon CRFI"></span>
-            <span>CRFI: {{ info.CRFIInterestRate }}%</span>
+            <span>CRFI: {{ info.CRFIInterestRate | rate }}%</span>
             <span> - </span>
             <span class="icon cFIL"></span>
-            <span>CFIL: {{ info.CFilInterestRate }}%</span>
+            <span>CFIL: {{ info.CFilInterestRate | rate }}%</span>
           </div>
         </div>
         <div class="mask-desc">
@@ -37,10 +41,9 @@
           </p>
           <p class="mask-desc-balance">
             {{
-              info.Type == 1
-                ? balance.watlletcfil
-                : balance.watlletCRFI | decimals
+              info.Type == 1 ? wallet.walletCFil : wallet.walletCRFI | decimals
             }}
+            <!--  -->
           </p>
         </div>
         <div class="form">
@@ -97,32 +100,48 @@ export default {
     }
   },
   computed: {
+    wallet() {
+      return this.$store.state.wallet
+    },
     balance() {
       return this.$store.state.balance
     },
   },
+  mounted() {
+    let invite = this.getQueryString('invite') || ''
+    this.inviteValue = invite
+  },
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData', 'buyCoin', 'demandBuyCoin']),
+    getQueryString(name) {
+      let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+      let r = window.location.search.substr(1).match(reg)
+      if (r != null) {
+        return decodeURIComponent(r[2])
+      }
+      return null
+    },
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
     },
     handleConfirm() {
+      console.log(this.info)
       if (!this.value) {
         this.$toast(this.$t('toast'))
         return
       }
-      if (this.isDemand) {
+      if (!this.info.ID) {
         this.demandBuyCoin({
-          ...this.curItem,
+          ...this.info,
           value: this.value,
           inviteValue: this.inviteValue,
         })
       } else {
         this.buyCoin({
-          ...this.curItem,
+          ...this.info,
           value: this.value,
           inviteValue: this.inviteValue,
         })

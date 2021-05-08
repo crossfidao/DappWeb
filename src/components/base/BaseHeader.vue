@@ -21,11 +21,11 @@
       closeable
       close-icon="wap-nav"
       overlay-class="dfkdslfdl"
-      overlay-style="background: red"
       v-model="showpop"
       position="right"
       :style="{ height: '100%', width: '273px' }"
     >
+      <!-- overlay-style="background: #000000" -->
       <div class="pop">
         <div class="pop-menu">
           <div class="pop-menu-item">

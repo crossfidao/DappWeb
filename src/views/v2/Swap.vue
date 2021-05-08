@@ -17,17 +17,32 @@
           </div>
         </div>
       </div>
-
-      <div class="qrcode-box">
-        <div id="qrcode" ref="qrcode" class="qrcode"></div>
-      </div>
-      <div class="copy">
-        <span class="copy-text">0xfdlkfjdlkfjdlksfjldksfjdlkfjldkfjdl</span>
-        <div class="copy-right">
-          <van-icon name="description" size="30" color="#A2A2A2" />
-          <p>{{ $t('copy') }}</p>
+      <template>
+        <h4
+          v-show="!FileAddr"
+          class="login-btn"
+          style="margin-bottom: 8px"
+          @click="handleLogin"
+        >
+          {{ $t('login') }}
+        </h4>
+      </template>
+      <template v-show="FileAddr">
+        <div class="qrcode-box">
+          <div id="qrcode" ref="qrcode" class="qrcode"></div>
         </div>
-      </div>
+        <div
+          class="tag-read copy"
+          :data-clipboard-text="FileAddr"
+          @click="copy"
+        >
+          <span class="copy-text">{{ userFileAddr }}</span>
+          <div class="copy-right">
+            <van-icon name="description" size="30" color="#A2A2A2" />
+            <p>{{ $t('copy') }}</p>
+          </div>
+        </div>
+      </template>
       <h4 class="title" style="margin-bottom: 12px">
         {{ $t('claimedRewards') }}
       </h4>
@@ -52,18 +67,18 @@
               v-model="value"
               :placeholder="$t('purchaseAmount')"
             />
-            <span class="max">{{ $t('max') }}</span>
+            <span class="max" @click="handleMax">{{ $t('max') }}</span>
           </div>
           <div class="form-item">
             <van-field
               class="field"
               center
               clearable
-              v-model="value"
-              :placeholder="$t('purchaseAmount')"
+              v-model="fileCoin"
+              :placeholder="$t('addressPlaceholder')"
             />
           </div>
-          <div class="form-btn">
+          <div class="form-btn" @click="handleRepurchase">
             {{ $t('confirm') }}
           </div>
         </div>
@@ -75,15 +90,24 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import QRCode from 'qrcodejs2'
+import Clipboard from 'clipboard'
 export default {
   data() {
     return {
+      isLogin: false,
       showMask: false,
       currentRate: 0,
       value: '',
+      fileCoin: '',
     }
   },
   computed: {
+    FileAddr() {
+      return this.$store.state.FilAddr
+    },
+    userFileAddr() {
+      return this.FileAddr.slice(0, 12) + '...' + this.FileAddr.slice(30, 41)
+    },
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -91,30 +115,67 @@ export default {
       return this.currentRate.toFixed(0) + '%'
     },
   },
+  watch: {
+    FileAddr() {
+      this.qrcode()
+    },
+  },
   async mounted() {
-    this.qrcode()
+    if (this.FileAddr) {
+      console.log('dfdlkfqrcode')
+      this.$nextTick(() => {
+        // this.qrcode()
+      })
+    }
   },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['login', 'Repurchase', 'RepurchaseMax']),
+    async handleMax() {
+      this.value = await this.RepurchaseMax()
+    },
+    // 回购
+    handleRepurchase() {
+      this.Repurchase({
+        value: this.value,
+        fileCoin: this.fileCoin,
+      })
+      this.value = ''
+      this.fileCoin = ''
+      this.showMask = false
+    },
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
     },
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        this.$toast(this.$t('copySucc'))
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
+    async handleLogin() {
+      await this.login()
+      this.qrcode()
+    },
     qrcode() {
       let qrcode = new QRCode('qrcode', {
         width: 120, // 设置宽度，单位像素
         height: 120, // 设置高度，单位像素
-        text: location.origin, // 设置二维码内容或跳转地址
+        text: this.FileAddr, // 设置二维码内容或跳转地址
         colorDark: '#000000',
         colorLight: '#ffffff',
         correctLevel: QRCode.CorrectLevel.H,
       })
-      setTimeout(() => {
-        this.htmlToCanvas()
-      }, 2000)
-      this.$nextTick(() => {})
     },
   },
 }
@@ -127,7 +188,7 @@ export default {
 .container {
   overflow: auto;
   height: 100%;
-  background: #414447;
+  background: #222;
   color: #fff;
   .content {
     padding-bottom: 24px;
@@ -158,6 +219,18 @@ export default {
   &-item {
     text-align: center;
   }
+}
+
+.login-btn {
+  width: 120px;
+  height: 32px;
+  line-height: 32px;
+  background: #18ced2;
+  margin: 12px auto 24px;
+  opacity: 1;
+  border-radius: 0.26667rem;
+  text-align: center;
+  font-size: 14px;
 }
 .qrcode-box {
   width: 138px;

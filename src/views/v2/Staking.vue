@@ -8,7 +8,7 @@
       <div class="items">
         <div class="item">
           <span class="item-label">{{ $t('sFILAssets') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ wallet.walletSFil | decimals }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('pledge') }}:</span>
@@ -34,25 +34,16 @@
           <span class="item-content">213213.232</span>
         </div>
         <div class="item-btn">
-          <span class="btn">{{ $t('borrow') }}</span>
-          <span class="btn">{{ $t('repay') }}</span>
+          <span class="btn" @click="handleBorrow">{{ $t('borrow') }}</span>
+          <span class="btn" @click="handleRepay">{{ $t('repay') }}</span>
         </div>
       </div>
 
       <div class="items">
         <h4 class="item-title">{{ $t('market') }}</h4>
-
         <div class="item">
           <span class="item-label">{{ $t('totalsFIL') }}:</span>
-          <span class="item-content">213213.232</span>
-        </div>
-        <div class="item">
-          <span class="item-label">{{ $t('totalHashrate') }}:</span>
-          <span class="item-content">213213.232</span>
-        </div>
-        <div class="item-btn">
-          <span class="btn">{{ $t('borrow') }}</span>
-          <span class="btn">{{ $t('repay') }}</span>
+          <span class="item-content">{{ totalSupply }}</span>
         </div>
       </div>
     </div>
@@ -92,6 +83,43 @@
         </div>
       </div>
     </van-overlay>
+    <!-- repay -->
+    <van-overlay
+      class="mask"
+      :show="showRepayMask"
+      @click.self="showRepayMask = false"
+    >
+      <div class="mask-content">
+        <h4 class="mask-title">{{ $t('cFILRepay') }}</h4>
+        <div class="form">
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="repayValue"
+            :placeholder="$t('purchaseAmount')"
+          />
+          <span class="max">{{ $t('max') }}</span>
+        </div>
+        <div class="item">
+          <span class="item-label">{{ $t('loanApy') }}:</span>
+          <span class="item-content">213213.232</span>
+        </div>
+        <div class="item">
+          <span class="item-label">{{ $t('pledgeRate') }}:</span>
+          <span class="item-content">213213.232</span>
+        </div>
+        <div class="item">
+          <span class="item-label">{{ $t('walletBalance') }}:</span>
+          <span class="item-content">213213.232</span>
+        </div>
+        <div class="footer">
+          <div class="footer-btn" @click="handleRepayConfirm">
+            {{ $t('confirm') }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -100,26 +128,47 @@ import { mapActions, mapMutations } from 'vuex'
 export default {
   data() {
     return {
-      showMask: true,
+      showMask: false,
+      showRepayMask: false,
       currentRate: 0,
+      value: '',
+      repayValue: '',
+      totalSupply: '',
     }
   },
   computed: {
-    showLoading() {
-      return this.$store.state.showLoading
-    },
-    text() {
-      return this.currentRate.toFixed(0) + '%'
+    wallet() {
+      return this.$store.state.wallet
     },
   },
-  async mounted() {},
+  async mounted() {
+    this.totalSupply = await this.getTotalSupply()
+  },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['init', 'stake', 'getTotalSupply']),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
+    },
+    handleBorrow() {
+      this.showMask = true
+    },
+    handleRepay() {
+      this.showRepayMask = true
+    },
+    handleConfirm() {
+      this.stake({
+        mode: 4,
+        value: this.value,
+      })
+    },
+    handleRepayConfirm() {
+      this.stake({
+        mode: 5,
+        value: this.repayValue,
+      })
     },
   },
 }
@@ -130,9 +179,7 @@ export default {
   z-index: 999;
 }
 .container {
-  display: flex;
-  flex-direction: column;
-  // height: 100%;
+  height: 100%;
   background: #414447;
   color: #fff;
   .content {

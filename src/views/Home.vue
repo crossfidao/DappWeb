@@ -8,7 +8,7 @@
         <h4 class="address" v-if="FileAddr" style="margin-bottom: 8px">
           {{ userFileAddr }}
         </h4>
-        <h4 class="copy" v-else style="margin-bottom: 8px" @click="login">
+        <h4 class="copy" v-else style="margin-bottom: 8px" @click="handleLogin">
           {{ $t('login') }}
         </h4>
         <div

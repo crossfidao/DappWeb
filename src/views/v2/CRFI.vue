@@ -4,8 +4,9 @@
     <h4 class="title">{{ $t('cFILInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
-        v-for="(item, index) in 5"
-        :key="item"
+        v-for="(item, index) in CRFIList"
+        :key="index"
+        :info="item"
         :style="getStyle(index)"
       />
     </div>
@@ -21,6 +22,11 @@ export default {
     }
   },
   computed: {
+    CRFIList() {
+      console.log('listsdsd', this.$store.state.CRFIList)
+      return this.$store.state.CRFIList
+    },
+
     showLoading() {
       return this.$store.state.showLoading
     },

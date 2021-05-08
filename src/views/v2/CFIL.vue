@@ -3,7 +3,12 @@
     <BaseHeader />
     <h4 class="title">{{ $t('cFILInvestment') }}</h4>
     <div class="content bg">
-      <BaseItem v-for="(item, index) in 5" :key="item" :index="index" />
+      <BaseItem
+        v-for="(item, index) in CFilList"
+        :info="item"
+        :key="index"
+        :index="index"
+      />
     </div>
   </div>
 </template>
@@ -17,6 +22,9 @@ export default {
     }
   },
   computed: {
+    CFilList() {
+      return this.$store.state.CFilList
+    },
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -27,7 +35,7 @@ export default {
   async mounted() {},
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['initData', 'buyCoin']),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']

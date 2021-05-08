@@ -27,7 +27,7 @@ export default {
     }
     ethereum.on('accountsChanged', accounts => {
       this.setUserAddress(accounts[0])
-      this.initData()
+      this.init()
       // Handle the new accounts, or lack thereof.
       // "accounts" will always be an array, but it can be empty.
     })
@@ -40,14 +40,15 @@ export default {
   },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['init']),
     async ethereum() {
       let accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
+      console.log('account', accounts)
       if (accounts.length > 0) {
         this.setUserAddress(accounts[0])
-        this.initData()
+        this.init()
       }
     },
   },

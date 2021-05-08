@@ -24,7 +24,7 @@ const cn = {
   totalDeposit: 'Total Deposit',
   purchase: 'Purchase',
   purchaseAmount: 'Purchase Amount',
-  day: 'Day',
+  day: 'Days',
 
   // Wallet
   walletBalance: 'Wallet Balance',
@@ -59,6 +59,10 @@ const cn = {
   company: 'Company',
   nodeNumber: 'Node Number',
 
+  cFILRepay: 'cFIL Repay',
+  myLoan: 'myLoan',
+  walletBalance: 'wallet Balance',
+
   // rewards
   referralRewards: 'Referral Rewards',
   claim: 'Claim',
@@ -67,6 +71,7 @@ const cn = {
   // swap
   filSwap: 'FIL SWAP',
   copy: 'Copy',
+  copySucc: 'Copy successfully',
   swapPlaceholder: 'Please input the amount',
   addressPlaceholder: 'Please input your filecoin address',
 
@@ -80,7 +85,6 @@ const cn = {
   depositCoins: 'deposit coins',
   selectUser: 'select User',
   selectLang: 'select Language',
-  copy: 'copy',
   copyText: 'copied',
 
   // home
@@ -124,6 +128,7 @@ const cn = {
   income: 'income',
   currentInvest: 'current invest',
   fast: 'fast',
+  onDemand: 'On Demand',
   expireDate: 'expire date',
 
   // admin

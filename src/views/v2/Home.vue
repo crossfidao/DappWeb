@@ -1,15 +1,16 @@
 <template>
   <div class="container">
+    <BaseHeader />
     <h4 class="title">{{ $t('dashboard') }}</h4>
-    <h4 class="title2">{{ $t('filStatistics') }}</h4>
+    <h4 class="title2">{{ $t('filStatistics') }}df</h4>
     <div class="circle" style="text-align: center">
       <van-circle
         fill="#222222"
-        layer-color="#1FCED2"
-        color="#5855F0"
+        layer-color="#5855F0"
+        color="#1FCED2"
         stroke-width="100"
         v-model="currentRate"
-        :rate="30"
+        :rate="rate"
         :speed="100"
         :text="text"
         stroke-linecap="butt"
@@ -21,11 +22,24 @@
     <div class="items">
       <div class="item">
         <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">3000</p>
+        <p class="item-text item-bottom">{{ systemInfo.nowInvestCRFI }}</p>
       </div>
       <div class="item">
         <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">3000</p>
+        <p class="item-text item-bottom">{{ systemInfo.cfilLendingTotal }}</p>
+      </div>
+    </div>
+    <h4 class="title2" style="margin-bottom: 20px">
+      {{ $t('crfiStatistics') }}
+    </h4>
+    <div class="items">
+      <div class="item">
+        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
+        <p class="item-text item-bottom">{{ systemInfo.nowInvestCRFI }}</p>
+      </div>
+      <div class="item">
+        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
+        <p class="item-text item-bottom">{{ systemInfo.cfilLendingTotal }}</p>
       </div>
     </div>
   </div>
@@ -33,6 +47,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import BigNumber from 'bignumber.js'
 export default {
   data() {
     return {
@@ -40,6 +55,21 @@ export default {
     }
   },
   computed: {
+    systemInfo() {
+      return this.$store.state.systemInfo
+    },
+
+    rate() {
+      let { cfilLendingTotal, nowInvestCRFI } = this.systemInfo
+      let rate = new BigNumber(nowInvestCRFI).div(
+        new BigNumber(cfilLendingTotal),
+      )
+      if (cfilLendingTotal == 0) {
+        return 0
+      }
+      console.log('rate', rate.toString())
+      return parseInt(rate.toString())
+    },
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -89,9 +119,10 @@ export default {
   margin-bottom: 23px;
 }
 /deep/ .van-circle__text {
-  color: #fff;
+  color: #73ffe9;
+  font-size: 20px;
+  font-weight: bold;
 }
-
 .items {
   display: flex;
   justify-content: space-around;

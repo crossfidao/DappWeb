@@ -9,47 +9,52 @@
           <p>cFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
-        <p class="balance">99999999.999</p>
-        <p class="balance-item-btn">{{ $t('swap') }}</p>
+        <p class="balance">{{ wallet.walletCFil | decimals }}</p>
+        <router-link tag="p" to="/swap" class="balance-item-btn">
+          {{ $t('swap') }}
+        </router-link>
       </div>
       <div class="balance-item bg2">
         <div class="balance-item-left">
           <p class="icon CRFI"></p>
-          <p>cFIL</p>
+          <p>CRFI</p>
           <p>{{ $t('balance') }}</p>
         </div>
-        <p class="balance">99999999.999</p>
+        <p class="balance">{{ wallet.walletCRFI | decimals }}</p>
       </div>
       <div class="balance-item bg3">
         <div class="balance-item-left">
           <p class="icon CRFI"></p>
-          <p>cFIL</p>
+          <p>sFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
-        <p class="balance">99999999.999</p>
+        <p class="balance">{{ wallet.walletSFil | decimals }}</p>
         <router-link tag="p" to="/staking" class="balance-item-btn">
           {{ $t('stake') }}
         </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
-      <div class="item" v-for="item in 3" :key="item">
+      <div class="item" v-for="item in userList" :key="item">
         <div class="item-left">
-          <p style="padding: 8px 0;">On Demand</p>
+          <p style="padding: 8px 0;">
+            {{ item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand') }}
+          </p>
           <p class="item-coin item-coin-c">CRFI</p>
         </div>
         <div class="item-right">
           <div class="item-rate">
-            CRFI: 0.5% + cFIL: 0.2%
+            CRFI: {{ item.CRFIInterestRate | rate }}% + cFIL:
+            {{ item.CFilInterestRate | rate }}%
           </div>
-          <p class="item-balance">9999999.000</p>
+          <p class="item-balance">{{ item.Amount | decimals }}</p>
           <div class="income-box">
             <div class="income">
-              <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ 39493434.0000</p>
+              <p>CFil {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
             </div>
             <div class="income">
               <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ 39493434.0000</p>
+              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
             </div>
           </div>
         </div>
@@ -67,6 +72,12 @@ export default {
     }
   },
   computed: {
+    wallet() {
+      return this.$store.state.wallet
+    },
+    userList() {
+      return this.$store.state.userList
+    },
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -116,6 +127,7 @@ export default {
     bottom: 10px;
     width: 73px;
     height: 20px;
+    line-height: 20px;
     background: #ffffff;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     opacity: 1;
