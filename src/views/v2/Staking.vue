@@ -148,7 +148,6 @@ export default {
   },
   computed: {
     loanInvest() {
-      console.log('this.$store.state.loanInvest', this.$store.state.loanInvest)
       return this.$store.state.loanInvest
     },
     pledgeRate() {

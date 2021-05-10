@@ -128,11 +128,11 @@ export default new Vuex.Store({
       let { Lending, Pledge } = state.loanInvest
 
       let rate = new BigNumber(Lending).div(new BigNumber(Pledge))
-      console.log(
-        'loanInvestloanInvestloanInvestloanInvest',
-        state.loanInvest,
-        rate,
-      )
+      // console.log(
+      //   'loanInvestloanInvestloanInvestloanInvest',
+      //   state.loanInvest,
+      //   rate,
+      // )
 
       if (Pledge == 0) {
         return 0
@@ -304,11 +304,9 @@ export default new Vuex.Store({
     },
     setRewardsList(state, data) {
       state.rewardsList.unshift(data)
-      console.log('rew', state.rewardsList)
     },
     setLoanInvest(state, data) {
       state.loanInvest = data
-      console.log('state', state.loanInvest)
     },
   },
   actions: {
@@ -361,7 +359,6 @@ export default new Vuex.Store({
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
 
       commit('setSystemInfo', systemInfo)
-      console.log('systemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
       // console.log('package', data)
@@ -461,15 +458,16 @@ export default new Vuex.Store({
       let list = await crossLend.callContract('GetInvestRecords', [address])
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
-      // console.log('GetInvestRecords', loanInvest)
+      // console.log('GetInvestRecords', list)
 
       let arr = JSON.parse(JSON.stringify(interestDetail))
+      // console.log('arrlenght', arr.length, arr)
       let loanInterest = arr.pop()
       let demandCFilInterest = arr.pop()
       let demandCRFIInterest = arr.pop()
       let recordsInterest = arr
-      console.log('dfdf', interestDetail, loanInterest)
-      if (arr.length > 0) {
+      // console.log('dfdf', interestDetail, loanInterest)
+      if (interestDetail.length > 0) {
         commit('setLoanInvest', {
           Lending,
           Pledge,
@@ -874,9 +872,8 @@ export default new Vuex.Store({
       let SFil = ''
       if (mode == 4) {
         let paymentDue = utils.fromWei(state.loanCFil.PaymentDue)
-        console.log(value, paymentDue)
         if (parseFloat(value) < parseFloat(paymentDue)) {
-          console.log('xiaoyu')
+          // console.log('xiaoyu')
           Toast(i18n.t('toastPaymentDue'))
           return
         }

@@ -45,7 +45,6 @@ export default {
       let accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       })
-      console.log('account', accounts)
       if (accounts.length > 0) {
         this.setUserAddress(accounts[0])
         this.init()

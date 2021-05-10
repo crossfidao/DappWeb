@@ -68,7 +68,6 @@ export default {
     },
 
     rate() {
-      console.log(this.systemInfo)
       let { cfilLendingTotal, nowInvestCFil } = this.systemInfo
       let rate = new BigNumber(cfilLendingTotal).div(
         new BigNumber(nowInvestCFil),

@@ -49,7 +49,7 @@ export default class Contract {
   }
 
   async callContract(methods, args) {
-    console.log(methods, args)
+    console.log('call', methods, args)
     try {
       return await this.contract.methods[methods](...args).call()
     } catch (e) {
@@ -58,7 +58,7 @@ export default class Contract {
     }
   }
   async executeContract(methods, args, address) {
-    console.log(methods, args, address)
+    console.log('execute', methods, args, address)
     let isLoading = store.state.showLoading
     if (isLoading) {
       Toast(i18n.t('inexecution'))
