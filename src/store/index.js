@@ -44,29 +44,29 @@ const SFilContract = new Contract({
   abi: SFilAbi,
 })
 
-crossLend.contract.events
-  .AffEvent(
-    {
-      filter: {}, // Using an array means OR: e.g. 20 or 23
-      fromBlock: 0,
-    },
-    function(error, event) {
-      console.log(event)
-    },
-  )
-  .on('connected', function(subscriptionId) {
-    // console.log(subscriptionId)
-  })
-  .on('data', function(event) {
-    console.log(event) // same results as the optional callback above
-  })
-  .on('changed', function(event) {
-    // remove event from local database
-  })
-  .on('error', function(error, receipt) {
-    // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-    console.log('error', error, receipt)
-  })
+// crossLend.contract.events
+//   .AffEvent(
+//     {
+//       filter: {}, // Using an array means OR: e.g. 20 or 23
+//       fromBlock: 0,
+//     },
+//     function(error, event) {
+//       console.log(event)
+//     },
+//   )
+//   .on('connected', function(subscriptionId) {
+//     // console.log(subscriptionId)
+//   })
+//   .on('data', function(event) {
+//     console.log(event) // same results as the optional callback above
+//   })
+//   .on('changed', function(event) {
+//     // remove event from local database
+//   })
+//   .on('error', function(error, receipt) {
+//     // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+//     console.log('error', error, receipt)
+//   })
 
 export default new Vuex.Store({
   state: {
@@ -310,6 +310,23 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    async calcCFilToSFil({ state }) {
+      let address = state.userAddress
+      let walletCFil = await CFilContract.callContract('balanceOf', [address])
+      let { CFil, Lending } = state.loanInvest
+      let total = new BigNumber(CFil).plus(new BigNumber(Lending))
+      if (new BigNumber(walletCFil).comparedTo(total) == 1) {
+        return utils.fromWei(total.toString())
+      } else {
+        return utils.fromWei(walletCFil)
+      }
+    },
+    async calcSFilToCFil({ state }) {
+      let address = state.userAddress
+      let walletSFil = await SFilContract.callContract('balanceOf', [address])
+      let res = await crossLend.callContract('calcSFilToCFil', [walletSFil])
+      return utils.fromWei(res)
+    },
     async changeLoanRate({ state, commit, dispatch }, data) {
       console.log(data)
       let userAddress = state.userAddress

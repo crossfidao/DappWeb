@@ -45,7 +45,7 @@
         </div>
       </template>
       <h4 class="title" style="margin-bottom: 12px">
-        {{ $t('claimedRewards') }}
+        {{ $t('cfilSwap') }}
       </h4>
       <div class="items">
         <div class="type">

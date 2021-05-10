@@ -60,7 +60,7 @@
             v-model="value"
             :placeholder="$t('purchaseAmount')"
           />
-          <!-- <span class="max">{{ $t('max') }}</span> -->
+          <span class="max" @click="handleSFilToCFil">{{ $t('max') }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('availableMarket') }}:</span>
@@ -104,7 +104,7 @@
             v-model="repayValue"
             :placeholder="$t('purchaseAmount')"
           />
-          <!-- <span class="max">{{ $t('max') }}</span> -->
+          <span class="max" @click="handleCFilToSFil">{{ $t('max') }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('myLoan') }}:</span>
@@ -168,11 +168,24 @@ export default {
   },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['init', 'stake', 'getTotalSupply']),
+    ...mapActions([
+      'init',
+      'stake',
+      'getTotalSupply',
+      'calcSFilToCFil',
+      'calcCFilToSFil',
+    ]),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
+    },
+    // max
+    async handleSFilToCFil() {
+      this.value = await this.calcSFilToCFil()
+    },
+    async handleCFilToSFil() {
+      this.repayValue = await this.calcCFilToSFil()
     },
     handleBorrow() {
       this.showMask = true

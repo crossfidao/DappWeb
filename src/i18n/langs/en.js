@@ -81,6 +81,7 @@ const cn = {
   copySucc: 'Copy successfully',
   swapPlaceholder: 'Please input the amount',
   addressPlaceholder: 'Please input your filecoin address',
+  cfilSwap: 'cFIL SWAP',
 
   // base
   assets: 'assets',

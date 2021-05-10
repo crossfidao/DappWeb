@@ -32,10 +32,11 @@ export default {
       // "accounts" will always be an array, but it can be empty.
     })
     ethereum.on('chainChanged', chainId => {
+      console.log(chainId)
       // Handle the new chain.
       // Correctly handling chain changes can be complicated.
       // We recommend reloading the page unless you have good reason not to.
-      window.location.reload()
+      // window.location.reload()
     })
   },
   methods: {
