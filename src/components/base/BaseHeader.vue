@@ -19,7 +19,7 @@
     </div>
 
     <van-popup
-      :overlay="false"
+      :overlay="true"
       closeable
       close-icon="wap-nav"
       overlay-class="dfkdslfdl"
@@ -49,6 +49,15 @@
           <router-link tag="div" to="/reward" class="pop-menu-item">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('referralRewards') }}</span>
+          </router-link>
+          <router-link
+            v-if="userInfo.admin"
+            tag="div"
+            to="/admin"
+            class="pop-menu-item"
+          >
+            <van-icon name="arrow-left" />
+            <span class="text">{{ $t('admin') }}</span>
           </router-link>
         </div>
 
@@ -123,6 +132,9 @@ export default {
   computed: {
     showLoading() {
       return this.$store.state.showLoading
+    },
+    userInfo() {
+      return this.$store.state.userInfo
     },
     userAddress() {
       return this.$store.state.userAddress
@@ -262,6 +274,7 @@ export default {
     font-size: 12px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
+    text-align: center;
     &-item {
       margin-bottom: 24px;
     }

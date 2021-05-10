@@ -1,6 +1,6 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader :isBack="true" />
     <div class="content">
       <h4 class="title">{{ $t('referralRewards') }}</h4>
       <div class="items">
@@ -19,6 +19,7 @@
         </div>
       </div>
     </div>
+
     <h4 class="title" style="margin-bottom: 42px">
       {{ $t('claimedRewards') }}
     </h4>
@@ -30,13 +31,14 @@
         <p class="address">
           {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
         </p>
-        <p class="date">2020-05-01 12:12:12</p>
+        <p class="date">{{ getDate(item.timestamp) }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 import Clipboard from 'clipboard'
 import { mapActions, mapMutations } from 'vuex'
 export default {
@@ -59,7 +61,6 @@ export default {
       return this.$store.state.userInfo
     },
     rewardsList() {
-      console.log('dfkldjsflkdsjflkdsf', this.$store.state.rewardsList)
       return this.$store.state.rewardsList
     },
     text() {
@@ -76,6 +77,9 @@ export default {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
+    },
+    getDate(value) {
+      return moment(value * 1000).format('yyyy-MM-DD hh:mm:ss')
     },
     copy() {
       var clipboard = new Clipboard('.tag-read')
@@ -102,6 +106,7 @@ export default {
 .home {
   z-index: 999;
   height: 100%;
+  overflow: auto;
 }
 .container {
   display: flex;

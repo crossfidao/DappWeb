@@ -15,6 +15,7 @@ const cn = {
   auditReport: 'Audit Report',
   supportCenter: 'Support Center',
   referralRewards: 'Referral Rewards',
+  admin: 'admin',
 
   // home
   filStatistics: 'FIL Statistics',

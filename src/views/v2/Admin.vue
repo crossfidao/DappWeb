@@ -156,12 +156,20 @@
             <div class="label">借贷利率</div>
             <div class="input">{{ loanCFil.PledgeRate | rate }} %</div>
           </div>
-          <div class="item" style="color: #fff">
+          <div
+            class="item"
+            style="color: #fff; margin-bottom: 24px; border-bottom: 1px solid #ccc; padding-bottom: 12px;"
+          >
             <div class="label">PaymentDue</div>
             <div class="input">{{ loanCFil.PaymentDue | decimals }}</div>
           </div>
 
-          <div class="apply-item" v-for="item in applyList" :key="item.SID">
+          <div
+            class="apply-item"
+            v-for="item in applyList"
+            :key="item.SID"
+            style="margin-bottom: 24px; border-bottom: 1px solid #ccc;padding-bottom: 12px;"
+          >
             <div class="item-text" v-for="(obj, key) in item.Info" :key="key">
               <span>{{ $t(key) }}: </span>
               <span>{{ obj }}</span>

@@ -328,7 +328,7 @@ export default new Vuex.Store({
     // 获取推荐列表
     async getRewardList({ state, commit }) {
       let address = state.userAddress
-      console.log('dfd', address)
+      console.log('address', address)
       crossLend.contract
         .getPastEvents(
           'AffEvent',
@@ -340,7 +340,7 @@ export default new Vuex.Store({
             toBlock: 'latest',
           },
           function(error, events) {
-            console.log('watch', events)
+            console.log('watch123', events)
           },
         )
         .then(function(events) {
