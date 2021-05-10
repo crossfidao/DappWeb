@@ -68,15 +68,14 @@ export default {
     },
 
     rate() {
-      let { cfilLendingTotal, nowInvestCRFI } = this.systemInfo
-      let rate = new BigNumber(nowInvestCRFI).div(
-        new BigNumber(cfilLendingTotal),
+      let { cfilLendingTotal, nowInvestCFil } = this.systemInfo
+      let rate = new BigNumber(cfilLendingTotal).div(
+        new BigNumber(nowInvestCFil),
       )
       if (cfilLendingTotal == 0) {
         return 0
       }
-      console.log('rate', rate.toString())
-      return parseInt(rate.toString())
+      return parseInt(rate * 100)
     },
     showLoading() {
       return this.$store.state.showLoading

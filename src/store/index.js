@@ -120,14 +120,20 @@ export default new Vuex.Store({
     loanInvest: {
       Lending: '0',
       Pledge: '0',
+      CFil: '0',
     },
   },
   getters: {
     pledgeRate: state => {
-      console.log('loanInvest', state.loanInvest)
       let { Lending, Pledge } = state.loanInvest
 
-      let rate = Lending / Pledge
+      let rate = new BigNumber(Lending).div(new BigNumber(Pledge))
+      console.log(
+        'loanInvestloanInvestloanInvestloanInvest',
+        state.loanInvest,
+        rate,
+      )
+
       if (Pledge == 0) {
         return 0
       }
@@ -302,10 +308,11 @@ export default new Vuex.Store({
     },
     setLoanInvest(state, data) {
       state.loanInvest = data
+      console.log('state', state.loanInvest)
     },
   },
   actions: {
-    async changeLoanRate({ state, commit }, data) {
+    async changeLoanRate({ state, commit, dispatch }, data) {
       console.log(data)
       let userAddress = state.userAddress
       let { APY, PledgeRate, PaymentDue } = data
@@ -318,6 +325,7 @@ export default new Vuex.Store({
         [APY, PledgeRate, PaymentDue],
         userAddress,
       )
+      this.dispatch('init')
     },
     // 获取推荐列表
     async getRewardList({ state, commit }) {
@@ -451,14 +459,23 @@ export default new Vuex.Store({
       let address = state.userAddress
       let userList = []
       let list = await crossLend.callContract('GetInvestRecords', [address])
-      console.log('GetInvestRecords', list)
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
-      // commit('setLoanInvest', loanInvest)
+      let { Lending, Pledge } = loanInvest
+      // console.log('GetInvestRecords', loanInvest)
+
       let arr = JSON.parse(JSON.stringify(interestDetail))
-      let loanInterest = arr.pop()
-      let demandCFilInterest = arr.pop()
-      let demandCRFIInterest = arr.pop()
-      let recordsInterest = arr
+      if (arr.length > 0) {
+        let loanInterest = arr.pop()
+        let demandCFilInterest = arr.pop()
+        let demandCRFIInterest = arr.pop()
+        let recordsInterest = arr
+        console.log('dfdf', interestDetail, loanInterest)
+        commit('setLoanInvest', {
+          Lending,
+          Pledge,
+          CFil: loanInterest[1],
+        })
+      }
 
       if (demandCFil.Amount != 0) {
         let CRFIInterestRate =
@@ -738,7 +755,7 @@ export default new Vuex.Store({
       let { value } = data
       value = utils.toWei(value.toString()) / 100
       try {
-        await corsslend.executeContract(
+        await crossLend.executeContract(
           'ChangeAffRate',
           [value.toString()],
           state.userAddress,
@@ -751,12 +768,12 @@ export default new Vuex.Store({
       crfi = utils.toWei(crfi.toString()) / 100
       cfil = utils.toWei(cfil.toString()) / 100
       try {
-        await corsslend.executeContract(
+        await crossLend.executeContract(
           'ChangePackageRate',
           [ID, crfi.toString(), cfil.toString()],
           state.userAddress,
         )
-        dispatch('initData')
+        dispatch('init')
       } catch (e) {}
     },
     // 修改活期利率
@@ -766,12 +783,12 @@ export default new Vuex.Store({
       crfi = utils.toWei(crfi.toString()) / 100
       cfil = utils.toWei(cfil.toString()) / 100
       try {
-        await corsslend.executeContract(
+        await crossLend.executeContract(
           'ChangeDemandRate',
           [ID, crfi.toString(), cfil.toString()],
           state.userAddress,
         )
-        dispatch('initData')
+        dispatch('init')
       } catch (e) {
         console.log(e)
       }
@@ -848,7 +865,7 @@ export default new Vuex.Store({
       } catch (e) {}
     },
     // stake
-    async stake({ state, commit }, data) {
+    async stake({ state, commit, dispatch }, data) {
       let { mode = 4, value } = data
       let betys = CRFIContract.web3.eth.abi.encodeParameters(
         ['uint256', 'uint256', 'address'],
@@ -866,19 +883,37 @@ export default new Vuex.Store({
         SFil = await crossLend.callContract('calcCFilToSFil', [
           utils.toWei(value),
         ])
+        try {
+          await SFilContract.executeContract(
+            'send',
+            [CROSSLEND_ADDRESS, SFil, betys],
+            state.userAddress,
+          )
+          dispatch('init')
+        } catch (e) {}
         console.log('sfil', SFil)
+      } else {
+        value = utils.toWei(value)
+        console.log('sendValue', value)
+        try {
+          await CFilContract.executeContract(
+            'send',
+            [CROSSLEND_ADDRESS, value, betys],
+            state.userAddress,
+          )
+          dispatch('init')
+        } catch (e) {}
       }
-      value = utils.toWei(value)
 
-      console.log('stake', mode, value)
-      try {
-        await SFilContract.executeContract(
-          'send',
-          [CROSSLEND_ADDRESS, SFil, betys],
-          state.userAddress,
-        )
-        dispatch('init')
-      } catch (e) {}
+      // console.log('stake', mode, value)
+      // try {
+      //   await SFilContract.executeContract(
+      //     'send',
+      //     [CROSSLEND_ADDRESS, SFil, betys],
+      //     state.userAddress,
+      //   )
+      //   dispatch('init')
+      // } catch (e) {}
     },
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {

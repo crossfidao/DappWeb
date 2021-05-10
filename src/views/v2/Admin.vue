@@ -144,7 +144,7 @@
         <van-tab title="SFIL 配置">
           <h4 class="title">
             <span>参数配置</span>
-            <van-button type="primary" size="small" @click="showEdit = true">
+            <van-button type="primary" size="small" @click="handleEditLoan">
               修改
             </van-button>
           </h4>
@@ -168,16 +168,23 @@
             </div>
             <div class="item-wallet">
               <span>Addr:</span>
-              <span>{{
-                item.Addr.slice(0, 12) + '...' + item.Addr.slice(30, 42)
-              }}</span>
+              <span>
+                {{ item.Addr.slice(0, 12) + '...' + item.Addr.slice(30, 42) }}
+              </span>
+              <span
+                class="tag-read copy"
+                :data-clipboard-text="item.Addr"
+                @click="copy"
+              >
+                <van-icon name="description" size="18" color="#A2A2A2" />
+              </span>
             </div>
             <div class="item-wallet">
               <span>CFIL{{ $t('balance') }}:</span>
               <span>{{ wallet.walletCFil | decimals }}</span>
             </div>
             <div class="item-wallet">
-              <span>CFIL{{ $t('balance') }}:</span>
+              <span>CRFI{{ $t('balance') }}:</span>
               <span>{{ wallet.walletCRFI | decimals }}</span>
             </div>
             <div class="item-wallet">
@@ -265,7 +272,7 @@
             placeholder="请填写借贷利率（%）"
           />
           <van-field
-            label="借贷利率"
+            label="借贷下限"
             class="field"
             center
             clearable
@@ -296,6 +303,7 @@
 <script>
 import Web3 from 'web3'
 import { mapActions } from 'vuex'
+import Clipboard from 'clipboard'
 
 let web3 = new Web3()
 let { utils } = web3
@@ -303,7 +311,7 @@ export default {
   name: 'admin',
   data() {
     return {
-      active: 1,
+      active: 0,
       show: false,
       showMask: false,
       showEdit: false,
@@ -321,12 +329,6 @@ export default {
         PaymentDue: '',
       },
     }
-  },
-  watch: {
-    loanCFil(val) {
-      console.log('valvalval', val)
-      this.getParams(val)
-    },
   },
   computed: {
     wallet() {
@@ -407,9 +409,13 @@ export default {
     systemInfo(val) {
       this.affRate = utils.fromWei(this.systemInfo.affRate) * 100
     },
+    loanCFil(val) {
+      console.log('valvalval', val)
+      this.getParams(val)
+    },
   },
   async mounted() {
-    // this.getParams(this.loanCFil)
+    this.getParams(this.loanCFil)
     await this.getApplyStaking()
   },
   methods: {
@@ -424,13 +430,32 @@ export default {
       'deleteStaking',
       'changeLoanRate',
     ]),
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        this.$toast(this.$t('copySucc'))
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // 释放内存
+        clipboard.destroy()
+      })
+    },
     getParams(data) {
       let { APY, PledgeRate, PaymentDue } = data
+      console.log('APY', data)
       this.params = {
-        APY: utils.fromWei(APY) * 100,
-        PledgeRate: utils.fromWei(PledgeRate) * 100,
-        PaymentDue: utils.fromWei(PaymentDue) * 100,
+        APY: (utils.fromWei(APY) * 100).toFixed(2),
+        PledgeRate: (utils.fromWei(PledgeRate) * 100).toFixed(2),
+        PaymentDue: utils.fromWei(PaymentDue),
       }
+    },
+    handleEditLoan() {
+      this.getParams(this.loanCFil)
+      this.showEdit = true
     },
     // 拒绝
     handleRefuse(data) {
@@ -474,11 +499,11 @@ export default {
       this.curItem = item
       let {
         Days = undefined,
-        EFilInterestRate,
+        CFilInterestRate,
         CRFIInterestRate,
       } = this.curItem
       this.CRFL = CRFIInterestRate
-      this.cfil = EFilInterestRate
+      this.cfil = CFilInterestRate
       this.isDemand = !Days
       this.curItem = item
       this.showMask = true
@@ -512,12 +537,12 @@ export default {
       this.showMask = false
     },
     handleChangeRate() {
-      let { ID, EFilInterestRate, CRFIInterestRate } = this.curItem
-
+      let { ID, CFilInterestRate, CRFIInterestRate } = this.curItem
       if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
         this.$toast('请填写0-100的数字')
         return
       }
+      console.log('ID', ID)
       this.ChangePackageRate({
         ID,
         crfi: this.CRFL,
@@ -538,14 +563,15 @@ export default {
   color: #333;
 }
 .about {
-  background: #414447;
+  background: #2c3546;
   height: 100%;
   overflow: auto;
 }
 .content {
   color: #333;
-  width: 317px;
+  width: 375px;
   margin: 0 auto;
+  // padding: 0 24px;
   // padding-top: 130px;
 }
 
@@ -577,6 +603,8 @@ export default {
   padding-left: 12px;
   .item-text,
   .item-wallet {
+    display: flex;
+    align-items: center;
     margin-bottom: 12px;
   }
 }

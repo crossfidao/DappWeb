@@ -34,7 +34,7 @@
         </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
-      <div class="text-align: right; ">
+      <div style="text-align: right">
         <span @click="Withdraw" style="padding-right: 24px">
           {{ $t('withdraw') }}
         </span>

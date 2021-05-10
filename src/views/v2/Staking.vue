@@ -113,7 +113,7 @@
         <div class="item">
           <span class="item-label">{{ $t('pledgeRate') }}:</span>
           <!-- TODO: 计算 lending/pledge-->
-          <span class="item-content">{{ pledgeRate | decimals }}</span>
+          <span class="item-content">{{ (pledgeRate * 100).toFixed() }} %</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('walletBalance') }}:</span>
@@ -121,7 +121,7 @@
         </div>
         <div class="item">
           <span class="item-label">{{ $t('loanApy') }}:</span>
-          <span class="item-content">{{ loanCFil.APY | rate }} %</span>
+          <span class="item-content">{{ loanInvest.CFil | decimals }} </span>
         </div>
         <div class="footer">
           <div class="footer-btn" @click="handleRepayConfirm">
