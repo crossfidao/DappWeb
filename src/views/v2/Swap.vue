@@ -1,6 +1,6 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader :isBack="true" />
     <div class="content">
       <h4 class="title">{{ $t('filSwap') }}</h4>
       <div class="items">
@@ -35,6 +35,7 @@
           class="tag-read copy"
           :data-clipboard-text="FileAddr"
           @click="copy"
+          v-if="FileAddr"
         >
           <span class="copy-text">{{ userFileAddr }}</span>
           <div class="copy-right">
@@ -124,7 +125,7 @@ export default {
     if (this.FileAddr) {
       console.log('dfdlkfqrcode')
       this.$nextTick(() => {
-        // this.qrcode()
+        this.qrcode()
       })
     }
   },
@@ -166,6 +167,7 @@ export default {
     async handleLogin() {
       await this.login()
       this.qrcode()
+      this.$router.go(0)
     },
     qrcode() {
       let qrcode = new QRCode('qrcode', {

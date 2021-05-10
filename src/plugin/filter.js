@@ -12,17 +12,7 @@ Vue.filter('date', value => {
 
 Vue.filter('decimals', value => {
   value = value || '0'
-  return parseFloat(utils.fromWei(value)).toFixed(5)
-})
-
-Vue.filter('decimals1', value => {
-  if (typeof value == 'object') {
-  }
-  value = value || '0'
-  return new BigNumber(value).div(new BigNumber(1e18))
-  // return value
-  // .toFixed(9)
-  return parseFloat(utils.fromWei(new BigNumber(value))).toFixed(5)
+  return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value)))).toFixed(5)
 })
 
 Vue.filter('rate', value => {

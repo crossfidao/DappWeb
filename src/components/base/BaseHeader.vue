@@ -1,10 +1,11 @@
 <template>
   <div class="header" :style="'background:' + color">
     <div class="header-user">
-      <router-link to="/" tag="div" class="logo">
+      <router-link to="/" tag="div" class="logo" v-if="!isBack">
         <img src="../../assets/images/logo.png" alt="" class="title-logo" />
         <!-- <span>{{ address }}</span> -->
       </router-link>
+      <van-icon name="arrow-left" v-else size="24" @click="$router.back()" />
       <span v-show="showLoading">pending</span>
       <div class="right">
         <!-- <span class="header-user-btn" @click="ethereum">
@@ -16,6 +17,7 @@
         <van-icon name="wap-nav" size="28" @click="showpop = true" />
       </div>
     </div>
+
     <van-popup
       :overlay="false"
       closeable
@@ -44,10 +46,10 @@
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('supportCenter') }}</span>
           </div>
-          <div class="pop-menu-item">
+          <router-link tag="div" to="/reward" class="pop-menu-item">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('referralRewards') }}</span>
-          </div>
+          </router-link>
         </div>
 
         <div class="lang">
@@ -83,6 +85,10 @@ import { mapActions, mapMutations } from 'vuex'
 export default {
   name: 'BaseHeader',
   props: {
+    isBack: {
+      type: Boolean,
+      default: false,
+    },
     color: {
       type: String,
       default: 'transparent',

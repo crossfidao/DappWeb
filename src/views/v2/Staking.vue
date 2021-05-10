@@ -1,38 +1,40 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader :isBack="true" />
     <div class="content">
       <div class="stake" style="text-align: right">
-        <span class="stake-btn">{{ $t('stake') }}</span>
+        <router-link tag="span" to="/staking1" class="stake-btn">
+          {{ $t('stake') }}
+        </router-link>
       </div>
       <div class="items">
         <div class="item">
           <span class="item-label">{{ $t('sFILAssets') }}:</span>
           <span class="item-content">{{ wallet.walletSFil | decimals }}</span>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <span class="item-label">{{ $t('pledge') }}:</span>
           <span class="item-content">213213.232</span>
-        </div>
+        </div> -->
       </div>
       <div class="items">
         <h4 class="item-title">{{ $t('borrow') }}</h4>
         <div class="item">
           <span class="item-label">{{ $t('loanApy') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ loanCFil.APY | rate }} %</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('paymentDue') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ loanCFil.PaymentDue | decimals }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('pledgeRate') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ loanCFil.PledgeRate | rate }} % </span>
         </div>
-        <div class="item">
+        <!-- <div class="item">
           <span class="item-label">{{ $t('totalsFIL') }}:</span>
           <span class="item-content">213213.232</span>
-        </div>
+        </div> -->
         <div class="item-btn">
           <span class="btn" @click="handleBorrow">{{ $t('borrow') }}</span>
           <span class="btn" @click="handleRepay">{{ $t('repay') }}</span>
@@ -43,7 +45,7 @@
         <h4 class="item-title">{{ $t('market') }}</h4>
         <div class="item">
           <span class="item-label">{{ $t('totalsFIL') }}:</span>
-          <span class="item-content">{{ totalSupply }}</span>
+          <span class="item-content">{{ totalSupply | decimals }}</span>
         </div>
       </div>
     </div>
@@ -58,24 +60,27 @@
             v-model="value"
             :placeholder="$t('purchaseAmount')"
           />
-          <span class="max">{{ $t('max') }}</span>
+          <!-- <span class="max">{{ $t('max') }}</span> -->
+        </div>
+        <div class="item">
+          <span class="item-label">{{ $t('availableMarket') }}:</span>
+          <span class="item-content">
+            {{ systemInfo.avaiCFilAmount | decimals }}
+          </span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('loanApy') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ loanCFil.APY | rate }} %</span>
         </div>
-        <div class="item">
-          <span class="item-label">{{ $t('newProfit') }}:</span>
-          <span class="item-content">213213.232</span>
-        </div>
-        <div class="item">
-          <span class="item-label">{{ $t('paymentDue') }}:</span>
-          <span class="item-content">213213.232</span>
-        </div>
+
         <div class="item">
           <span class="item-label">{{ $t('pledgeRate') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ loanCFil.PledgeRate | rate }} % </span>
         </div>
+        <!-- <div class="item">
+          <span class="item-label">{{ $t('pledgeRate') }}:</span>
+          <span class="item-content">213213.232</span>
+        </div> -->
         <div class="footer">
           <div class="footer-btn" @click="handleConfirm">
             {{ $t('confirm') }}
@@ -99,19 +104,24 @@
             v-model="repayValue"
             :placeholder="$t('purchaseAmount')"
           />
-          <span class="max">{{ $t('max') }}</span>
+          <!-- <span class="max">{{ $t('max') }}</span> -->
         </div>
         <div class="item">
-          <span class="item-label">{{ $t('loanApy') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-label">{{ $t('myLoan') }}:</span>
+          <span class="item-content">{{ loanInvest.Lending | decimals }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('pledgeRate') }}:</span>
-          <span class="item-content">213213.232</span>
+          <!-- TODO: 计算 lending/pledge-->
+          <span class="item-content">{{ pledgeRate | decimals }}</span>
         </div>
         <div class="item">
           <span class="item-label">{{ $t('walletBalance') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ wallet.walletCFil | decimals }}</span>
+        </div>
+        <div class="item">
+          <span class="item-label">{{ $t('loanApy') }}:</span>
+          <span class="item-content">{{ loanCFil.APY | rate }} %</span>
         </div>
         <div class="footer">
           <div class="footer-btn" @click="handleRepayConfirm">
@@ -137,8 +147,21 @@ export default {
     }
   },
   computed: {
+    loanInvest() {
+      console.log('this.$store.state.loanInvest', this.$store.state.loanInvest)
+      return this.$store.state.loanInvest
+    },
+    pledgeRate() {
+      return this.$store.getters.pledgeRate
+    },
     wallet() {
       return this.$store.state.wallet
+    },
+    systemInfo() {
+      return this.$store.state.systemInfo
+    },
+    loanCFil() {
+      return this.$store.state.loanCFil
     },
   },
   async mounted() {
@@ -215,7 +238,7 @@ export default {
   font-size: 16px;
   font-family: Montserrat;
   font-weight: 500;
-  color: #ffffff;
+  // color: #ffffff;
   text-align: left;
   .item-title {
     margin-bottom: 20px;
@@ -230,6 +253,7 @@ export default {
 .item {
   display: flex;
   // margin-bottom: 20px;
+  // color: #000;
   padding-bottom: 16px;
   &-label,
   &-content {

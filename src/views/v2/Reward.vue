@@ -6,21 +6,30 @@
       <div class="items">
         <div class="logo"></div>
         <div class="items-content">
-          1000.00
+          {{ userInfo.totalAffCRFI | decimals }}
         </div>
         <div class="item-btn">
-          <span class="btn">{{ $t('claim') }}</span>
+          <span
+            class="tag-read btn"
+            :data-clipboard-text="inviteLink"
+            @click="copy"
+          >
+            {{ $t('claim') }}
+          </span>
         </div>
       </div>
     </div>
     <h4 class="title" style="margin-bottom: 42px">
       {{ $t('claimedRewards') }}
     </h4>
-    <div class="item" v-for="item in 10">
+    <!-- <van-empty description="暂无数据" size="0px" image="" /> -->
+    <div class="item" v-for="item in rewardsList" :key="item.indexed">
       <span class="item-logo"></span>
       <div class="item-right">
-        <p class="price">+ 10000.00 CRFI</p>
-        <p class="address">0x48545.....34309308320</p>
+        <p class="price">+ {{ item.amount | decimals }} CRFI</p>
+        <p class="address">
+          {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
+        </p>
         <p class="date">2020-05-01 12:12:12</p>
       </div>
     </div>
@@ -28,6 +37,7 @@
 </template>
 
 <script>
+import Clipboard from 'clipboard'
 import { mapActions, mapMutations } from 'vuex'
 export default {
   data() {
@@ -38,29 +48,60 @@ export default {
     }
   },
   computed: {
-    showLoading() {
-      return this.$store.state.showLoading
+    userAddress() {
+      return this.$store.state.userAddress
+    },
+    inviteLink() {
+      let { origin } = location
+      return origin + '?invite=' + this.userAddress
+    },
+    userInfo() {
+      return this.$store.state.userInfo
+    },
+    rewardsList() {
+      console.log('dfkldjsflkdsjflkdsf', this.$store.state.rewardsList)
+      return this.$store.state.rewardsList
     },
     text() {
       return this.currentRate.toFixed(0) + '%'
     },
   },
-  async mounted() {},
+  async mounted() {
+    this.getRewardList()
+  },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['getRewardList']),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
       return `background: ${arr[target]}`
+    },
+    copy() {
+      var clipboard = new Clipboard('.tag-read')
+      clipboard.on('success', e => {
+        this.$toast(this.$t('copySucc'))
+        // 释放内存
+        clipboard.destroy()
+      })
+      clipboard.on('error', e => {
+        // 不支持复制
+        console.log('该浏览器不支持自动复制')
+        // 释放内存
+        clipboard.destroy()
+      })
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-empty__image {
+  display: none;
+}
 .home {
   z-index: 999;
+  height: 100%;
 }
 .container {
   display: flex;

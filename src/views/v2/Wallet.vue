@@ -34,14 +34,25 @@
         </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
-      <div class="item" v-for="item in userList" :key="item">
+      <div class="text-align: right; ">
+        <span @click="Withdraw" style="padding-right: 24px">
+          {{ $t('withdraw') }}
+        </span>
+      </div>
+
+      <div class="item" v-for="(item, index) in userList" :key="index">
         <div class="item-left">
           <p style="padding: 8px 0;">
             {{ item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand') }}
           </p>
-          <p class="item-coin item-coin-c">CRFI</p>
+          <p class="item-coin item-coin-c">
+            {{ item.Type == 0 ? 'CRFI' : 'CFil' }}
+          </p>
         </div>
         <div class="item-right">
+          <span @click="WithdrawDemand" v-if="item.Days == 0">
+            {{ $t('withdraw') }}
+          </span>
           <div class="item-rate">
             CRFI: {{ item.CRFIInterestRate | rate }}% + cFIL:
             {{ item.CFilInterestRate | rate }}%
@@ -88,7 +99,7 @@ export default {
   async mounted() {},
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['Withdraw', 'WithdrawDemand']),
   },
 }
 </script>

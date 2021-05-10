@@ -44,20 +44,28 @@ const SFilContract = new Contract({
   abi: SFilAbi,
 })
 
-SFilContract.contract
-  .getPastEvents(
-    'ApplyStakingEvent',
+crossLend.contract.events
+  .AffEvent(
     {
       filter: {}, // Using an array means OR: e.g. 20 or 23
       fromBlock: 0,
-      toBlock: 'latest',
     },
-    function(error, events) {
-      console.log('watch', events)
+    function(error, event) {
+      console.log(event)
     },
   )
-  .then(function(events) {
-    console.log('watch', events) // same results as the optional callback above
+  .on('connected', function(subscriptionId) {
+    // console.log(subscriptionId)
+  })
+  .on('data', function(event) {
+    console.log(event) // same results as the optional callback above
+  })
+  .on('changed', function(event) {
+    // remove event from local database
+  })
+  .on('error', function(error, receipt) {
+    // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+    console.log('error', error, receipt)
   })
 
 export default new Vuex.Store({
@@ -103,8 +111,28 @@ export default new Vuex.Store({
       watlletSFil: 0,
     },
     applyList: [],
+    loanCFil: {
+      APY: '0',
+      PaymentDue: '0',
+      PledgeRate: '0',
+    },
+    rewardsList: [],
+    loanInvest: {
+      Lending: '0',
+      Pledge: '0',
+    },
   },
   getters: {
+    pledgeRate: state => {
+      console.log('loanInvest', state.loanInvest)
+      let { Lending, Pledge } = state.loanInvest
+
+      let rate = Lending / Pledge
+      if (Pledge == 0) {
+        return 0
+      }
+      return rate
+    },
     cfilWithdrawable: state => {
       let number = 0
       let now = parseInt(new Date().getTime() / 1000)
@@ -231,40 +259,130 @@ export default new Vuex.Store({
     setWallet(state, data) {
       state.wallet = data
     },
+    setCRFITotalAmount(state, data) {
+      let { PackageID, Amount } = data
+      let item = state.CRFIList.find(n => PackageID == n.ID)
+      item['Amount'] = new BigNumber(item.Amount)
+        .plus(new BigNumber(Amount))
+        .toString()
+    },
+    setCFilTotalAmount(state, data) {
+      let { PackageID, Amount } = data
+      let item = state.CFilList.find(n => PackageID == n.ID)
+      item['Amount'] = new BigNumber(item.Amount)
+        .plus(new BigNumber(Amount))
+        .toString()
+    },
+    setCRFIDemandTotalAmount(state, data) {
+      let { PackageID, Amount } = data
+      let item = state.CRFIList.find(n => PackageID == n.ID)
+      item['Amount'] = new BigNumber(item.Amount)
+        .plus(new BigNumber(Amount))
+        .toString()
+    },
+    setCFilDemandTotalAmount(state, data) {
+      let { PackageID, Amount } = data
+      let item = state.CFilList.find(n => PackageID == n.ID)
+      item['Amount'] = new BigNumber(item.Amount)
+        .plus(new BigNumber(Amount))
+        .toString()
+    },
     setUserList(state, data) {
       state.userList = data
     },
     setApplyList(state, data) {
       state.applyList = data
     },
+    setLoanCFil(state, data) {
+      state.loanCFil = data
+    },
+    setRewardsList(state, data) {
+      state.rewardsList.unshift(data)
+      console.log('rew', state.rewardsList)
+    },
+    setLoanInvest(state, data) {
+      state.loanInvest = data
+    },
   },
   actions: {
+    async changeLoanRate({ state, commit }, data) {
+      console.log(data)
+      let userAddress = state.userAddress
+      let { APY, PledgeRate, PaymentDue } = data
+      APY = (utils.toWei(APY.toString()) / 100).toString()
+      PledgeRate = (utils.toWei(PledgeRate.toString()) / 100).toString()
+      PaymentDue = utils.toWei(PaymentDue.toString())
+      console.log(APY, PledgeRate, PaymentDue)
+      await crossLend.executeContract(
+        'ChangeLoanRate',
+        [APY, PledgeRate, PaymentDue],
+        userAddress,
+      )
+    },
+    // 获取推荐列表
+    async getRewardList({ state, commit }) {
+      let address = state.userAddress
+      console.log('dfd', address)
+      crossLend.contract
+        .getPastEvents(
+          'AffEvent',
+          {
+            filter: {
+              receiver: [address],
+            }, // Using an array means OR: e.g. 20 or 23
+            fromBlock: 0,
+            toBlock: 'latest',
+          },
+          function(error, events) {
+            console.log('watch', events)
+          },
+        )
+        .then(function(events) {
+          console.log('watch', events)
+          // same results as the optional callback above
+          events.forEach(e => {
+            let { returnValues } = e
+            commit('setRewardsList', returnValues)
+          })
+        })
+    },
     // 初始化
     async init({ state, commit, dispatch }) {
       let address = state.userAddress
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
+
       commit('setSystemInfo', systemInfo)
       console.log('systemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
-      let { financialPackages, demandCFil, demandCRFI } = data
+      // console.log('package', data)
+      let { financialPackages, demandCFil, demandCRFI, loanCFil } = data
+      commit('setLoanCFil', loanCFil)
       let CRFIList = []
       let CFilList = []
       financialPackages.forEach(e => {
         let { Type } = e
         if (Type === '0') {
-          CRFIList.push(e)
+          CRFIList.push({
+            ...e,
+            Amount: '0',
+          })
         } else {
-          CFilList.push(e)
+          CFilList.push({
+            ...e,
+            Amount: '0',
+          })
         }
       })
       CFilList.unshift({
         Days: '0',
+        Amount: '0',
         ...demandCFil,
       })
       CRFIList.unshift({
         Days: '0',
+        Amount: '0',
         ...demandCRFI,
       })
       commit('setCRFIList', CRFIList)
@@ -287,6 +405,7 @@ export default new Vuex.Store({
     },
     // 拒绝
     async deleteStaking({ state, dispatch }, data) {
+      let userAddress = state.userAddress
       let { SID } = data
       await SFilContract.executeContract(
         'DeleteStakingByAdmin',
@@ -298,24 +417,26 @@ export default new Vuex.Store({
     // 通过
     async issusStaking({ state, commit, dispatch }, data) {
       let { SID, value } = data
+
       let userAddress = state.userAddress
       await SFilContract.executeContract(
         'IssueStaking',
-        [SID, value],
+        [SID, utils.toWei(value)],
         userAddress,
       )
       dispatch('getApplyStaking')
     },
     // 获取 apply 事件
     async getApplyStaking({ state, commit }) {
-      console.log('kldjfldj')
       let res = await SFilContract.callContract('GetNowStakingApply', [])
-      console.log('dfdfsfsafds', res)
+      console.log('res', res)
       let arr = []
       res.forEach(e => {
         let { Info, Addr, SID, validIdx } = e
         console.log(Info)
-        Info = JSON.parse(Info)
+        if (Info) {
+          Info = JSON.parse(Info)
+        }
         arr.push({
           SID,
           Info,
@@ -332,6 +453,7 @@ export default new Vuex.Store({
       let list = await crossLend.callContract('GetInvestRecords', [address])
       console.log('GetInvestRecords', list)
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
+      // commit('setLoanInvest', loanInvest)
       let arr = JSON.parse(JSON.stringify(interestDetail))
       let loanInterest = arr.pop()
       let demandCFilInterest = arr.pop()
@@ -355,6 +477,7 @@ export default new Vuex.Store({
           CRFIInterest: demandCFilInterest[1],
           Days: '0',
         })
+        commit('setCFilDemandTotalAmount', demandCFil)
       }
       if (demandCRFI.Amount != 0) {
         let CRFIInterestRate =
@@ -373,15 +496,21 @@ export default new Vuex.Store({
           CRFIInterest: demandCRFIInterest[1],
           Days: '0',
         })
+        commit('setCRFIDemandTotalAmount', demandCRFI)
       }
       records.forEach((e, index) => {
+        let { Type } = e
+        if (Type == 0) {
+          commit('setCRFITotalAmount', e)
+        } else {
+          commit('setCFilTotalAmount', e)
+        }
         userList.push({
           ...e,
           CRFIInterest: recordsInterest[index][0],
           CFilInterest: recordsInterest[index][1],
         })
       })
-      console.log('list', list)
       commit('setUserList', userList)
     },
     // 获取用户余额
@@ -395,120 +524,125 @@ export default new Vuex.Store({
         walletCRFI,
         walletSFil,
       })
+      let res = await crossLend.callContract('GetInvestInfo', [0, address])
+      commit('setUserInfo', res)
     },
     // 获取 SFil 总量
     async getTotalSupply({ state, commit }) {
       let res = await SFilContract.callContract('totalSupply', [])
-      console.log('res', res)
+      // console.log('res', res)
       return res
     },
     // 签名 登录
-    login({ state, commit }) {
-      let timestamp = parseInt(new Date().getTime() / 1000)
-      web3.currentProvider.sendAsync(
-        {
-          method: 'net_version',
-          params: [],
-          jsonrpc: '2.0',
-        },
-        function(err, result) {
-          const netId = result.result
-          const msgParams = JSON.stringify({
-            types: {
-              Challenge: [
-                { name: 'address', type: 'address' },
-                { name: 'timestamp', type: 'uint256' },
-              ],
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'version', type: 'string' },
-                { name: 'salt', type: 'string' },
-              ],
-            },
-            primaryType: 'Challenge',
-            domain: {
-              name: 'CrossFI_ETHChallenger',
-              version: '1.0',
-              chainId: 654321,
-              salt: 'asasdfiuosicvuxzoiv',
-            },
-            message: {
-              address: state.userAddress,
-              timestamp,
-            },
-          })
+    async login({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        let timestamp = parseInt(new Date().getTime() / 1000)
+        web3.currentProvider.sendAsync(
+          {
+            method: 'net_version',
+            params: [],
+            jsonrpc: '2.0',
+          },
+          function(err, result) {
+            const netId = result.result
+            const msgParams = JSON.stringify({
+              types: {
+                Challenge: [
+                  { name: 'address', type: 'address' },
+                  { name: 'timestamp', type: 'uint256' },
+                ],
+                EIP712Domain: [
+                  { name: 'name', type: 'string' },
+                  { name: 'chainId', type: 'uint256' },
+                  { name: 'version', type: 'string' },
+                  { name: 'salt', type: 'string' },
+                ],
+              },
+              primaryType: 'Challenge',
+              domain: {
+                name: 'CrossFI_ETHChallenger',
+                version: '1.0',
+                chainId: 654321,
+                salt: 'asasdfiuosicvuxzoiv',
+              },
+              message: {
+                address: state.userAddress,
+                timestamp,
+              },
+            })
 
-          let from = state.userAddress
+            let from = state.userAddress
 
-          var params = [from, msgParams]
-          var method = 'eth_signTypedData_v3'
+            var params = [from, msgParams]
+            var method = 'eth_signTypedData_v3'
 
-          web3.currentProvider.sendAsync(
-            {
-              method,
-              params,
-              from,
-            },
-            function(err, result) {
-              if (err) return console.dir(err)
-              if (result.error) {
-                alert(result.error.message)
-              }
-              if (result.error) return console.error('ERROR', result)
-              // console.log('TYPED SIGNED:' + JSON.stringify(result.result))
-              // console.log('TYPED SIGNED:' + result.result.substring(2))
-              const signature = result.result.substring(2)
+            web3.currentProvider.sendAsync(
+              {
+                method,
+                params,
+                from,
+              },
+              function(err, result) {
+                if (err) return console.dir(err)
+                if (result.error) {
+                  alert(result.error.message)
+                }
+                if (result.error) return console.error('ERROR', result)
+                // console.log('TYPED SIGNED:' + JSON.stringify(result.result))
+                // console.log('TYPED SIGNED:' + result.result.substring(2))
+                const signature = result.result.substring(2)
 
-              // sendToServerForVerification(signature)
-              axios
-                .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
-                  // .get('http://10.255.3.147:9980/get_addr', {
-                  params: {
-                    eth_addr: state.userAddress,
-                    signed: signature,
-                    timestamp: timestamp,
-                  },
-                })
-                .then(function(response) {
-                  let {
-                    data: {
-                      result: { FilAddr },
+                // sendToServerForVerification(signature)
+                axios
+                  .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
+                    // .get('http://10.255.3.147:9980/get_addr', {
+                    params: {
+                      eth_addr: state.userAddress,
+                      signed: signature,
+                      timestamp: timestamp,
                     },
-                  } = response
-                  commit('setFileAddr', FilAddr)
-                  localStorage.setItem(state.userAddress, FilAddr)
+                  })
+                  .then(function(response) {
+                    let {
+                      data: {
+                        result: { FilAddr },
+                      },
+                    } = response
+                    commit('setFileAddr', FilAddr)
+                    localStorage.setItem(state.userAddress, FilAddr)
+                    resolve()
+                  })
+                  .catch(function(error) {
+                    console.log(error)
+                  })
+                const recovered = sigUtil.recoverTypedSignature({
+                  data: JSON.parse(msgParams),
+                  sig: result.result,
                 })
-                .catch(function(error) {
-                  console.log(error)
-                })
-              const recovered = sigUtil.recoverTypedSignature({
-                data: JSON.parse(msgParams),
-                sig: result.result,
-              })
-              // console.log(
-              //   'recovered',
-              //   recovered,
-              //   ethUtil.toChecksumAddress(recovered),
-              //   ethUtil.toChecksumAddress(from),
-              // )
-              if (
-                ethUtil.toChecksumAddress(recovered) ===
-                ethUtil.toChecksumAddress(from)
-              ) {
-                // alert('Successfully ecRecovered signer as ' + from)
-              } else {
-                alert(
-                  'Failed to verify signer when comparing ' +
-                    result +
-                    ' to ' +
-                    from,
-                )
-              }
-            },
-          )
-        },
-      )
+                // console.log(
+                //   'recovered',
+                //   recovered,
+                //   ethUtil.toChecksumAddress(recovered),
+                //   ethUtil.toChecksumAddress(from),
+                // )
+                if (
+                  ethUtil.toChecksumAddress(recovered) ===
+                  ethUtil.toChecksumAddress(from)
+                ) {
+                  // alert('Successfully ecRecovered signer as ' + from)
+                } else {
+                  alert(
+                    'Failed to verify signer when comparing ' +
+                      result +
+                      ' to ' +
+                      from,
+                  )
+                }
+              },
+            )
+          },
+        )
+      })
     },
     // 计算 CRFI
     // total
@@ -524,18 +658,20 @@ export default new Vuex.Store({
     },
     async RepurchaseMax({ state }) {
       let tmp = state.wallet.walletCFil
+      let tmpCRFI = state.wallet.walletCRFI
       // 根据现有CFil 计算要销毁的 CRFI
       let res = await CFilContract.callContract('_calcNeedBurnCRFI', [tmp])
-      if (new BigNumber(tmp).comparedTo(new BigNumber(res)) == -1) {
+      console.log('need', res)
+      if (new BigNumber(tmpCRFI).comparedTo(new BigNumber(res)) == -1) {
         console.log('小于')
         let value = state.wallet.walletCRFI
         let res = await CFilContract.callContract('_calcBurnCFil', [value])
         return utils.fromWei(res)
       } else {
         console.log('大于')
+        return utils.fromWei(tmp)
       }
       // 在判断 CRFI 是否足够
-      return utils.fromWei(res)
     },
     // 回购
     async Repurchase({ state, commit, dispatch }, data) {
@@ -556,11 +692,12 @@ export default new Vuex.Store({
       // TODO: 比例为0时直接调用CFil burn方法
       let res = await CFilContract.callContract('burnCFilRateCRFI', [])
       let betys1 = utils.utf8ToHex(fileCoin)
-      let betys = CRFIContract.web3.eth.abi.encodeParameters(
-        ['string'],
-        [fileCoin],
-      )
+      // let betys = CRFIContract.web3.eth.abi.encodeParameters(
+      //   ['string'],
+      //   [fileCoin],
+      // )
       if (res == 0) {
+        console.log('直接烧')
         await CRFIContract.executeContract(
           'burn',
           [value, betys1],
@@ -642,13 +779,13 @@ export default new Vuex.Store({
 
     async WithdrawDemand({ state, commit, dispatch }) {
       try {
-        await corsslend.executeContract('WithdrawDemand', [], state.userAddress)
-        dispatch('initData')
+        await crossLend.executeContract('WithdrawDemand', [], state.userAddress)
+        dispatch('init')
       } catch (e) {}
     },
     async Withdraw({ state, dispatch }) {
-      await corsslend.executeContract('Withdraw', [], state.userAddress)
-      dispatch('initData')
+      await crossLend.executeContract('Withdraw', [], state.userAddress)
+      dispatch('init')
       try {
       } catch (e) {}
     },
@@ -682,7 +819,7 @@ export default new Vuex.Store({
           [CROSSLEND_ADDRESS, value, betys],
           state.userAddress,
         )
-        dispatch('initData')
+        dispatch('init')
       } catch (e) {}
     },
     // 购买
@@ -717,11 +854,27 @@ export default new Vuex.Store({
         ['uint256', 'uint256', 'address'],
         [mode, 0, '0x0000000000000000000000000000000000000000'],
       )
+      let SFil = ''
+      if (mode == 4) {
+        let paymentDue = utils.fromWei(state.loanCFil.PaymentDue)
+        console.log(value, paymentDue)
+        if (parseFloat(value) < parseFloat(paymentDue)) {
+          console.log('xiaoyu')
+          Toast(i18n.t('toastPaymentDue'))
+          return
+        }
+        SFil = await crossLend.callContract('calcCFilToSFil', [
+          utils.toWei(value),
+        ])
+        console.log('sfil', SFil)
+      }
       value = utils.toWei(value)
+
+      console.log('stake', mode, value)
       try {
         await SFilContract.executeContract(
           'send',
-          [CROSSLEND_ADDRESS, value, betys],
+          [CROSSLEND_ADDRESS, SFil, betys],
           state.userAddress,
         )
         dispatch('init')
@@ -809,6 +962,7 @@ export default new Vuex.Store({
 
       // 获取列表
       let list = await corsslend.callContract('GetPackages', [])
+      console.log('getPackages', list)
       let { demandCRFI, demandCFil, financialPackages } = list
       let list1 = await corsslend.callContract('GetInvestRecords', [address])
       let records = list1.records

@@ -15,7 +15,9 @@
     </div>
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
-      <p>cFIL</p>
+      <p>
+        {{ info.Amount || 0 | decimals }} {{ info.Type == 0 ? 'CRFI' : 'CFIL' }}
+      </p>
     </div>
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
@@ -81,7 +83,7 @@ export default {
       default: 'depositCoins',
     },
     info: {
-      type: Object,
+      type: Object | Array,
       default: () => {
         return {
           ID: 0,
@@ -128,7 +130,6 @@ export default {
       return `background: ${arr[target]}`
     },
     handleConfirm() {
-      console.log(this.info)
       if (!this.value) {
         this.$toast(this.$t('toast'))
         return

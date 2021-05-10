@@ -18,6 +18,9 @@ const cn = {
   filStatistics: 'FIL Statistics',
   crfiStatistics: 'CRFI Statistics',
   fileCoinDepositTotal: 'Filecoin Deposit Total',
+  lendingTotal: 'Lending<br/> Total',
+  crfiDepositTotal: 'CRFI Deposit Total',
+  referralRewards: 'Referral Rewards',
 
   // CFIL
   cFILInvestment: 'cFIL Investment',
@@ -58,9 +61,10 @@ const cn = {
   email: 'Email',
   company: 'Company',
   nodeNumber: 'Node Number',
+  toastPaymentDue: '借出不能小于最低值',
 
   cFILRepay: 'cFIL Repay',
-  myLoan: 'myLoan',
+  myLoan: 'My Loan',
   walletBalance: 'wallet Balance',
 
   // rewards

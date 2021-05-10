@@ -2,7 +2,7 @@
   <div class="container">
     <BaseHeader />
     <h4 class="title">{{ $t('dashboard') }}</h4>
-    <h4 class="title2">{{ $t('filStatistics') }}df</h4>
+    <h4 class="title2">{{ $t('filStatistics') }}</h4>
     <div class="circle" style="text-align: center">
       <van-circle
         fill="#222222"
@@ -17,29 +17,37 @@
       />
     </div>
     <h4 class="title2" style="margin-bottom: 20px">
-      {{ $t('crfiStatistics') }}
+      <!-- {{ $t('filStatistics') }} -->
     </h4>
     <div class="items">
       <div class="item">
         <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">{{ systemInfo.nowInvestCRFI }}</p>
+        <p class="item-text item-bottom">
+          {{ systemInfo.nowInvestCFil | decimals }}
+        </p>
       </div>
       <div class="item">
-        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">{{ systemInfo.cfilLendingTotal }}</p>
+        <p class="item-text" v-html="$t('lendingTotal')"></p>
+        <p class="item-text item-bottom">
+          {{ systemInfo.cfilLendingTotal | decimals }}
+        </p>
       </div>
     </div>
-    <h4 class="title2" style="margin-bottom: 20px">
+    <h4 class="title2" style="margin-bottom: 20px; margin-top: 20px;">
       {{ $t('crfiStatistics') }}
     </h4>
     <div class="items">
       <div class="item">
-        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">{{ systemInfo.nowInvestCRFI }}</p>
+        <p class="item-text">{{ $t('crfiDepositTotal') }}</p>
+        <p class="item-text item-bottom">
+          {{ systemInfo.nowInvestCRFI | decimals }}
+        </p>
       </div>
       <div class="item">
-        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
-        <p class="item-text item-bottom">{{ systemInfo.cfilLendingTotal }}</p>
+        <p class="item-text">{{ $t('referralRewards') }}</p>
+        <p class="item-text item-bottom">
+          {{ systemInfo.cfilLendingTotal | decimals }}
+        </p>
       </div>
     </div>
   </div>

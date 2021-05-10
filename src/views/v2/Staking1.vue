@@ -1,46 +1,25 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader :isBack="true" />
     <div class="content">
       <div class="items">
         <h4 class="item-title">{{ $t('staking') }}</h4>
         <div class="item">
           <span class="item-label">{{ $t('totalIssue') }}:</span>
-          <span class="item-content">213213.232</span>
-        </div>
-        <div class="item">
-          <span class="item-label">{{ $t('totalHashrate') }}:</span>
-          <span class="item-content">213213.232</span>
+          <span class="item-content">{{ totalSupply | decimals }}</span>
         </div>
         <div class="item-input">
           <span class="item-input-label">{{ $t('name') }}:</span>
-          <van-field
-            class="field"
-            center
-            clearable
-            v-model="params.name"
-            :placeholder="$t('purchaseAmount')"
-          />
+          <van-field class="field" center clearable v-model="params.name" />
+          <!-- :placeholder="$t('purchaseAmount')" -->
         </div>
         <div class="item-input">
           <span class="item-input-label">{{ $t('email') }}:</span>
-          <van-field
-            class="field"
-            center
-            clearable
-            v-model="params.email"
-            :placeholder="$t('purchaseAmount')"
-          />
+          <van-field class="field" center clearable v-model="params.email" />
         </div>
         <div class="item-input">
           <span class="item-input-label">{{ $t('company') }}:</span>
-          <van-field
-            class="field"
-            center
-            clearable
-            v-model="params.company"
-            :placeholder="$t('purchaseAmount')"
-          />
+          <van-field class="field" center clearable v-model="params.company" />
         </div>
         <div class="item-input">
           <span class="item-input-label">{{ $t('nodeNumber') }}:</span>
@@ -49,7 +28,6 @@
             center
             clearable
             v-model="params.nodeNumber"
-            :placeholder="$t('purchaseAmount')"
           />
         </div>
         <div class="item-btn">
@@ -73,6 +51,7 @@ export default {
         company: '',
         nodeNumber: '',
       },
+      totalSupply: '',
     }
   },
   computed: {
@@ -83,11 +62,22 @@ export default {
       return this.currentRate.toFixed(0) + '%'
     },
   },
-  async mounted() {},
+  async mounted() {
+    this.totalSupply = await this.getTotalSupply()
+    console.log('dkfldlkf', this.totalSupply)
+  },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData', 'applyStaking']),
+    ...mapActions(['applyStaking', 'getTotalSupply']),
     async handleStaking() {
+      if (
+        this.params.name == '' ||
+        this.params.email == '' ||
+        this.params.company == '' ||
+        this.params.nodeNumber == ''
+      ) {
+        return
+      }
       await this.applyStaking(JSON.stringify(this.params))
     },
     getStyle(index) {

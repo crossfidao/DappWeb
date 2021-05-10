@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <BaseHeader> </BaseHeader>
+    <BaseHeader></BaseHeader>
     <div class="content">
       <van-tabs v-model="active">
         <van-tab title="管理页面">
@@ -82,7 +82,7 @@
                 <div class="price">
                   <h5 class="price-title">cFil {{ $t('rate') }}:</h5>
                   <span class="price-text">
-                    {{ item.EFilInterestRate }}
+                    {{ item.CFilInterestRate }}
                   </span>
 
                   <span>%</span>
@@ -124,7 +124,7 @@
                 <div class="price">
                   <h5 class="price-title">cFil {{ $t('rate') }}:</h5>
                   <span class="price-text">
-                    {{ item.EFilInterestRate }}
+                    {{ item.CFilInterestRate }}
                   </span>
 
                   <span>%</span>
@@ -142,10 +142,35 @@
           </div>
         </van-tab>
         <van-tab title="SFIL 配置">
+          <h4 class="title">
+            <span>参数配置</span>
+            <van-button type="primary" size="small" @click="showEdit = true">
+              修改
+            </van-button>
+          </h4>
+          <div class="item" style="color: #fff">
+            <div class="label">抵押率</div>
+            <div class="input">{{ loanCFil.APY | rate }} %</div>
+          </div>
+          <div class="item" style="color: #fff">
+            <div class="label">借贷利率</div>
+            <div class="input">{{ loanCFil.PledgeRate | rate }} %</div>
+          </div>
+          <div class="item" style="color: #fff">
+            <div class="label">PaymentDue</div>
+            <div class="input">{{ loanCFil.PaymentDue | decimals }}</div>
+          </div>
+
           <div class="apply-item" v-for="item in applyList" :key="item.SID">
             <div class="item-text" v-for="(obj, key) in item.Info" :key="key">
               <span>{{ $t(key) }}: </span>
               <span>{{ obj }}</span>
+            </div>
+            <div class="item-wallet">
+              <span>Addr:</span>
+              <span>{{
+                item.Addr.slice(0, 12) + '...' + item.Addr.slice(30, 42)
+              }}</span>
             </div>
             <div class="item-wallet">
               <span>CFIL{{ $t('balance') }}:</span>
@@ -156,7 +181,7 @@
               <span>{{ wallet.walletCRFI | decimals }}</span>
             </div>
             <div class="item-wallet">
-              <span>CFIL{{ $t('balance') }}:</span>
+              <span>SFIL{{ $t('balance') }}:</span>
               <span>{{ wallet.walletSFil | decimals }}</span>
             </div>
             <div class="item-btn">
@@ -164,17 +189,23 @@
                 type="primary"
                 size="small"
                 @click="handleApplyPass(item)"
-                >通过</van-button
               >
-              <van-button type="danger" size="small" @click="handleRefuse(item)"
-                >拒绝</van-button
+                通过
+              </van-button>
+              <van-button
+                type="danger"
+                size="small"
+                @click="handleRefuse(item)"
               >
+                拒绝
+              </van-button>
             </div>
           </div>
         </van-tab>
         <van-dialog
           v-model="show"
-          title="标题"
+          color="#000000"
+          title="通过"
           show-cancel-button
           @confirm="handlePassConfirm"
           @cancel="show = false"
@@ -213,6 +244,52 @@
         </div>
       </div>
     </van-overlay>
+    <van-overlay class="mask" :show="showEdit" @click.self="showMask = false">
+      <div class="mask-content">
+        <h4 class="mask-title">利率修改</h4>
+        <div class="form">
+          <van-field
+            class="field"
+            label="抵押率"
+            center
+            clearable
+            v-model="params.APY"
+            placeholder="请填写抵押率（%）"
+          />
+          <van-field
+            label="借贷利率"
+            class="field"
+            center
+            clearable
+            v-model="params.PledgeRate"
+            placeholder="请填写借贷利率（%）"
+          />
+          <van-field
+            label="借贷利率"
+            class="field"
+            center
+            clearable
+            v-model="params.PaymentDue"
+            placeholder="请填写PaymentDue"
+          />
+          <!-- <van-field
+            class="field"
+            center
+            clearable
+            v-model="cfil"
+            placeholder="请填写cFil利率（%）"
+          /> -->
+        </div>
+        <div class="footer">
+          <div class="footer-btn" @click="showEdit = false">
+            {{ $t('cancel') }}
+          </div>
+          <div class="footer-btn" @click="handleLoanRateConfirm">
+            {{ $t('confirm') }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -229,6 +306,7 @@ export default {
       active: 1,
       show: false,
       showMask: false,
+      showEdit: false,
       isDemand: false,
       affRate: '0',
       curItem: null,
@@ -237,11 +315,25 @@ export default {
       value: '',
       CRFIValue: '',
       curItem: null,
+      params: {
+        APY: '',
+        PledgeRate: '',
+        PaymentDue: '',
+      },
     }
+  },
+  watch: {
+    loanCFil(val) {
+      console.log('valvalval', val)
+      this.getParams(val)
+    },
   },
   computed: {
     wallet() {
       return this.$store.state.wallet
+    },
+    loanCFil() {
+      return this.$store.state.loanCFil
     },
     applyList() {
       return this.$store.state.applyList
@@ -250,7 +342,7 @@ export default {
       return this.$store.state.systemInfo
     },
     eFilList() {
-      let list = this.$store.state.eFilList
+      let list = this.$store.state.CFilList
       console.log('list', list)
       let tmp = []
       list.forEach(element => {
@@ -263,7 +355,6 @@ export default {
           Type,
           deleteFlag,
         } = element
-
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
 
@@ -282,7 +373,7 @@ export default {
       return tmp
     },
     crfiList() {
-      let list = this.$store.state.crfiList
+      let list = this.$store.state.CRFIList
 
       let tmp = []
       list.forEach(element => {
@@ -318,6 +409,7 @@ export default {
     },
   },
   async mounted() {
+    // this.getParams(this.loanCFil)
     await this.getApplyStaking()
   },
   methods: {
@@ -330,17 +422,28 @@ export default {
       'getApplyStaking',
       'issusStaking',
       'deleteStaking',
+      'changeLoanRate',
     ]),
+    getParams(data) {
+      let { APY, PledgeRate, PaymentDue } = data
+      this.params = {
+        APY: utils.fromWei(APY) * 100,
+        PledgeRate: utils.fromWei(PledgeRate) * 100,
+        PaymentDue: utils.fromWei(PaymentDue) * 100,
+      }
+    },
     // 拒绝
     handleRefuse(data) {
+      console.log('dflkdfd;k', data)
       this.curItem = data
       let { SID } = data
       this.$dialog
         .confirm({
-          title: '标题',
-          message: '弹窗内容',
+          title: '拒绝',
+          message: '确定拒绝该用户的申请吗？',
         })
         .then(async () => {
+          console.log('SID', SID)
           this.deleteStaking({ SID })
           // on confirm
         })
@@ -422,20 +525,60 @@ export default {
       })
       this.showMask = false
     },
+    handleLoanRateConfirm() {
+      this.changeLoanRate(this.params)
+      this.showEdit = false
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-dialog__header {
+  color: #333;
+}
 .about {
   background: #414447;
-  color: #fff;
   height: 100%;
+  overflow: auto;
 }
 .content {
+  color: #333;
   width: 317px;
   margin: 0 auto;
   // padding-top: 130px;
+}
+
+// 配置
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+  color: #fff;
+  font-size: 12px;
+}
+.item {
+  display: flex;
+  margin-bottom: 12px;
+  padding-left: 12px;
+  // color: #fff;
+  font-size: 10px;
+  .label {
+    width: 100px;
+    margin-right: 12px;
+    text-align: left;
+  }
+}
+.apply-item {
+  color: #fff;
+  font-size: 14px;
+  text-align: left;
+  padding-left: 12px;
+  .item-text,
+  .item-wallet {
+    margin-bottom: 12px;
+  }
 }
 .charge {
   display: flex;
@@ -569,7 +712,7 @@ export default {
   // background: rgba(0, 0, 0, 0.6);
   &-content {
     width: 310px;
-    height: 200px;
+    // height: 200px;
     position: absolute;
     z-index: 99;
     top: 50%;
@@ -577,6 +720,7 @@ export default {
     transform: translateX(-50%) translateY(-50%);
     background: #fff;
     border-radius: 16px;
+    padding-bottom: 12px;
     font-size: 15px;
     color: #63c2cd;
   }
