@@ -34,8 +34,8 @@
         </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
-      <div style="text-align: right">
-        <span @click="Withdraw" style="padding-right: 24px">
+      <div style="text-align: right; margin-bottom: 24px; margin-right: 24px;">
+        <span @click="Withdraw" class="withdraw">
           {{ $t('withdraw') }}
         </span>
       </div>
@@ -50,7 +50,7 @@
           </p>
         </div>
         <div class="item-right">
-          <span @click="WithdrawDemand" v-if="item.Days == 0">
+          <span class="withdraw" @click="WithdrawDemand" v-if="item.Days == 0">
             {{ $t('withdraw') }}
           </span>
           <div class="item-rate">
@@ -132,22 +132,38 @@ export default {
   font-family: Montserrat;
   font-weight: 500;
   color: #ffffff;
-  &-btn {
-    position: absolute;
-    right: 18px;
-    bottom: 10px;
-    width: 73px;
-    height: 20px;
-    line-height: 20px;
-    background: #ffffff;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    opacity: 1;
-    border-radius: 5px;
-    font-size: 10px;
-    font-family: Montserrat;
-    font-weight: 400;
-    color: #1f8aff;
-  }
+}
+.balance-item-btn {
+  position: absolute;
+  right: 18px;
+  bottom: 10px;
+  width: 73px;
+  height: 20px;
+  line-height: 20px;
+  background: #ffffff;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  border-radius: 5px;
+  font-size: 10px;
+  font-family: Montserrat;
+  font-weight: 400;
+  color: #1f8aff;
+}
+.withdraw {
+  display: inline-block;
+  //
+  width: 73px;
+  height: 20px;
+  line-height: 20px;
+  background: #ffffff;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  opacity: 1;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10px;
+  font-family: Montserrat;
+  font-weight: 400;
+  color: #1f8aff;
 }
 .bg1 {
   background: #2786ff;

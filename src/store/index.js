@@ -464,12 +464,12 @@ export default new Vuex.Store({
       // console.log('GetInvestRecords', loanInvest)
 
       let arr = JSON.parse(JSON.stringify(interestDetail))
+      let loanInterest = arr.pop()
+      let demandCFilInterest = arr.pop()
+      let demandCRFIInterest = arr.pop()
+      let recordsInterest = arr
+      console.log('dfdf', interestDetail, loanInterest)
       if (arr.length > 0) {
-        let loanInterest = arr.pop()
-        let demandCFilInterest = arr.pop()
-        let demandCRFIInterest = arr.pop()
-        let recordsInterest = arr
-        console.log('dfdf', interestDetail, loanInterest)
         commit('setLoanInvest', {
           Lending,
           Pledge,

@@ -1,5 +1,7 @@
 import Web3 from 'web3'
 import { Toast } from 'vant'
+import i18n from '@/i18n/i18n'
+
 import store from '@/store'
 // web3.eth.send({
 //   from: web3.eth.accounts[0],
@@ -59,6 +61,7 @@ export default class Contract {
     console.log(methods, args, address)
     let isLoading = store.state.showLoading
     if (isLoading) {
+      Toast(i18n.t('inexecution'))
       return false
     }
     store.commit('setLoading', true)

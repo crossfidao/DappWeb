@@ -46,7 +46,7 @@
       <div class="item">
         <p class="item-text">{{ $t('referralRewards') }}</p>
         <p class="item-text item-bottom">
-          {{ systemInfo.cfilLendingTotal | decimals }}
+          {{ systemInfo.crfiRewardTotal | decimals }}
         </p>
       </div>
     </div>
@@ -68,6 +68,7 @@ export default {
     },
 
     rate() {
+      console.log(this.systemInfo)
       let { cfilLendingTotal, nowInvestCFil } = this.systemInfo
       let rate = new BigNumber(cfilLendingTotal).div(
         new BigNumber(nowInvestCFil),

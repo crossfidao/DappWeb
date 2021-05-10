@@ -52,6 +52,7 @@
           <van-field
             class="field"
             center
+            type="number"
             clearable
             v-model="value"
             :placeholder="$t('purchaseAmount')"

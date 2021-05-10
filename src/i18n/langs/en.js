@@ -7,6 +7,8 @@ const cn = {
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
 
+  inexecution: '有交易正在执行中...',
+
   // Header
   staking: 'Staking',
   aboutCrossFi: 'About CrossFi',
