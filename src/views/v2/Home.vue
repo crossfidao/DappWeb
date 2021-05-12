@@ -20,13 +20,13 @@
       <!-- {{ $t('filStatistics') }} -->
     </h4>
     <div class="items">
-      <div class="item">
+      <div class="item bg" style="background: #2b67c1">
         <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
         <p class="item-text item-bottom">
           {{ systemInfo.nowInvestCFil | decimals }}
         </p>
       </div>
-      <div class="item">
+      <div class="item color" style="background: #2b67c1">
         <p class="item-text" v-html="$t('lendingTotal')"></p>
         <p class="item-text item-bottom">
           {{ systemInfo.cfilLendingTotal | decimals }}
@@ -37,8 +37,8 @@
       {{ $t('crfiStatistics') }}
     </h4>
     <div class="items">
-      <div class="item">
-        <p class="item-text">{{ $t('crfiDepositTotal') }}</p>
+      <div class="item bg">
+        <p class="item-text color">{{ $t('crfiDepositTotal') }}</p>
         <p class="item-text item-bottom">
           {{ systemInfo.nowInvestCRFI | decimals }}
         </p>
@@ -99,6 +99,7 @@ export default {
   height: 100%;
   color: #fff;
   text-align: left;
+  background: url('../../assets/images/bg.png') no-repeat;
   .content {
     flex: 1;
   }

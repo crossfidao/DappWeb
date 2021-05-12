@@ -30,8 +30,8 @@ export default {
     return {
       tabs: [
         {
-          name: 'dashboard',
           path: '/',
+          name: 'dashboard',
           icon: 'dashboard',
         },
         {
@@ -45,7 +45,8 @@ export default {
           icon: 'CRFI',
         },
         {
-          name: 'aaa',
+          name: 'wallet',
+          icon: 'wallet',
           path: '/wallet',
         },
       ],
@@ -100,11 +101,17 @@ export default {
       height: 18px;
       background-size: cover;
     }
+    .dashboard {
+      background-image: url('../../assets/icon/dashboard.jpg');
+    }
     .cFIL {
       background-image: url('../../assets/icon/cFIL.png');
     }
     .CRFI {
       background-image: url('../../assets/icon/CRFI.png');
+    }
+    .wallet {
+      background-image: url('../../assets/icon/wallet.png');
     }
   }
 }
@@ -122,6 +129,16 @@ export default {
   }
   .cFIL {
     background-image: url('../../assets/icon/cFIL-active.png') !important;
+  }
+  .dashboard {
+    background-image: url('../../assets/icon/dashboard-active.jpg') !important;
+  }
+  .CRFI {
+    background-image: url('../../assets/icon/CRFI-active.png') !important;
+  }
+
+  .wallet {
+    background-image: url('../../assets/icon/wallet-active.jpg') !important;
   }
 }
 </style>

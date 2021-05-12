@@ -2,10 +2,11 @@
   <div class="header" :style="'background:' + color">
     <div class="header-user">
       <router-link to="/" tag="div" class="logo" v-if="!isBack">
-        <img src="../../assets/images/logo.png" alt="" class="title-logo" />
+        <img src="../../assets/logo.png" alt="" class="title-logo" />
         <!-- <span>{{ address }}</span> -->
       </router-link>
       <van-icon name="arrow-left" v-else size="24" @click="$router.back()" />
+      <span v-if="title" class="header-title">{{ title }}</span>
       <span v-show="showLoading">pending</span>
       <div class="right">
         <!-- <span class="header-user-btn" @click="ethereum">
@@ -14,7 +15,7 @@
         <span class="header-user-btn" @click="handleApp">
           {{ $t('application') }}
         </span> -->
-        <van-icon name="wap-nav" size="28" @click="showpop = true" />
+        <van-icon :name="line" size="28" @click="showpop = true" />
       </div>
     </div>
 
@@ -30,10 +31,10 @@
       <!-- overlay-style="background: #000000" -->
       <div class="pop">
         <div class="pop-menu">
-          <div class="pop-menu-item">
+          <router-link tag="div" to="/staking" class="pop-menu-item">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('staking') }}</span>
-          </div>
+          </router-link>
           <div class="pop-menu-item">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('aboutCrossFi') }}</span>
@@ -104,11 +105,12 @@ export default {
     },
     title: {
       type: String,
-      default: 'depositCoins',
+      default: '',
     },
   },
   data() {
     return {
+      line: require('../../assets/icon/line.png'),
       showpop: false,
       show: false,
       showLang: false,
@@ -179,6 +181,12 @@ export default {
   border-bottom-right-radius: 32px;
   // padding-bottom: 21px;
   font-size: 10px;
+  &-title {
+    font-size: 25px;
+    font-family: Montserrat;
+    font-weight: 500;
+    color: #18ced2;
+  }
   &-user {
     display: flex;
     justify-content: space-between;

@@ -564,4 +564,7 @@ export default {
   color: #ffffff;
   font-size: 10px;
 }
+.bg {
+  background: #2b67c1 !important;
+}
 </style>

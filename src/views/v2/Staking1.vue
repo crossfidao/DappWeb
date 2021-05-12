@@ -1,6 +1,6 @@
 <template>
   <div class="container home">
-    <BaseHeader :isBack="true" />
+    <BaseHeader :isBack="true" :title="$t('staking')" />
     <div class="content">
       <div class="items">
         <h4 class="item-title">{{ $t('staking') }}</h4>
@@ -98,6 +98,8 @@ export default {
   flex-direction: column;
   height: 100%;
   background: #414447;
+  background: url('../../assets/images/bg.png') no-repeat;
+
   color: #fff;
   .content {
     padding-bottom: 24px;

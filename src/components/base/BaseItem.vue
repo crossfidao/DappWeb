@@ -163,6 +163,7 @@ export default {
   width: 265px;
   height: 88px;
   background: #6d06c3;
+  background-image: url('../../assets/images/bowen.png') !important;
   margin: 0 auto 9px;
   opacity: 1;
   padding: 12px;

@@ -24,7 +24,7 @@
       </div>
       <div class="balance-item bg3">
         <div class="balance-item-left">
-          <p class="icon CRFI"></p>
+          <!-- <p class="icon CRFI"></p> -->
           <p>sFIL</p>
           <p>{{ $t('balance') }}</p>
         </div>
@@ -42,7 +42,7 @@
 
       <div class="item" v-for="(item, index) in userList" :key="index">
         <div class="item-left">
-          <p style="padding: 8px 0;">
+          <p class="item-date" style="padding: 8px 0; flex: 1">
             {{ item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand') }}
           </p>
           <p class="item-coin item-coin-c">
@@ -110,6 +110,7 @@ export default {
   flex-direction: column;
   height: 100%;
   color: #fff;
+  background: url('../../assets/images/bg.png') no-repeat;
   .content {
     flex: 1;
   }
@@ -188,6 +189,8 @@ export default {
   font-size: 10px;
   font-family: Segoe UI;
   &-left {
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
     width: 64px;
     height: 74px;
@@ -200,10 +203,15 @@ export default {
     font-weight: bold;
     color: #ffffff;
     opacity: 1;
+    .item-date {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
   &-coin {
-    height: 20px;
-    // line-height: 20px;
+    height: 24px;
+    line-height: 24px;
     font-weight: 300;
     font-size: 12px;
   }
@@ -252,6 +260,8 @@ export default {
   height: 26px;
 }
 .cFIL {
+  height: 36px;
+  width: 36px;
   background: url('../../assets/icon/cFIL-wallet.png') no-repeat;
   background-size: cover;
 }

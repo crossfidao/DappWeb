@@ -1,7 +1,7 @@
 <template>
   <div class="container home">
     <BaseHeader />
-    <h4 class="title">{{ $t('cFILInvestment') }}</h4>
+    <h4 class="title">{{ $t('CRFIInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
         v-for="(item, index) in CRFIList"

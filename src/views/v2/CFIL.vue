@@ -1,7 +1,9 @@
 <template>
   <div class="container home">
     <BaseHeader />
-    <h4 class="title">{{ $t('cFILInvestment') }}</h4>
+    <h4 class="title">
+      {{ $t('cFILInvestment') }}
+    </h4>
     <div class="content bg">
       <BaseItem
         v-for="(item, index) in CFilList"
@@ -67,6 +69,7 @@ export default {
 .title {
   color: #fff;
   margin-left: 30px;
+  margin-bottom: 8px;
   text-align: left;
 }
 </style>

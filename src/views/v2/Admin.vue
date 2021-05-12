@@ -21,13 +21,13 @@
             </div>
           </div>
           <!-- 重置 -->
-          <div class="charge-title">
+          <div class="charge-title" style="margin: 0 32px">
             <span>
               {{ $t('charge') }} cFil {{ $t('interestPool') }}
               {{ systemInfo.cfilInterestPool | decimals }}</span
             >
           </div>
-          <div class="charge">
+          <div class="charge" style="margin: 0 32px">
             <van-field
               class="price-input"
               placeholder="请输入cFil数量"
@@ -39,13 +39,13 @@
             </van-button>
           </div>
           <!-- 充值CRFI -->
-          <div class="charge-title">
+          <div class="charge-title" style="margin: 0 32px">
             <span>
               {{ $t('charge') }} CRFI {{ $t('interestPool') }}
               {{ systemInfo.crfiInterestPool | decimals }}</span
             >
           </div>
-          <div class="charge">
+          <div class="charge" style="margin: 0 32px">
             <van-field
               class="price-input"
               placeholder="请输入CRFI数量"
@@ -142,26 +142,30 @@
           </div>
         </van-tab>
         <van-tab title="SFIL 配置">
-          <h4 class="title">
-            <span>参数配置</span>
-            <van-button type="primary" size="small" @click="handleEditLoan">
-              修改
-            </van-button>
-          </h4>
-          <div class="item" style="color: #fff">
-            <div class="label">抵押率</div>
-            <div class="input">{{ loanCFil.APY | rate }} %</div>
-          </div>
-          <div class="item" style="color: #fff">
-            <div class="label">借贷利率</div>
-            <div class="input">{{ loanCFil.PledgeRate | rate }} %</div>
-          </div>
           <div
-            class="item"
-            style="color: #fff; margin-bottom: 24px; border-bottom: 1px solid #ccc; padding-bottom: 12px;"
+            style="background: #2c3546; margin: 0 32px 24px; border-radius: 8px; padding: 12px;"
           >
-            <div class="label">PaymentDue</div>
-            <div class="input">{{ loanCFil.PaymentDue | decimals }}</div>
+            <h4 class="title">
+              <span>参数配置</span>
+              <van-button type="primary" size="small" @click="handleEditLoan">
+                修改
+              </van-button>
+            </h4>
+            <div class="item" style="color: #fff">
+              <div class="label">抵押率</div>
+              <div class="input">{{ loanCFil.APY | rate }} %</div>
+            </div>
+            <div class="item" style="color: #fff">
+              <div class="label">借贷利率</div>
+              <div class="input">{{ loanCFil.PledgeRate | rate }} %</div>
+            </div>
+            <div
+              class="item"
+              style="color: #fff; margin-bottom: 24px; border-bottom: 1px solid #ccc; padding-bottom: 12px;"
+            >
+              <div class="label">PaymentDue</div>
+              <div class="input">{{ loanCFil.PaymentDue | decimals }}</div>
+            </div>
           </div>
 
           <div
@@ -572,6 +576,8 @@ export default {
 }
 .about {
   background: #2c3546;
+  background: url('../../assets/images/bg.png') no-repeat;
+
   height: 100%;
   overflow: auto;
 }
@@ -605,10 +611,13 @@ export default {
   }
 }
 .apply-item {
+  background: #2c3546;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 0 32px 24px;
   color: #fff;
   font-size: 14px;
   text-align: left;
-  padding-left: 12px;
   .item-text,
   .item-wallet {
     display: flex;
@@ -619,6 +628,7 @@ export default {
 .charge {
   display: flex;
   align-items: center;
+  margin: 12px auto 20px;
   padding: 12px 0;
   background: #fff;
   border: 1px solid #63c2cd;
@@ -641,10 +651,8 @@ export default {
   color: #63c2cd;
 }
 .items {
-  width: 317px;
-  margin: 12px auto 20px;
   background: #fff;
-
+  margin: 0 32px;
   border-radius: 5px;
   text-align: left;
   font-size: 15px;

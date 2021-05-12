@@ -27,6 +27,7 @@ const cn = {
 
   // CFIL
   cFILInvestment: 'cFIL Investment',
+  CRFIInvestment: 'CRFI Investment',
   totalDeposit: 'Total Deposit',
   purchase: 'Purchase',
   purchaseAmount: 'Purchase Amount',

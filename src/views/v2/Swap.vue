@@ -6,7 +6,7 @@
       <div class="items">
         <div class="type">
           <div class="type-item">
-            <i class="icon"></i>
+            <i class="icon filecoin"></i>
             <p>FIL</p>
           </div>
 
@@ -55,7 +55,7 @@
           </div>
           <van-icon name="exchange" size="42" />
           <div class="type-item">
-            <i class="icon"></i>
+            <i class="icon filecoin"></i>
             <p>FIL</p>
           </div>
         </div>
@@ -191,6 +191,8 @@ export default {
   overflow: auto;
   height: 100%;
   background: #222;
+  background: url('../../assets/images/bg.png') no-repeat;
+
   color: #fff;
   .content {
     padding-bottom: 24px;
@@ -217,6 +219,12 @@ export default {
     width: 46px;
     height: 46px;
     background: url('../../assets/icon/cFIL-blue.png');
+  }
+  .filecoin {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    background: url('../../assets/icon/filecoin-fil-logo.png');
   }
   &-item {
     text-align: center;
