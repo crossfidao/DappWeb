@@ -627,7 +627,7 @@ export default new Vuex.Store({
                 // sendToServerForVerification(signature)
                 axios
                   .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
-                    // .get('http://10.255.3.147:9980/get_addr', {
+                    // .get('http://10.30.0.1:9980/get_addr', {
                     params: {
                       eth_addr: state.userAddress,
                       signed: signature,

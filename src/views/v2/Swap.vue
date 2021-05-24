@@ -2,85 +2,89 @@
   <div class="container home">
     <BaseHeader :isBack="true" />
     <div class="content">
-      <h4 class="title">{{ $t('filSwap') }}</h4>
-      <div class="items">
-        <div class="type">
-          <div class="type-item">
-            <i class="icon filecoin"></i>
-            <p>FIL</p>
-          </div>
+      <template v-if="current == 0">
+        <h4 class="title">{{ $t('filSwap') }}</h4>
+        <div class="items">
+          <div class="type">
+            <div class="type-item">
+              <i class="icon filecoin"></i>
+              <p>FIL</p>
+            </div>
 
-          <van-icon name="exchange" size="42" />
-          <div class="type-item">
-            <i class="icon"></i>
-            <p>cFIL</p>
+            <van-icon @click="handleClick" name="exchange" size="42" />
+            <div class="type-item">
+              <i class="icon"></i>
+              <p>cFIL</p>
+            </div>
           </div>
         </div>
-      </div>
-      <template>
-        <h4
-          v-show="!FileAddr"
-          class="login-btn"
-          style="margin-bottom: 8px"
-          @click="handleLogin"
-        >
-          {{ $t('login') }}
+        <template>
+          <h4
+            v-show="!FileAddr"
+            class="login-btn"
+            style="margin-bottom: 8px"
+            @click="handleLogin"
+          >
+            {{ $t('login') }}
+          </h4>
+        </template>
+        <template v-show="FileAddr">
+          <div class="qrcode-box">
+            <div id="qrcode" ref="qrcode" class="qrcode"></div>
+          </div>
+          <div
+            class="tag-read copy"
+            :data-clipboard-text="FileAddr"
+            @click="copy"
+            v-if="FileAddr"
+          >
+            <span class="copy-text">{{ userFileAddr }}</span>
+            <div class="copy-right">
+              <van-icon name="description" size="30" color="#A2A2A2" />
+              <p>{{ $t('copy') }}</p>
+            </div>
+          </div>
+        </template>
+      </template>
+      <div v-show="current == 1">
+        <h4 class="title" style="margin-bottom: 12px">
+          {{ $t('cfilSwap') }}
         </h4>
-      </template>
-      <template v-show="FileAddr">
-        <div class="qrcode-box">
-          <div id="qrcode" ref="qrcode" class="qrcode"></div>
-        </div>
-        <div
-          class="tag-read copy"
-          :data-clipboard-text="FileAddr"
-          @click="copy"
-          v-if="FileAddr"
-        >
-          <span class="copy-text">{{ userFileAddr }}</span>
-          <div class="copy-right">
-            <van-icon name="description" size="30" color="#A2A2A2" />
-            <p>{{ $t('copy') }}</p>
+        <div class="items">
+          <div class="type">
+            <div class="type-item">
+              <i class="icon"></i>
+              <p>cFIL</p>
+            </div>
+            <van-icon @click="handleClick" name="exchange" size="42" />
+            <div class="type-item">
+              <i class="icon filecoin"></i>
+              <p>FIL</p>
+            </div>
           </div>
-        </div>
-      </template>
-      <h4 class="title" style="margin-bottom: 12px">
-        {{ $t('cfilSwap') }}
-      </h4>
-      <div class="items">
-        <div class="type">
-          <div class="type-item">
-            <i class="icon"></i>
-            <p>cFIL</p>
-          </div>
-          <van-icon name="exchange" size="42" />
-          <div class="type-item">
-            <i class="icon filecoin"></i>
-            <p>FIL</p>
-          </div>
-        </div>
-        <div class="form">
-          <div class="form-item">
-            <van-field
-              class="field"
-              center
-              clearable
-              v-model="value"
-              :placeholder="$t('purchaseAmount')"
-            />
-            <span class="max" @click="handleMax">{{ $t('max') }}</span>
-          </div>
-          <div class="form-item">
-            <van-field
-              class="field"
-              center
-              clearable
-              v-model="fileCoin"
-              :placeholder="$t('addressPlaceholder')"
-            />
-          </div>
-          <div class="form-btn" @click="handleRepurchase">
-            {{ $t('confirm') }}
+          <div class="form">
+            <div class="form-item">
+              <van-field
+                class="field"
+                center
+                clearable
+                v-model="value"
+                :placeholder="$t('purchaseAmount')"
+              />
+              <span class="max" @click="handleMax">{{ $t('max') }}</span>
+            </div>
+            <div class="form-item">
+              <van-field
+                class="field"
+                center
+                clearable
+                v-model="fileCoin"
+                :placeholder="$t('addressPlaceholder')"
+              />
+            </div>
+            <div class="form-btn" @click="handleRepurchase">
+              {{ $t('confirm') }}
+            </div>
           </div>
         </div>
       </div>
@@ -97,6 +101,7 @@ export default {
     return {
       isLogin: false,
       showMask: false,
+      current: 0,
       currentRate: 0,
       value: '',
       fileCoin: '',
@@ -134,6 +139,14 @@ export default {
     ...mapActions(['login', 'Repurchase', 'RepurchaseMax']),
     async handleMax() {
       this.value = await this.RepurchaseMax()
+    },
+    handleClick() {
+      this.current = this.current == 0 ? 1 : 0
+      if (this.current == 0) {
+        this.$nextTick(() => {
+          this.qrcode()
+        })
+      }
     },
     // 回购
     handleRepurchase() {
@@ -218,7 +231,7 @@ export default {
     display: inline-block;
     width: 46px;
     height: 46px;
-    background: url('../../assets/icon/cFIL-blue.png');
+    background: url('../../assets/icon/cFIL-blue.png') no-repeat;
   }
   .filecoin {
     display: inline-block;
