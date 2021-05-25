@@ -115,10 +115,10 @@ export default {
       show: false,
       showLang: false,
       lang: [
-        // {
-        //   name: '中文',
-        //   lang: 'cn',
-        // },
+        {
+          name: '中文',
+          lang: 'cn',
+        },
         {
           name: 'English',
           lang: 'en',

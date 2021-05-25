@@ -507,6 +507,8 @@ export default new Vuex.Store({
           CFilInterestRate,
           CFilInterest: demandCFilInterest[0],
           CRFIInterest: demandCFilInterest[1],
+          Type: 1,
+
           Days: '0',
         })
         commit('setCFilDemandTotalAmount', demandCFil)
@@ -526,6 +528,7 @@ export default new Vuex.Store({
           CFilInterestRate,
           CFilInterest: demandCRFIInterest[0],
           CRFIInterest: demandCRFIInterest[1],
+          Type: 0,
           Days: '0',
         })
         commit('setCRFIDemandTotalAmount', demandCRFI)

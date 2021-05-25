@@ -128,7 +128,6 @@ export default {
   },
   async mounted() {
     if (this.FileAddr) {
-      console.log('dfdlkfqrcode')
       this.$nextTick(() => {
         this.qrcode()
       })

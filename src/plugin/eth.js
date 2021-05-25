@@ -89,8 +89,6 @@ export default class Contract {
           throw e.message
         }
       } catch (e) {
-        console.log('dfdlfd', e.code, e.message)
-        console.log('gas', e, e.code)
         Toast(e.toString())
         store.commit('setLoading', false)
         reject()

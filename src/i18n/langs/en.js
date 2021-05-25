@@ -7,7 +7,7 @@ const cn = {
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
 
-  inexecution: '有交易正在执行中...',
+  inexecution: 'There are transactions in progress...',
 
   // Header
   staking: 'Staking',
@@ -65,7 +65,7 @@ const cn = {
   email: 'Email',
   company: 'Company',
   nodeNumber: 'Node Number',
-  toastPaymentDue: '借出不能小于最低值',
+  toastPaymentDue: 'The loan cannot be less than the minimum value',
 
   cFILRepay: 'cFIL Repay',
   myLoan: 'My Loan',
