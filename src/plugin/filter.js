@@ -18,7 +18,12 @@ Vue.filter('decimals', value => {
 
 Vue.filter('rate', value => {
   value = value || '0'
-  value = value * 100
+  value = (value * 100).toString()
+  try {
+    return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value))))
+  } catch (e) {
+    console.log(value, e)
+  }
   return utils.fromWei(value.toString())
 })
 

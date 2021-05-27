@@ -1,7 +1,7 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const kr = {
   // menubar
-  dashboard: '대시보드',
+  dashboard: '홈 페이지',
   cFILInvest: 'cFIL 투자',
   CRFIInvest: 'CRFI 투자',
   wallet: '지갑', // ? 保留关键字
@@ -20,7 +20,7 @@ const kr = {
   // home
   filStatistics: 'FIL 통계',
   crfiStatistics: 'CRFI 통계',
-  fileCoinDepositTotal: '총 FIL 예금',
+  fileCoinDepositTotal: '총 예금',
   lendingTotal: '총 대출',
   crfiDepositTotal: '총 CRFI 예금',
   referralRewards: '러퍼럴 보상',

@@ -1,7 +1,7 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
   // menubar
-  dashboard: 'Dashboard',
+  dashboard: 'Home',
   cFILInvest: 'cFIL Invest',
   CRFIInvest: 'CRFI Invest',
   wallet: 'Wallet', // ? 保留关键字
@@ -20,7 +20,8 @@ const cn = {
   // home
   filStatistics: 'FIL Statistics',
   crfiStatistics: 'CRFI Statistics',
-  fileCoinDepositTotal: 'Filecoin Deposit Total',
+  // fileCoinDepositTotal: 'Filecoin Deposit Total ',
+  fileCoinDepositTotal: 'Total deposit',
   lendingTotal: 'Lending<br/> Total',
   crfiDepositTotal: 'CRFI Deposit Total',
   referralRewards: 'Referral Rewards',
@@ -106,6 +107,7 @@ const cn = {
   contract: 'contract',
   repurchase: 'repurchase',
   withdraw: 'withdraw',
+  withdrawAll: 'withdraw All',
   eFilDesc: 'cFil can be redeemed in 1:1 ratio by Filecoin',
   FDDesc: 'CRFI can be obtained by staking and mining',
   eFilPlaceholder: 'please input your cFil selling amount',

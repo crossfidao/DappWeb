@@ -36,7 +36,7 @@
       <h4 class="title">{{ $t('myPositions') }}</h4>
       <div style="text-align: right; margin-bottom: 24px; margin-right: 24px;">
         <span @click="Withdraw" class="withdraw">
-          {{ $t('withdraw') }}
+          {{ $t('withdrawAll') }}
         </span>
       </div>
 
@@ -45,12 +45,20 @@
           <p class="item-date" style="padding: 8px 0; flex: 1">
             {{ item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand') }}
           </p>
-          <p class="item-coin item-coin-c">
+          <p
+            class="item-coin item-coin-c"
+            :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
+          >
             {{ item.Type == 0 ? 'CRFI' : 'CFil' }}
           </p>
         </div>
         <div class="item-right">
-          <span class="withdraw" @click="WithdrawDemand" v-if="item.Days == 0">
+          <span
+            class="withdraw"
+            :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
+            @click="WithdrawDemand"
+            v-if="item.Days == 0"
+          >
             {{ $t('withdraw') }}
           </span>
           <div class="item-rate">
@@ -164,7 +172,7 @@ export default {
   font-size: 10px;
   font-family: Montserrat;
   font-weight: 400;
-  color: #1f8aff;
+  color: #ffffff;
 }
 .bg1 {
   background: #2786ff;

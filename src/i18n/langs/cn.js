@@ -1,7 +1,7 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
   // menubar
-  dashboard: '数字面板',
+  dashboard: '首页',
   cFILInvest: 'cFIL 投入',
   CRFIInvest: 'CRFI 投入',
   wallet: '钱包', // ? 保留关键字
@@ -18,9 +18,10 @@ const cn = {
   admin: '管理',
 
   // home
-  filStatistics: 'FIL 总数',
+  filStatistics: 'FIL 使用占比',
   crfiStatistics: 'CRFI 总数',
-  fileCoinDepositTotal: 'FIL 质押总数',
+  fileCoinDepositTotal: '总存款',
+  // fileCoinDepositTotal: 'FIL 质押总数',
   lendingTotal: '总借出',
   crfiDepositTotal: 'CRFI质押总数',
   referralRewards: '推荐奖',
@@ -104,6 +105,7 @@ const cn = {
   contract: '合约',
   repurchase: '赎回',
   withdraw: '取出',
+  withdrawAll: '全部提现',
   eFilDesc: 'cFil可以与Filecoin以1:1的比例交换。',
   FDDesc: 'CRFI可以质押和理财',
   eFilPlaceholder: '请输入cFil兑换量',

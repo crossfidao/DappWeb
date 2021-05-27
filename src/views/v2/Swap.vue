@@ -231,12 +231,14 @@ export default {
     width: 46px;
     height: 46px;
     background: url('../../assets/icon/cFIL-blue.png') no-repeat;
+    background-size: contain;
   }
   .filecoin {
     display: inline-block;
     width: 46px;
     height: 46px;
     background: url('../../assets/icon/filecoin-fil-logo.png');
+    background-size: contain;
   }
   &-item {
     text-align: center;

@@ -8,10 +8,16 @@
     </div>
     <div class="item-rate">
       <span class="icon CRFI"></span>
-      <span>CRFI: {{ info.CRFIInterestRate | rate }}%</span>
+      <span>
+        CRFI: {{ info.CRFIInterestRate | rate }}%
+        {{ getRate(info) }}
+      </span>
       <span>+</span>
       <span class="icon cFIL"></span>
-      <span>CFIL: {{ info.CFilInterestRate | rate }}%</span>
+      <span
+        >CFIL: {{ info.CFilInterestRate | rate }}%
+        {{ getCFilRate(info) | rate }}
+      </span>
     </div>
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
@@ -73,6 +79,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import BigNumber from 'bignumber.js'
 export default {
   name: 'BaseFooter',
   props: {
@@ -124,6 +131,39 @@ export default {
         return decodeURIComponent(r[2])
       }
       return null
+    },
+    getRate(data) {
+      let { Type, Amount = 1, CRFIInterestRate } = data
+      console.log(Type, data, Amount)
+      if (Amount == 0) {
+        Amount = 1
+      }
+
+      if (Type == 1) {
+        // CFil
+        let value = '24'
+        let result = new BigNumber(value)
+          .times(new BigNumber(CRFIInterestRate))
+          .div(new BigNumber(Amount))
+          .times(new BigNumber(100))
+
+        console.log(parseFloat(result.toString()))
+
+        return parseFloat(result.toString()).toFixed(2)
+      } else {
+        return CRFIInterestRate
+      }
+    },
+    getCFilRate(data) {
+      let { Type, CFilInterestRate } = data
+      console.log(Type, data)
+      if (Type == 0) {
+        // CFil
+        CFilInterestRate
+        return 100
+      } else {
+        return CFilInterestRate
+      }
     },
     getStyle(index) {
       let target = index % 5
