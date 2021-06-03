@@ -34,8 +34,8 @@
         </router-link>
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
-      <div style="text-align: right; margin-bottom: 24px; margin-right: 24px;">
-        <span @click="Withdraw" class="withdraw">
+      <div style="text-align: right; margin-bottom: 24px; margin-right: 24px; ">
+        <span @click="Withdraw" class="withdraw" style="background: #18CED2">
           {{ $t('withdrawAll') }}
         </span>
       </div>
@@ -56,7 +56,7 @@
           <span
             class="withdraw"
             :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
-            @click="WithdrawDemand"
+            @click="WithdrawDemand(item.Type)"
             v-if="item.Days == 0"
           >
             {{ $t('withdraw') }}
@@ -105,6 +105,7 @@ export default {
     },
   },
   async mounted() {},
+
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['Withdraw', 'WithdrawDemand']),

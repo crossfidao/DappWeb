@@ -20,7 +20,9 @@ Vue.filter('rate', value => {
   value = value || '0'
   value = (value * 100).toString()
   try {
-    return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value))))
+    return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value)))).toFixed(
+      2,
+    )
   } catch (e) {
     console.log(value, e)
   }

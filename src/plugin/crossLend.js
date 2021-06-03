@@ -178,6 +178,13 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
+           inputs: [],
+           name: 'CalcDurationTime',
+           outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
            inputs: [{ internalType: 'uint256', name: 'rate', type: 'uint256' }],
            name: 'ChangeAffRate',
            outputs: [],
@@ -574,6 +581,13 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
+           inputs: [{ internalType: 'string', name: 'key', type: 'string' }],
+           name: 'GetMap',
+           outputs: [{ internalType: 'string', name: 'value', type: 'string' }],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
            inputs: [],
            name: 'GetPackages',
            outputs: [
@@ -798,11 +812,28 @@ export const crossLendAbi = [
          },
          {
            inputs: [],
+           name: 'OneDayTimes',
+           outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+           stateMutability: 'view',
+           type: 'function',
+         },
+         {
+           inputs: [],
            name: 'SFil',
            outputs: [
              { internalType: 'contract IERC777', name: '', type: 'address' },
            ],
            stateMutability: 'view',
+           type: 'function',
+         },
+         {
+           inputs: [
+             { internalType: 'string', name: 'key', type: 'string' },
+             { internalType: 'string', name: 'value', type: 'string' },
+           ],
+           name: 'SetMap',
+           outputs: [],
+           stateMutability: 'nonpayable',
            type: 'function',
          },
          {
@@ -831,7 +862,13 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
-           inputs: [],
+           inputs: [
+             {
+               internalType: 'uint256',
+               name: 'financialType',
+               type: 'uint256',
+             },
+           ],
            name: 'WithdrawDemand',
            outputs: [],
            stateMutability: 'nonpayable',

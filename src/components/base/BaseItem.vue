@@ -9,14 +9,15 @@
     <div class="item-rate">
       <span class="icon CRFI"></span>
       <span>
-        CRFI: {{ info.CRFIInterestRate | rate }}%
-        {{ getRate(info) }}
+        <!-- {{ info.CRFIInterestRate | rate }}% -->
+        CRFI: {{ getRate(info) | rate }}%
       </span>
       <span>+</span>
       <span class="icon cFIL"></span>
-      <span
-        >CFIL: {{ info.CFilInterestRate | rate }}%
-        {{ getCFilRate(info) | rate }}
+      <span>
+        CFIL:
+        <!-- {{ info.CFilInterestRate | rate }}% -->
+        {{ getCFilRate(info) | rate }}%
       </span>
     </div>
     <div class="item-total">
@@ -110,6 +111,12 @@ export default {
     }
   },
   computed: {
+    cfilPrice() {
+      return this.$store.state.cfilPrice
+    },
+    crfiPrice() {
+      return this.$store.state.crfiPrice
+    },
     wallet() {
       return this.$store.state.wallet
     },
@@ -117,13 +124,13 @@ export default {
       return this.$store.state.balance
     },
   },
-  mounted() {
+  async mounted() {
     let invite = this.getQueryString('invite') || ''
     this.inviteValue = invite
   },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData', 'buyCoin', 'demandBuyCoin']),
+    ...mapActions(['initData', 'buyCoin', 'demandBuyCoin', 'getKeyValue']),
     getQueryString(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
       let r = window.location.search.substr(1).match(reg)
@@ -134,33 +141,27 @@ export default {
     },
     getRate(data) {
       let { Type, Amount = 1, CRFIInterestRate } = data
-      console.log(Type, data, Amount)
       if (Amount == 0) {
         Amount = 1
       }
 
       if (Type == 1) {
         // CFil
-        let value = '24'
-        let result = new BigNumber(value)
+        let result = new BigNumber(this.crfiPrice)
           .times(new BigNumber(CRFIInterestRate))
-          .div(new BigNumber(Amount))
-          .times(new BigNumber(100))
-
-        console.log(parseFloat(result.toString()))
-
-        return parseFloat(result.toString()).toFixed(2)
+          .div(new BigNumber(this.cfilPrice))
+        return result.toString()
       } else {
         return CRFIInterestRate
       }
     },
     getCFilRate(data) {
       let { Type, CFilInterestRate } = data
-      console.log(Type, data)
       if (Type == 0) {
-        // CFil
-        CFilInterestRate
-        return 100
+        let result = new BigNumber(this.cfilPrice)
+          .times(new BigNumber(CFilInterestRate))
+          .div(new BigNumber(this.crfiPrice))
+        return result.toString()
       } else {
         return CFilInterestRate
       }

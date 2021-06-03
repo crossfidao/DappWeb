@@ -14,6 +14,7 @@ export default {
     },
   },
   async mounted() {},
+
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData']),

@@ -39,6 +39,7 @@ export default {
       // window.location.reload()
     })
   },
+
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['init']),

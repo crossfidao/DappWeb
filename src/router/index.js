@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import Home from '../views/Home.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -71,59 +72,14 @@ const routes = [
       import(/* webpackChunkName: "about" */ '../views/v2/Swap.vue'),
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Home.vue'),
-  },
-  {
-    path: '/sign',
-    name: 'Sign',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Sign.vue'),
-  },
-  {
-    path: '/investment',
-    name: 'investment',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Investment.vue'),
-  },
-  {
-    path: '/assets',
-    name: 'assets',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Assets.vue'),
-  },
-  {
     path: '/admin',
     name: 'admin',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/v2/Admin.vue'),
   },
   {
-    path: '/apply',
-    name: 'apply',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/Apply.vue'),
-  },
-  {
     path: '/deploy',
     name: 'deploy',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/deploy.vue'),
   },
@@ -131,6 +87,17 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  // ...
+  console.log(from)
+  if (from.name == null) {
+    store.commit('setHome', true)
+  } else {
+    store.commit('setHome', false)
+  }
+  next()
 })
 
 router.afterEach((to, from, next) => {

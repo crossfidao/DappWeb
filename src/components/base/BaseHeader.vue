@@ -1,20 +1,13 @@
 <template>
   <div class="header" :style="'background:' + color">
     <div class="header-user">
-      <router-link to="/" tag="div" class="logo" v-if="!isBack">
+      <router-link to="/" tag="div" class="logo" v-if="!isBack || isHome">
         <img src="../../assets/logo.png" alt="" class="title-logo" />
-        <!-- <span>{{ address }}</span> -->
       </router-link>
       <van-icon name="arrow-left" v-else size="24" @click="$router.back()" />
       <span v-if="title" class="header-title">{{ title }}</span>
       <span v-show="showLoading">pending</span>
       <div class="right">
-        <!-- <span class="header-user-btn" @click="ethereum">
-          {{ !userAddress ? $t('connect') : '已连接' }}
-        </span>
-        <span class="header-user-btn" @click="handleApp">
-          {{ $t('application') }}
-        </span> -->
         <van-icon :name="line" size="28" @click="showpop = true" />
       </div>
     </div>
@@ -28,7 +21,6 @@
       position="right"
       :style="{ height: '100%', width: '273px' }"
     >
-      <!-- overlay-style="background: #000000" -->
       <div class="pop">
         <div class="pop-menu">
           <router-link tag="div" to="/staking" class="pop-menu-item">
@@ -134,6 +126,9 @@ export default {
   computed: {
     showLoading() {
       return this.$store.state.showLoading
+    },
+    isHome() {
+      return this.$store.state.isHome
     },
     userInfo() {
       return this.$store.state.userInfo

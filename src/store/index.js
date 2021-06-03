@@ -44,33 +44,10 @@ const SFilContract = new Contract({
   abi: SFilAbi,
 })
 
-// crossLend.contract.events
-//   .AffEvent(
-//     {
-//       filter: {}, // Using an array means OR: e.g. 20 or 23
-//       fromBlock: 0,
-//     },
-//     function(error, event) {
-//       console.log(event)
-//     },
-//   )
-//   .on('connected', function(subscriptionId) {
-//     // console.log(subscriptionId)
-//   })
-//   .on('data', function(event) {
-//     console.log(event) // same results as the optional callback above
-//   })
-//   .on('changed', function(event) {
-//     // remove event from local database
-//   })
-//   .on('error', function(error, receipt) {
-//     // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
-//     console.log('error', error, receipt)
-//   })
-
 export default new Vuex.Store({
   state: {
     showLoading: false,
+    isHome: false,
     userAddress: '',
     FilAddr: '',
     systemInfo: {
@@ -96,6 +73,8 @@ export default new Vuex.Store({
       cfilInterest: '0',
       crfiInterest: '0',
     },
+    cfilPrice: '',
+    crfiPrice: '',
     userList: [],
     userDemandList: [],
     demandFD: [],
@@ -128,11 +107,6 @@ export default new Vuex.Store({
       let { Lending, Pledge } = state.loanInvest
 
       let rate = new BigNumber(Lending).div(new BigNumber(Pledge))
-      // console.log(
-      //   'loanInvestloanInvestloanInvestloanInvest',
-      //   state.loanInvest,
-      //   rate,
-      // )
 
       if (Pledge == 0) {
         return 0
@@ -185,7 +159,7 @@ export default new Vuex.Store({
       let number = 0
 
       state.userList.forEach(e => {
-        let { Amount, Type, EndTime, EFilInterestRate, FDInterestRate } = e
+        let { Amount, Type, EFilInterestRate, FDInterestRate } = e
         if (Type == 1) {
           let value =
             parseFloat(utils.fromWei(Amount.toString())) *
@@ -220,6 +194,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setHome(state, value) {
+      state.isHome = value
+    },
     setLoading(state, value) {
       state.showLoading = value
     },
@@ -308,8 +285,17 @@ export default new Vuex.Store({
     setLoanInvest(state, data) {
       state.loanInvest = data
     },
+    setMap(state, data) {
+      state.crfiPrice = data.crfiPrice
+      state.cfilPrice = data.cfilPrice
+    },
   },
   actions: {
+    // 获取key - value
+    async getKeyValue({ state }, key) {
+      let res = await crossLend.callContract('GetMap', [key])
+      return res
+    },
     async calcCFilToSFil({ state }) {
       let address = state.userAddress
       let walletCFil = await CFilContract.callContract('balanceOf', [address])
@@ -372,6 +358,14 @@ export default new Vuex.Store({
     // 初始化
     async init({ state, commit, dispatch }) {
       let address = state.userAddress
+
+      let cfilPrice = await crossLend.callContract('GetMap', ['cfilPrice'])
+      let crfiPrice = await crossLend.callContract('GetMap', ['crfiPrice'])
+
+      commit('setMap', {
+        cfilPrice: cfilPrice || 1,
+        crfiPrice: crfiPrice || 1,
+      })
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
 
@@ -812,9 +806,14 @@ export default new Vuex.Store({
       }
     },
 
-    async WithdrawDemand({ state, commit, dispatch }) {
+    async WithdrawDemand({ state, commit, dispatch }, type) {
+      console.log('type', type)
       try {
-        await crossLend.executeContract('WithdrawDemand', [], state.userAddress)
+        await crossLend.executeContract(
+          'WithdrawDemand',
+          [type],
+          state.userAddress,
+        )
         dispatch('init')
       } catch (e) {}
     },

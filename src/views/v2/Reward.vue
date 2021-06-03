@@ -54,8 +54,8 @@ export default {
       return this.$store.state.userAddress
     },
     inviteLink() {
-      let { origin } = location
-      return origin + '?invite=' + this.userAddress
+      let { origin, pathname, hash } = location
+      return origin + pathname + '?invite=' + this.userAddress
     },
     userInfo() {
       return this.$store.state.userInfo
@@ -68,6 +68,8 @@ export default {
     },
   },
   async mounted() {
+    console.log(location)
+    console.log(location.href + '?invite=' + this.userAddress)
     this.getRewardList()
   },
   methods: {
