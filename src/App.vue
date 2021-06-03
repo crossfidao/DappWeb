@@ -58,12 +58,14 @@ export default {
 
 <style lang="scss">
 #app {
+  width: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background: #eee url('./assets/images/bg.png') no-repeat !important;
+  // background: red url('./assets/images/bg.png') no-repeat !important;
+  background: url('./assets/images/bg.png') no-repeat;
+  background-size: cover;
 }
 
 .loading {

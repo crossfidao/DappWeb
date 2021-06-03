@@ -26,8 +26,10 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100%;
-  background: #2c3546;
+  // background: red url('../../assets/images/bg.png') no-repeat !important;
+  background-size: cover;
   .content {
     flex: 1;
     overflow: auto;

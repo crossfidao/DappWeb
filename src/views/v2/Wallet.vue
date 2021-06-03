@@ -119,7 +119,6 @@ export default {
   flex-direction: column;
   height: 100%;
   color: #fff;
-  background: url('../../assets/images/bg.png') no-repeat;
   .content {
     flex: 1;
   }
