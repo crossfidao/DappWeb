@@ -172,8 +172,8 @@ export default {
 .header {
   position: relative;
   background: transparent;
-  border-bottom-left-radius: 32px;
-  border-bottom-right-radius: 32px;
+  // border-bottom-left-radius: 32px;
+  // border-bottom-right-radius: 32px;
   // padding-bottom: 21px;
   font-size: 10px;
   &-title {

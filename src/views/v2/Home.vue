@@ -99,6 +99,8 @@ export default {
   height: 100%;
   color: #fff;
   text-align: left;
+  background: url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   .content {
     flex: 1;
   }

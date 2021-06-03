@@ -4,7 +4,7 @@
     <div class="content">
       <div class="stake" style="text-align: right">
         <router-link tag="span" to="/staking1" class="stake-btn">
-          {{ $t('stake') }}
+          {{ $t('stake1') }}
         </router-link>
       </div>
       <div class="items">
@@ -217,6 +217,7 @@ export default {
   height: 100%;
   background: #414447;
   background: url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   color: #fff;
   .content {
     padding-bottom: 24px;

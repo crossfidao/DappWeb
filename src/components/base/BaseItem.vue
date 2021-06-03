@@ -169,7 +169,7 @@ export default {
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
-      return `background: ${arr[target]}`
+      return `background-color: ${arr[target]}`
     },
     handleConfirm() {
       if (!this.value) {
@@ -205,6 +205,8 @@ export default {
   height: 88px;
   background: #6d06c3;
   background-image: url('../../assets/images/bowen.png') !important;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin: 0 auto 9px;
   opacity: 1;
   padding: 12px;

@@ -61,14 +61,30 @@
           >
             {{ $t('withdraw') }}
           </span>
-          <div class="item-rate">
-            CRFI: {{ item.CRFIInterestRate | rate }}% + cFIL:
+          <div class="item-rate" v-if="item.Type == 0">
+            CRFI: +{{ item.CRFIInterestRate | rate }}% cFIL: +
             {{ item.CFilInterestRate | rate }}%
           </div>
+          <div class="item-rate" v-else>
+            cFIL: +
+            {{ item.CFilInterestRate | rate }}% CRFI: +{{
+              item.CRFIInterestRate | rate
+            }}%
+          </div>
           <p class="item-balance">{{ item.Amount | decimals }}</p>
-          <div class="income-box">
+          <div class="income-box" v-if="item.Type == 0">
             <div class="income">
-              <p>CFil {{ $t('profit') }}</p>
+              <p>CRFI {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
+            </div>
+            <div class="income">
+              <p>cFil {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
+            </div>
+          </div>
+          <div class="income-box" v-else>
+            <div class="income">
+              <p>cFil {{ $t('profit') }}</p>
               <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
             </div>
             <div class="income">
@@ -118,6 +134,9 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: #1f8aff;
+  background: url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   color: #fff;
   .content {
     flex: 1;

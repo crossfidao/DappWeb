@@ -1,18 +1,16 @@
 <template>
-  <div class="box">
-    <div class="footer">
-      <router-link
-        tag="div"
-        :to="item.path"
-        class="item"
-        v-for="item in tabs"
-        :key="item.name"
-      >
-        <i class="icon" :class="item.icon"></i>
-        <!-- <van-icon name="chat-o" size="18" /> -->
-        <p class="item-name">{{ $t(item.name) }}</p>
-      </router-link>
-    </div>
+  <div class="footer">
+    <router-link
+      tag="div"
+      :to="item.path"
+      class="item"
+      v-for="item in tabs"
+      :key="item.name"
+    >
+      <i class="icon" :class="item.icon"></i>
+      <!-- <van-icon name="chat-o" size="18" /> -->
+      <p class="item-name">{{ $t(item.name) }}</p>
+    </router-link>
   </div>
 </template>
 
@@ -66,14 +64,16 @@ export default {
 <style lang="scss" scoped>
 .box {
   background: transparent;
-  padding-top: 12px;
+  // background: red;
+
+  // padding-top: 12px;
 }
 .footer {
   width: 375px;
   height: 91px;
   background: #ffffff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  opacity: 1;
+  // opacity: 1;
   border-radius: 40px 40px 0px 0px;
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@ export default {
 
 .router-link-exact-active {
   position: relative;
-  z-index: 99;
+  z-index: 999;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   background: #2786ff;
   margin-bottom: 40px;

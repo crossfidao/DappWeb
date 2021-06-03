@@ -204,7 +204,8 @@ export default {
   height: 100%;
   background: #222;
   background: url('../../assets/images/bg.png') no-repeat;
-
+  background: url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   color: #fff;
   .content {
     padding-bottom: 24px;

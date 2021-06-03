@@ -1,6 +1,6 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader color="#1f8aff" />
     <h4 class="title">{{ $t('CRFIInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
@@ -41,7 +41,7 @@ export default {
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
-      return `background: ${arr[target]}`
+      return `background-color: ${arr[target]}`
     },
   },
 }

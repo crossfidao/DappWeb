@@ -1,6 +1,6 @@
 <template>
   <div class="container home">
-    <BaseHeader />
+    <BaseHeader color="#1f8aff" />
     <h4 class="title">
       {{ $t('cFILInvestment') }}
     </h4>
@@ -60,6 +60,7 @@ export default {
     flex: 1;
   }
 }
+
 .bg {
   background: #2c3546;
   border-top-left-radius: 40px;

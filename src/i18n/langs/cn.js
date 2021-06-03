@@ -44,7 +44,9 @@ const cn = {
 
   // stake
   stake: '理财',
+  stake1: '算力质押',
   staking: '理财中',
+  staking: '借贷',
   sFILAssets: 'sFIL 数量',
   pledge: '质押',
   borrow: '借',

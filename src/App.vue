@@ -64,8 +64,8 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   // background: red url('./assets/images/bg.png') no-repeat !important;
-  background: url('./assets/images/bg.png') no-repeat;
-  background-size: cover;
+  // background: url('./assets/images/bg.png') no-repeat;
+  // background-size: cover;
 }
 
 .loading {
