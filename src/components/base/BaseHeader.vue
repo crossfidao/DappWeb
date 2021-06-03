@@ -19,7 +19,7 @@
       overlay-class="dfkdslfdl"
       v-model="showpop"
       position="right"
-      :style="{ height: '100%', width: '273px' }"
+      :style="{ height: '100%' }"
     >
       <div class="pop">
         <div class="pop-menu">
@@ -246,11 +246,10 @@ export default {
 }
 .pop {
   height: 100%;
-  display: flex;
-  flex-direction: column;
   &-menu {
     flex: 1;
     padding-top: 120px;
+    padding: 120px 20px 0;
     text-align: left;
     &-item {
       display: flex;
