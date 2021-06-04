@@ -28,7 +28,7 @@
             {{ $t('login') }}
           </h4>
         </template>
-        <template v-show="FileAddr">
+        <div v-show="FileAddr">
           <div class="qrcode-box">
             <div id="qrcode" ref="qrcode" class="qrcode"></div>
           </div>
@@ -44,7 +44,7 @@
               <p>{{ $t('copy') }}</p>
             </div>
           </div>
-        </template>
+        </div>
       </template>
       <div v-show="current == 1">
         <h4 class="title" style="margin-bottom: 12px">
@@ -105,6 +105,7 @@ export default {
       currentRate: 0,
       value: '',
       fileCoin: '',
+      code: null,
     }
   },
   computed: {
@@ -113,6 +114,9 @@ export default {
     },
     userFileAddr() {
       return this.FileAddr.slice(0, 12) + '...' + this.FileAddr.slice(30, 41)
+    },
+    userAddress() {
+      return this.$store.state.userAddress
     },
     showLoading() {
       return this.$store.state.showLoading
@@ -163,6 +167,7 @@ export default {
       return `background: ${arr[target]}`
     },
     copy() {
+      localStorage.removeItem(this.userAddress)
       var clipboard = new Clipboard('.tag-read')
       clipboard.on('success', e => {
         this.$toast(this.$t('copySucc'))
@@ -178,18 +183,23 @@ export default {
     },
     async handleLogin() {
       await this.login()
-      this.qrcode()
-      this.$router.go(0)
+      this.$nextTick(() => {
+        this.qrcode()
+      })
     },
     qrcode() {
-      let qrcode = new QRCode('qrcode', {
-        width: 120, // 设置宽度，单位像素
-        height: 120, // 设置高度，单位像素
-        text: this.FileAddr, // 设置二维码内容或跳转地址
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.H,
-      })
+      if (!this.code) {
+        this.code = new QRCode('qrcode', {
+          width: 120, // 设置宽度，单位像素
+          height: 120, // 设置高度，单位像素
+          text: this.FileAddr, // 设置二维码内容或跳转地址
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          correctLevel: QRCode.CorrectLevel.Q,
+        })
+      } else {
+        this.code.makeCode(this.FileAddr)
+      }
     },
   },
 }
