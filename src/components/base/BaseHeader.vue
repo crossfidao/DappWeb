@@ -19,7 +19,7 @@
       overlay-class="dfkdslfdl"
       v-model="showpop"
       position="right"
-      :style="{ height: '100%' }"
+      :style="{ height: '100%', 'z-index': 9999 }"
     >
       <div class="pop">
         <div class="pop-menu">
@@ -244,7 +244,11 @@ export default {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   color: #fff;
 }
+/deep/ .van-popup--right {
+  z-index: 9999 !important;
+}
 .pop {
+  z-index: 10000000;
   height: 100%;
   &-menu {
     flex: 1;

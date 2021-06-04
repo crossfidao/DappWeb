@@ -5,9 +5,9 @@
     <div class="content bg">
       <BaseItem
         v-for="(item, index) in CRFIList"
-        :key="index"
         :info="item"
-        :style="getStyle(index)"
+        :key="index"
+        :index="index"
       />
     </div>
   </div>
@@ -26,7 +26,6 @@ export default {
       console.log('listsdsd', this.$store.state.CRFIList)
       return this.$store.state.CRFIList
     },
-
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -37,20 +36,17 @@ export default {
   async mounted() {},
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData']),
+    ...mapActions(['initData', 'buyCoin']),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
-      return `background-color: ${arr[target]}`
+      return `background: ${arr[target]}`
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.home {
-  z-index: 999;
-}
 .container {
   display: flex;
   flex-direction: column;

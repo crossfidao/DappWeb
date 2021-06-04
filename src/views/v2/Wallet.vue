@@ -74,6 +74,11 @@
           <p class="item-balance">{{ item.Amount | decimals }}</p>
           <div class="income-box" v-if="item.Type == 0">
             <div class="income">
+              <!-- {{ $t('profit') }}: -->
+              {{ item.EndTime && getEndTime(item.EndTime) }}
+              <!-- {{ getEndTime(item.EndTime) }} -->
+            </div>
+            <div class="income">
               <p>CRFI {{ $t('profit') }}</p>
               <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
             </div>
@@ -83,6 +88,10 @@
             </div>
           </div>
           <div class="income-box" v-else>
+            <div class="income">
+              <!-- {{ $t('profit') }}: -->
+              {{ item.EndTime && getEndTime(item.EndTime) }}
+            </div>
             <div class="income">
               <p>cFil {{ $t('profit') }}</p>
               <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
@@ -99,6 +108,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 import { mapActions, mapMutations } from 'vuex'
 export default {
   data() {
@@ -111,6 +121,7 @@ export default {
       return this.$store.state.wallet
     },
     userList() {
+      console.log(this.$store.state.userList)
       return this.$store.state.userList
     },
     showLoading() {
@@ -125,6 +136,9 @@ export default {
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['Withdraw', 'WithdrawDemand']),
+    getEndTime(value) {
+      return moment(value * 1000).format('YYYY-MM-DD')
+    },
   },
 }
 </script>

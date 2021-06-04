@@ -69,6 +69,7 @@ export default {
   // padding-top: 12px;
 }
 .footer {
+  position: relative;
   width: 375px;
   height: 91px;
   background: #ffffff;
@@ -117,9 +118,8 @@ export default {
 }
 
 .router-link-exact-active {
-  position: relative;
-  z-index: 999;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  z-index: 2;
   background: #2786ff;
   margin-bottom: 40px;
   color: #fff;

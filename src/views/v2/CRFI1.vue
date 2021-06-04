@@ -1,15 +1,13 @@
 <template>
   <div class="container home">
     <BaseHeader color="#1f8aff" />
-    <h4 class="title">
-      {{ $t('cFILInvestment') }}
-    </h4>
+    <h4 class="title">{{ $t('CRFIInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
-        v-for="(item, index) in CFilList"
-        :info="item"
+        v-for="(item, index) in CRFIList"
         :key="index"
-        :index="index"
+        :info="item"
+        :style="getStyle(index)"
       />
     </div>
   </div>
@@ -24,9 +22,11 @@ export default {
     }
   },
   computed: {
-    CFilList() {
-      return this.$store.state.CFilList
+    CRFIList() {
+      console.log('listsdsd', this.$store.state.CRFIList)
+      return this.$store.state.CRFIList
     },
+
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -37,17 +37,20 @@ export default {
   async mounted() {},
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['initData', 'buyCoin']),
+    ...mapActions(['initData']),
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
-      return `background: ${arr[target]}`
+      return `background-color: ${arr[target]}`
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+.home {
+  z-index: 2;
+}
 .container {
   display: flex;
   flex-direction: column;

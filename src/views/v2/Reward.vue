@@ -106,7 +106,7 @@ export default {
   display: none;
 }
 .home {
-  z-index: 999;
+  z-index: 99;
   height: 100%;
   overflow: auto;
 }

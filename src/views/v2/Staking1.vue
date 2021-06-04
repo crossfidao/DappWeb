@@ -91,7 +91,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  z-index: 999;
+  z-index: 99;
 }
 .container {
   display: flex;
