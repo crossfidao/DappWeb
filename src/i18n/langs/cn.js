@@ -37,13 +37,13 @@ const cn = {
   // Wallet
   walletBalance: '钱包余额',
   balance: '余额',
-  swap: '交换',
+  swap: '兑换',
   stake: '质押',
   myPositions: '我的',
   profit: '收益',
 
   // stake
-  stake: '理财',
+  stake: '算力质押',
   stake1: '算力质押',
   staking: '理财中',
   staking: '借贷',

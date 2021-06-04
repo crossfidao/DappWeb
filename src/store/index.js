@@ -859,7 +859,16 @@ export default new Vuex.Store({
     // 购买
     async buyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
+      // 判断余额
+      let { walletCFil, walletCRFI } = state.wallet
+      value = utils.toWei(value)
+      console.log(state.wallet, walletCFil, walletCRFI, value)
+      let balance = Type == 0 ? walletCRFI : walletCFil
 
+      if (new BigNumber(balance).comparedTo(new BigNumber(value)) == -1) {
+        Toast(i18n.t('balanceToast'))
+        return
+      }
       // 判断是否为正确的地址格式
       let isAddress = CRFIContract.web3.utils.isAddress(inviteValue)
       let invite = isAddress
@@ -869,7 +878,6 @@ export default new Vuex.Store({
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
       )
-      value = utils.toWei(value)
       let contract = Type == 0 ? CRFIContract : CFilContract
 
       try {
@@ -934,7 +942,20 @@ export default new Vuex.Store({
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
+
+      // 判断余额
+      let { walletCFil, walletCRFI } = state.wallet
+      value = utils.toWei(value)
+      console.log(state.wallet, walletCFil, walletCRFI, value)
+      let balance = Type == 0 ? walletCRFI : walletCFil
+
+      if (new BigNumber(balance).comparedTo(new BigNumber(value)) == -1) {
+        Toast(i18n.t('balanceToast'))
+        return
+      }
+
       let isAddress = CRFIContract.web3.utils.isAddress(inviteValue)
+
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
@@ -944,7 +965,6 @@ export default new Vuex.Store({
       )
       // 0x97b19d507f9acce9ae4c1d3af4c5393d11698b87
 
-      value = utils.toWei(value)
       let contract = Type == 0 ? CRFIContract : CFilContract
       try {
         await contract.executeContract(
