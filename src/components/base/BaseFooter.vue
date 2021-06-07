@@ -1,16 +1,18 @@
 <template>
-  <div class="footer">
-    <router-link
-      tag="div"
-      :to="item.path"
-      class="item"
-      v-for="item in tabs"
-      :key="item.name"
-    >
-      <i class="icon" :class="item.icon"></i>
-      <!-- <van-icon name="chat-o" size="18" /> -->
-      <p class="item-name">{{ $t(item.name) }}</p>
-    </router-link>
+  <div style="background: #2c3546">
+    <div class="footer">
+      <router-link
+        tag="div"
+        :to="item.path"
+        class="item"
+        v-for="item in tabs"
+        :key="item.name"
+      >
+        <i class="icon" :class="item.icon"></i>
+        <!-- <van-icon name="chat-o" size="18" /> -->
+        <p class="item-name">{{ $t(item.name) }}</p>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -72,7 +74,7 @@ export default {
   position: relative;
   width: 375px;
   height: 91px;
-  background: #ffffff;
+  background: #fff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   // opacity: 1;
   border-radius: 40px 40px 0px 0px;
@@ -103,7 +105,7 @@ export default {
       background-size: cover;
     }
     .dashboard {
-      background-image: url('../../assets/icon/dashboard.jpg');
+      background-image: url('../../assets/icon/dashboard.png');
     }
     .cFIL {
       background-image: url('../../assets/icon/cFIL.png');
@@ -131,14 +133,14 @@ export default {
     background-image: url('../../assets/icon/cFIL-active.png') !important;
   }
   .dashboard {
-    background-image: url('../../assets/icon/dashboard-active.jpg') !important;
+    background-image: url('../../assets/icon/home.png') !important;
   }
   .CRFI {
     background-image: url('../../assets/icon/CRFI-active.png') !important;
   }
 
   .wallet {
-    background-image: url('../../assets/icon/wallet-active.jpg') !important;
+    background-image: url('../../assets/icon/wallet-active.png') !important;
   }
 }
 </style>

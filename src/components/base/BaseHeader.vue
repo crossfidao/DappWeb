@@ -8,14 +8,19 @@
       <span v-if="title" class="header-title">{{ title }}</span>
       <span v-show="showLoading">pending</span>
       <div class="right">
-        <van-icon :name="line" size="28" @click="showpop = true" />
+        <div class="address">
+          <span class="address-icon"></span>
+          <span class="address-text">{{ address }}</span>
+        </div>
+        <span class="icon" @click="showpop = true"></span>
+        <!-- <van-icon :name="line" size="28" @click="showpop = true" /> -->
       </div>
     </div>
 
     <van-popup
       :overlay="true"
       closeable
-      close-icon="wap-nav"
+      :close-icon="closeIcon"
       overlay-class="dfkdslfdl"
       v-model="showpop"
       position="right"
@@ -102,6 +107,7 @@ export default {
   },
   data() {
     return {
+      closeIcon: require('../../assets/icon/menu.png'),
       line: require('../../assets/icon/line.png'),
       showpop: false,
       show: false,
@@ -138,8 +144,7 @@ export default {
     },
     address() {
       return (
-        this.userAddress.slice(0, 16) + '...'
-        // + this.userAddress.slice(30, 42)
+        this.userAddress.slice(0, 4) + '****' + this.userAddress.slice(38, 42)
       )
     },
   },
@@ -169,6 +174,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon {
+  width: 24px;
+  height: 24px;
+  background: url(../../assets/icon/menu.png) no-repeat;
+  background-size: cover;
+}
+.address {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  width: 109px;
+  background: #232a38;
+  margin-right: 16px;
+  box-shadow: 0px 1px 1px #343c4a, inset 0px 3px 9px rgba(0, 0, 0, 0.1);
+  border-radius: 32px;
+  padding: 0 6px;
+  &-icon {
+    width: 18px;
+    height: 18px;
+    background: url(../../assets/icon/Group.png) no-repeat;
+    background-size: cover;
+    margin-right: 5px;
+  }
+}
 .header {
   position: relative;
   background: transparent;
@@ -277,6 +306,10 @@ export default {
     }
   }
   .lang {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
     font-size: 12px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;

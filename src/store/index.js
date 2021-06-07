@@ -251,7 +251,10 @@ export default new Vuex.Store({
     },
     setCFilTotalAmount(state, data) {
       let { PackageID, Amount } = data
+      console.log('data', data, PackageID, state.CFilList)
+      console.log('dlfkdfldj;')
       let item = state.CFilList.find(n => PackageID == n.ID)
+      console.log('amount', Amount, item, state.CFilList)
       item['Amount'] = new BigNumber(item.Amount)
         .plus(new BigNumber(Amount))
         .toString()
@@ -266,6 +269,7 @@ export default new Vuex.Store({
     setCFilDemandTotalAmount(state, data) {
       let { PackageID, Amount } = data
       let item = state.CFilList.find(n => PackageID == n.ID)
+      console.log('paacdkf', PackageID)
       item['Amount'] = new BigNumber(item.Amount)
         .plus(new BigNumber(Amount))
         .toString()
@@ -368,12 +372,13 @@ export default new Vuex.Store({
       })
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
-
+      console.log('setSystemInfo', systemInfo)
       commit('setSystemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
       // console.log('package', data)
       let { financialPackages, demandCFil, demandCRFI, loanCFil } = data
+      console.log('fina', data)
       commit('setLoanCFil', loanCFil)
       let CRFIList = []
       let CFilList = []
@@ -467,6 +472,7 @@ export default new Vuex.Store({
       let address = state.userAddress
       let userList = []
       let list = await crossLend.callContract('GetInvestRecords', [address])
+      console.log('records', list)
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
       // console.log('GetInvestRecords', list)
@@ -528,7 +534,9 @@ export default new Vuex.Store({
         commit('setCRFIDemandTotalAmount', demandCRFI)
       }
       records.forEach((e, index) => {
-        let { Type } = e
+        let { Type, PackageID } = e
+
+        console.log('e', PackageID)
         if (Type == 0) {
           commit('setCRFITotalAmount', e)
         } else {
@@ -942,7 +950,6 @@ export default new Vuex.Store({
     // 活期购买
     async demandBuyCoin({ state, commit, dispatch }, data) {
       let { ID, Type, value, inviteValue } = data
-
       // 判断余额
       let { walletCFil, walletCRFI } = state.wallet
       value = utils.toWei(value)
@@ -964,7 +971,7 @@ export default new Vuex.Store({
         [1, parseInt(Type), invite],
       )
       // 0x97b19d507f9acce9ae4c1d3af4c5393d11698b87
-
+      console.log('betys', betys)
       let contract = Type == 0 ? CRFIContract : CFilContract
       try {
         await contract.executeContract(

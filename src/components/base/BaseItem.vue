@@ -23,7 +23,8 @@
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
       <p>
-        {{ info.Amount || 0 | decimals }} {{ info.Type == 0 ? 'CRFI' : 'CFIL' }}
+        {{ info.Total | decimals }}
+        <!-- 11{{ info.Amount || 0 | decimals }} {{ info.Type == 0 ? 'CRFI' : 'CFIL' }} -->
       </p>
     </div>
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
@@ -35,10 +36,10 @@
           </p>
           <div class="mask-rate">
             <span class="icon CRFI"></span>
-            <span>CRFI: {{ info.CRFIInterestRate | rate }}%</span>
+            <span>CRFI: {{ getRate(info) | rate }}%</span>
             <span> - </span>
             <span class="icon cFIL"></span>
-            <span>CFIL: {{ info.CFilInterestRate | rate }}%</span>
+            <span>CFIL: {{ getCFilRate(info) | rate }}%</span>
           </div>
         </div>
         <div class="mask-desc">
@@ -172,6 +173,7 @@ export default {
       return `background-color: ${arr[target]}`
     },
     handleConfirm() {
+      console.log('dfkdlf', !this.info.ID)
       if (!this.value) {
         this.$toast(this.$t('toast'))
         return

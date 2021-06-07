@@ -67,6 +67,7 @@
               <van-field
                 class="field"
                 center
+                :border="false"
                 clearable
                 v-model="value"
                 :placeholder="$t('purchaseAmount')"
@@ -145,7 +146,10 @@ export default {
     },
     handleClick() {
       this.current = this.current == 0 ? 1 : 0
-      if (this.current == 0) {
+      console.log(this.code)
+      if (this.current == 1) {
+        this.code = null
+      } else {
         this.$nextTick(() => {
           this.qrcode()
         })
@@ -198,7 +202,7 @@ export default {
           correctLevel: QRCode.CorrectLevel.Q,
         })
       } else {
-        this.code.makeCode(this.FileAddr)
+        this.code.makeImage(this.FileAddr)
       }
     },
   },
@@ -268,17 +272,19 @@ export default {
   font-size: 14px;
 }
 .qrcode-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 138px;
   height: 138px;
-  line-height: 138px;
   background: #fff;
   margin: 0 auto;
   text-align: center;
   margin-top: 10px;
   padding: 9px;
   /deep/ .qrcode img {
-    display: inline-block;
-    margin: 0 auto !important;
+    // display: inline-block;
+    // margin: 0 auto !important;
   }
 }
 .copy {

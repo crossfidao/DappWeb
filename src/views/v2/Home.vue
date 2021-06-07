@@ -5,16 +5,18 @@
     <h4 class="title2">{{ $t('filStatistics') }}</h4>
     <div class="circle" style="text-align: center">
       <van-circle
+        size="135"
         fill="#222222"
         layer-color="#5855F0"
         color="#1FCED2"
-        stroke-width="100"
+        stroke-width="120"
         v-model="currentRate"
         :rate="rate"
         :speed="100"
         :text="text"
         stroke-linecap="butt"
-      />
+      >
+      </van-circle>
     </div>
     <h4 class="title2" style="margin-bottom: 20px">
       <!-- {{ $t('filStatistics') }} -->
