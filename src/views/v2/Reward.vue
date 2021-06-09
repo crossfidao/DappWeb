@@ -113,7 +113,6 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  // height: 100%;
   background: #414447;
   color: #fff;
   .content {

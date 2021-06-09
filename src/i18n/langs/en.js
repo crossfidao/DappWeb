@@ -7,6 +7,11 @@ const cn = {
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
 
+  purchase: 'Stake',
+  cycle1: 'Period',
+  profit1: 'APY',
+  purchaseAmount: 'STAKE Amount',
+
   inexecution: 'There are transactions in progress...',
 
   // Header
@@ -30,8 +35,7 @@ const cn = {
   cFILInvestment: 'cFIL Investment',
   CRFIInvestment: 'CRFI Investment',
   totalDeposit: 'Total Deposit',
-  purchase: 'Purchase',
-  purchaseAmount: 'Purchase Amount',
+
   day: 'Days',
 
   // Wallet

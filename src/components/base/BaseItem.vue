@@ -27,10 +27,35 @@
         <!-- 11{{ info.Amount || 0 | decimals }} {{ info.Type == 0 ? 'CRFI' : 'CFIL' }} -->
       </p>
     </div>
-    <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
+    <van-overlay
+      class="mask"
+      :show="showMask"
+      @click.self="showMask = false"
+      z-index="9999"
+    >
       <div class="mask-content">
+        <van-icon
+          name="cross"
+          color="#8790A9"
+          class="close"
+          @click.self="showMask = false"
+        />
         <h4 class="mask-title">{{ $t('purchase') }}</h4>
-        <div class="mask-text">
+        <div class="mask-item">
+          <span class="mask-label">{{ $t('cycle1') }}</span>
+          <p class="mask-item-text">
+            {{ info.Days != 0 ? info.Days + ' ' + $t('day') : 'On Demand' }}
+          </p>
+        </div>
+        <div class="mask-item">
+          <span class="mask-label">{{ $t('profit1') }}</span>
+          <p class="mask-item-text">
+            <span>CRFI: {{ getRate(info) | rate }}%</span>
+            <span> + </span>
+            <span>CFIL: {{ getCFilRate(info) | rate }}%</span>
+          </p>
+        </div>
+        <!-- <div class="mask-text">
           <p>
             {{ info.Days != 0 ? info.Days + ' ' + $t('day') : 'On Demand' }}
           </p>
@@ -41,21 +66,14 @@
             <span class="icon cFIL"></span>
             <span>CFIL: {{ getCFilRate(info) | rate }}%</span>
           </div>
-        </div>
-        <div class="mask-desc">
-          <p class="mask-desc-name">
-            <span class="icon CRFI"></span>
-            <span>
-              {{ info.Type == 0 ? 'CRFI' : 'cFIL' }} {{ $t('balance') }}
-            </span>
-          </p>
+        </div> -->
+        <!-- <div class="mask-desc">
           <p class="mask-desc-balance">
             {{
               info.Type == 1 ? wallet.walletCFil : wallet.walletCRFI | decimals
             }}
-            <!--  -->
           </p>
-        </div>
+        </div> -->
         <div class="form">
           <van-field
             class="field"
@@ -66,14 +84,26 @@
             :placeholder="$t('purchaseAmount')"
           />
         </div>
-        <div class="footer">
+        <p class="mask-desc">
+          <span class="icon CRFI"></span>
+          <span>
+            {{ info.Type == 0 ? 'CRFI' : 'cFIL' }} {{ $t('balance') }}
+          </span>
+          <span>{{
+            info.Type == 1 ? wallet.walletCFil : wallet.walletCRFI | decimals
+          }}</span>
+        </p>
+        <div class="confirm" @click="handleConfirm">
+          {{ $t('confirm') }}
+        </div>
+        <!-- <div class="footer">
           <div class="footer-btn" @click="showMask = false">
             {{ $t('cancel') }}
           </div>
           <div class="footer-btn" @click="handleConfirm">
             {{ $t('confirm') }}
           </div>
-        </div>
+        </div> -->
       </div>
     </van-overlay>
   </div>
@@ -145,9 +175,11 @@ export default {
       if (Amount == 0) {
         Amount = 1
       }
-
       if (Type == 1) {
         // CFil
+        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+          return CRFIInterestRate
+        }
         let result = new BigNumber(this.crfiPrice)
           .times(new BigNumber(CRFIInterestRate))
           .div(new BigNumber(this.cfilPrice))
@@ -159,6 +191,9 @@ export default {
     getCFilRate(data) {
       let { Type, CFilInterestRate } = data
       if (Type == 0) {
+        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+          return CFilInterestRate
+        }
         let result = new BigNumber(this.cfilPrice)
           .times(new BigNumber(CFilInterestRate))
           .div(new BigNumber(this.crfiPrice))
@@ -173,7 +208,6 @@ export default {
       return `background-color: ${arr[target]}`
     },
     handleConfirm() {
-      console.log('dfkdlf', !this.info.ID)
       if (!this.value) {
         this.$toast(this.$t('toast'))
         return
@@ -266,34 +300,65 @@ export default {
     width: 320px;
     position: absolute;
     z-index: 99;
-    top: 50%;
+    bottom: 35px;
     left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    background: #3f4c5d;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    transform: translateX(-50%);
+    background: #414c5b;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     padding-bottom: 20px;
-    border-radius: 13px;
+    border-radius: 12px;
     font-size: 13px;
     font-family: Segoe UI;
     font-weight: bold;
     line-height: 16px;
     color: #ffffff;
   }
+  .close {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+  }
   &-title {
-    padding: 12px 0;
+    text-align: left;
+    margin: 0 18px;
+    padding: 18px 0;
+    border-bottom: 0.5px solid #4c5a7f;
+  }
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 18px;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase;
+    color: #c2c7d4;
+    &-text {
+      font-weight: 500;
+      font-size: 14px;
+      text-align: left;
+      text-transform: capitalize;
+      color: #ffffff;
+    }
   }
   &-text {
+    margin-left: 18px;
     margin-bottom: 24px;
-    padding-left: 14px;
     text-align: left;
   }
   &-desc {
+    text-align: left;
     margin-bottom: 16px;
-    margin-left: 12px;
+    margin-left: 18px;
     font-size: 10px;
     font-family: PingFangSC-Medium, PingFang SC;
     font-weight: 500;
     color: #fff;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #ffffff;
     &-name {
       display: flex;
       align-items: center;
@@ -307,12 +372,21 @@ export default {
       border-radius: 10px;
     }
   }
+  .confirm {
+    height: 56px;
+    line-height: 56px;
+    margin: 0 18px;
+    background: #5acbd0;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #ffffff;
+  }
   .footer {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     &-btn {
-      width: 87px;
       height: 32px;
       margin: 0 14px;
       line-height: 32px;

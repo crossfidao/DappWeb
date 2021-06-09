@@ -7,6 +7,11 @@ const kr = {
   wallet: '지갑', // ? 保留关键字
   aaa: '지갑',
 
+  purchase: '스테이크',
+  cycle1: '기간',
+  profit1: '수익율',
+  purchaseAmount: 'STAKE 수량',
+
   inexecution: '현재 거래가 진행중 입니다.',
 
   // Header
@@ -29,8 +34,7 @@ const kr = {
   cFILInvestment: 'cFIL 투자',
   CRFIInvestment: 'CRFI 투자',
   totalDeposit: '총 예금',
-  purchase: '구매',
-  purchaseAmount: '구매량',
+
   day: '일',
 
   // Wallet

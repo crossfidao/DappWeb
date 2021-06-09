@@ -1,5 +1,5 @@
 <template>
-  <div style="background: #2c3546">
+  <div :class="{ bg: isBg }">
     <div class="footer">
       <router-link
         tag="div"
@@ -28,6 +28,7 @@ export default {
   },
   data() {
     return {
+      isBg: false,
       tabs: [
         {
           path: '/',
@@ -51,6 +52,16 @@ export default {
         },
       ],
     }
+  },
+  watch: {
+    $route(val) {
+      let { name } = val
+      if (name === 'CRFI' || name === 'CFIL') {
+        this.isBg = true
+      } else {
+        this.isBg = false
+      }
+    },
   },
   computed: {},
   methods: {
@@ -121,7 +132,7 @@ export default {
 
 .router-link-exact-active {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  z-index: 2;
+  // z-index: 2;
   background: #2786ff;
   margin-bottom: 40px;
   color: #fff;
@@ -142,5 +153,8 @@ export default {
   .wallet {
     background-image: url('../../assets/icon/wallet-active.png') !important;
   }
+}
+.bg {
+  background: #3f495a !important;
 }
 </style>

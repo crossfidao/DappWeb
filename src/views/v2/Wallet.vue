@@ -121,7 +121,6 @@ export default {
       return this.$store.state.wallet
     },
     userList() {
-      console.log(this.$store.state.userList)
       return this.$store.state.userList
     },
     showLoading() {
@@ -149,7 +148,7 @@ export default {
   flex-direction: column;
   height: 100%;
   background: #1f8aff;
-  background: url('../../assets/images/bg.png') no-repeat;
+  background: #3f495a url('../../assets/images/bg.png') no-repeat;
   background-size: cover;
   color: #fff;
   .content {

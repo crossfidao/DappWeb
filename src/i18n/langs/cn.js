@@ -7,6 +7,11 @@ const cn = {
   wallet: '钱包', // ? 保留关键字
   aaa: 'AAA',
 
+  purchase: '质押',
+  cycle1: '周期',
+  profit1: 'APY',
+  purchaseAmount: '质押数量',
+
   inexecution: '无法执行',
 
   // Header
@@ -30,8 +35,8 @@ const cn = {
   cFILInvestment: 'cFIL 投入',
   CRFIInvestment: 'CRFI 投入',
   totalDeposit: '总质押',
-  purchase: '购买',
-  purchaseAmount: '购买数',
+  // purchase: '购买',
+  // purchaseAmount: '购买数',
   day: '天',
 
   // Wallet

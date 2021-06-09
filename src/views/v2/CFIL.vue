@@ -59,7 +59,7 @@ export default {
 }
 
 .bg {
-  background: #2c3546;
+  background: #3f495a;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
   padding-top: 52px;

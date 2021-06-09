@@ -20,6 +20,59 @@
               </van-button>
             </div>
           </div>
+
+          <div class="items">
+            <div class="title">
+              <span> 邀请返利最低限制</span>
+            </div>
+            <div class="charge">
+              <van-field
+                class="price-input"
+                border
+                v-model="affRateLimit"
+                placeholder="请输入cFil数量"
+              />
+              <van-button class="charge-btn" @click="handleAffRequire">
+                {{ $t('edit') }}
+              </van-button>
+            </div>
+          </div>
+          <!-- 修改crfiPrice -->
+          <div class="charge-title" style="margin: 0 32px">
+            <span>
+              汇率设置（crfiPrice）
+              {{ crfiPrice | decimals }}</span
+            >
+          </div>
+          <div class="charge" style="margin: 0 32px">
+            <van-field
+              class="price-input"
+              placeholder="请输入cFil汇率"
+              border
+              v-model="rate.crfiPrice"
+            />
+            <van-button class="charge-btn" @click="changeRate('crfiPrice')">
+              修改
+            </van-button>
+          </div>
+          <!-- 修改cfilPrice -->
+          <div class="charge-title" style="margin: 0 32px">
+            <span>
+              汇率设置（cfilPrice）
+              {{ cfilPrice | decimals }}
+            </span>
+          </div>
+          <div class="charge" style="margin: 0 32px">
+            <van-field
+              class="price-input"
+              placeholder="请输入cFil汇率"
+              border
+              v-model="rate.cfilPrice"
+            />
+            <van-button class="charge-btn" @click="changeRate('cfilPrice')">
+              修改
+            </van-button>
+          </div>
           <!-- 重置 -->
           <div class="charge-title" style="margin: 0 32px">
             <span>
@@ -71,6 +124,22 @@
                 <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cFil' }}</p>
               </div>
               <div class="item-content">
+                <div class="price" v-show="item.NewCRFIInterestRate">
+                  <h5 class="price-title">CRFI {{ $t('rate') }}(新):</h5>
+                  <span class="price-text">
+                    {{ item.NewCRFIInterestRate }}
+                  </span>
+
+                  <span>%</span>
+                </div>
+                <div class="price" v-show="item.NewCFilInterestRate">
+                  <h5 class="price-title">cFil {{ $t('rate') }}(新):</h5>
+                  <span class="price-text">
+                    {{ item.NewCFilInterestRate }}
+                  </span>
+
+                  <span>%</span>
+                </div>
                 <div class="price">
                   <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
                   <span class="price-text" v-if="!item.show">
@@ -79,6 +148,7 @@
 
                   <span>%</span>
                 </div>
+
                 <div class="price">
                   <h5 class="price-title">cFil {{ $t('rate') }}:</h5>
                   <span class="price-text">
@@ -113,6 +183,22 @@
                 <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cFil' }}</p>
               </div>
               <div class="item-content">
+                <div class="price" v-show="item.NewCRFIInterestRate">
+                  <h5 class="price-title">CRFI {{ $t('rate') }}（新）:</h5>
+                  <span class="price-text">
+                    {{ item.NewCRFIInterestRate }}
+                  </span>
+
+                  <span>%</span>
+                </div>
+                <div class="price" v-show="item.NewCFilInterestRate">
+                  <h5 class="price-title">cFil {{ $t('rate') }}（新）:</h5>
+                  <span class="price-text">
+                    {{ item.NewCFilInterestRate }}
+                  </span>
+
+                  <span>%</span>
+                </div>
                 <div class="price">
                   <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
                   <span class="price-text" v-if="!item.show">
@@ -121,6 +207,7 @@
 
                   <span>%</span>
                 </div>
+
                 <div class="price">
                   <h5 class="price-title">cFil {{ $t('rate') }}:</h5>
                   <span class="price-text">
@@ -328,13 +415,19 @@ export default {
       showMask: false,
       showEdit: false,
       isDemand: false,
-      affRate: '0',
+      affRate: '',
+      affRateLimit: '',
+
       curItem: null,
       CRFL: '',
       cfil: '',
       value: '',
       CRFIValue: '',
       curItem: null,
+      rate: {
+        crfiPrice: '',
+        cfilPrice: '',
+      },
       params: {
         APY: '',
         PledgeRate: '',
@@ -343,6 +436,12 @@ export default {
     }
   },
   computed: {
+    cfilPrice() {
+      return this.$store.state.cfilPrice
+    },
+    crfiPrice() {
+      return this.$store.state.crfiPrice
+    },
     wallet() {
       return this.$store.state.wallet
     },
@@ -357,7 +456,6 @@ export default {
     },
     eFilList() {
       let list = this.$store.state.CFilList
-      console.log('list', list)
       let tmp = []
       list.forEach(element => {
         // element.show = false
@@ -365,10 +463,21 @@ export default {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
+          NewCFilInterestRate,
+          NewCRFIInterestRate,
           ID,
           Type,
           deleteFlag,
         } = element
+
+        if (NewCFilInterestRate) {
+          NewCFilInterestRate = NewCFilInterestRate * 100
+          NewCFilInterestRate = utils.fromWei(NewCFilInterestRate.toString())
+        }
+        if (NewCRFIInterestRate) {
+          NewCRFIInterestRate = NewCRFIInterestRate * 100
+          NewCRFIInterestRate = utils.fromWei(NewCRFIInterestRate.toString())
+        }
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
 
@@ -378,6 +487,8 @@ export default {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
+          NewCFilInterestRate,
+          NewCRFIInterestRate,
           ID,
           Type,
           deleteFlag,
@@ -396,12 +507,23 @@ export default {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
+          NewCFilInterestRate,
+          NewCRFIInterestRate,
           ID,
           Type,
           deleteFlag,
         } = element
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
+        console.log(NewCFilInterestRate)
+        if (NewCFilInterestRate) {
+          NewCFilInterestRate = NewCFilInterestRate * 100
+          NewCFilInterestRate = utils.fromWei(NewCFilInterestRate.toString())
+        }
+        if (NewCRFIInterestRate) {
+          NewCRFIInterestRate = NewCRFIInterestRate * 100
+          NewCRFIInterestRate = utils.fromWei(NewCRFIInterestRate.toString())
+        }
 
         CRFIInterestRate = CRFIInterestRate * 100
         CRFIInterestRate = utils.fromWei(CRFIInterestRate.toString())
@@ -409,6 +531,8 @@ export default {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
+          NewCFilInterestRate,
+          NewCRFIInterestRate,
           ID,
           Type,
           deleteFlag,
@@ -419,29 +543,43 @@ export default {
   },
   watch: {
     systemInfo(val) {
+      console.log('val systemInfo', val)
+
       this.affRate = utils.fromWei(this.systemInfo.affRate) * 100
+      this.affRateLimit = utils.fromWei(this.systemInfo.affRequire)
     },
     loanCFil(val) {
-      console.log('valvalval', val)
       this.getParams(val)
     },
   },
   async mounted() {
     this.getParams(this.loanCFil)
+    await this.init()
     await this.getApplyStaking()
   },
   methods: {
     ...mapActions([
+      'init',
       'charge',
       'chargeCRFI',
       'ChangeAffRate',
+      'ChangeAffRateLimit',
       'ChangePackageRate',
       'ChangeDemandRate',
       'getApplyStaking',
       'issusStaking',
       'deleteStaking',
       'changeLoanRate',
+      'setKeyValue',
     ]),
+    changeRate(key) {
+      if (key === 'crfiPrice') {
+        console.log(key, this.rate.crfiPrice)
+        this.setKeyValue({ key, value: this.rate.crfiPrice })
+      } else if (key === 'cfilPrice') {
+        this.setKeyValue({ key, value: this.rate.cfilPrice })
+      }
+    },
     copy() {
       var clipboard = new Clipboard('.tag-read')
       clipboard.on('success', e => {
@@ -458,7 +596,6 @@ export default {
     },
     getParams(data) {
       let { APY, PledgeRate, PaymentDue } = data
-      console.log('APY', data)
       this.params = {
         APY: (utils.fromWei(APY) * 100).toFixed(2),
         PledgeRate: (utils.fromWei(PledgeRate) * 100).toFixed(2),
@@ -516,7 +653,7 @@ export default {
       } = this.curItem
       this.CRFL = CRFIInterestRate
       this.cfil = CFilInterestRate
-      this.isDemand = !Days
+      this.isDemand = Days == 0
       this.curItem = item
       this.showMask = true
       // if (item.show) {
@@ -528,7 +665,9 @@ export default {
     },
     // 更改利率
     handleRate() {
+      console.log('item', this.curItem)
       if (this.isDemand) {
+        console.log('活期')
         this.handleDemandRate()
       } else {
         this.handleChangeRate()
@@ -539,8 +678,14 @@ export default {
         value: this.affRate,
       })
     },
+    handleAffRequire() {
+      this.ChangeAffRateLimit({
+        value: this.affRateLimit,
+      })
+    },
     handleDemandRate() {
       let { Type } = this.curItem
+      console.log('type', Type)
       this.ChangeDemandRate({
         ID: Type,
         crfi: this.CRFL,
@@ -550,6 +695,7 @@ export default {
     },
     handleChangeRate() {
       let { ID, CFilInterestRate, CRFIInterestRate } = this.curItem
+      console.log('id', ID)
       if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
         this.$toast('请填写0-100的数字')
         return
@@ -575,8 +721,8 @@ export default {
   color: #333;
 }
 .about {
-  background: #2c3546;
-  background: url('../../assets/images/bg.png') no-repeat;
+  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
 
   height: 100%;
   overflow: auto;

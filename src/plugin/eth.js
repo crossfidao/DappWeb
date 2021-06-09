@@ -83,13 +83,21 @@ export default class Contract {
           resolve()
         } catch (e) {
           console.log(e)
-          Toast(e)
+          let { code } = e
+          console.log(code)
+          if (code == 4001) {
+            console.log(123, code)
+            Toast(i18n.t('cancel'))
+          } else {
+            // Toast(e)
+          }
           store.commit('setLoading', false)
           reject()
           throw e.message
         }
       } catch (e) {
-        Toast(e.toString())
+        // Toast(e.toString())
+        console.log(e.message.code)
         store.commit('setLoading', false)
         reject()
         throw e.message

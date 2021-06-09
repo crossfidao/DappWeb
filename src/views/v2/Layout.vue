@@ -13,6 +13,7 @@ export default {
       return this.$store.state.showLoading
     },
   },
+
   async mounted() {},
 
   methods: {
@@ -28,6 +29,8 @@ export default {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   background-size: cover;
   .content {
     flex: 1;

@@ -216,9 +216,8 @@ export default {
 .container {
   overflow: auto;
   height: 100%;
-  background: #222;
-  background: url('../../assets/images/bg.png') no-repeat;
-  background: url('../../assets/images/bg.png') no-repeat;
+  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+
   background-size: cover;
   color: #fff;
   .content {

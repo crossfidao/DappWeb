@@ -91,7 +91,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // ...
-  console.log(from)
   if (from.name == null) {
     store.commit('setHome', true)
   } else {
