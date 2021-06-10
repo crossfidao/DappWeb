@@ -30,9 +30,9 @@ const cn = {
   fileCoinDepositTotal: 'cFIL<br/>总存入',
   // fileCoinDepositTotal: 'FIL 质押总数',
   lendingTotal: 'cFIL<br/>总借出',
-  crfiDepositTotal: 'CRFI质押总数',
+  crfiDepositTotal: 'CRFI<br/>质押总数',
   referralRewards: '推荐奖',
-  referra: 'CRFI总产出',
+  referra: 'CRFI<br/>总产出',
 
   // CFIL
   cFILInvestment: 'cFIL STAKING',

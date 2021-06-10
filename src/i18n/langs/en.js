@@ -27,11 +27,11 @@ const cn = {
   filStatistics: 'FIL Statistics',
   crfiStatistics: 'CRFI Statistics',
   // fileCoinDepositTotal: 'Filecoin Deposit Total ',
-  fileCoinDepositTotal: 'Deposit Total',
-  lendingTotal: 'Lending Total',
-  crfiDepositTotal: 'Deposit Total',
+  fileCoinDepositTotal: 'Deposit<br/>Total',
+  lendingTotal: 'Lending<br/>Total',
+  crfiDepositTotal: 'Deposit<br/>Total',
   referralRewards: 'Output Total',
-  referra: 'total output',
+  referra: 'total<br/>output',
 
   // CFIL
   cFILInvestment: 'cFIL STAKING',

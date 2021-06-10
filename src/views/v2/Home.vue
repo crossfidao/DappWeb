@@ -40,13 +40,15 @@
     </h4>
     <div class="items">
       <div class="item bg">
-        <p class="item-text color">{{ $t('crfiDepositTotal') }}</p>
+        <p class="item-text color" v-html="$t('crfiDepositTotal')">
+          {{ $t('crfiDepositTotal') }}
+        </p>
         <p class="item-text item-bottom">
           {{ systemInfo.nowInvestCRFI | decimals }}
         </p>
       </div>
       <div class="item">
-        <p class="item-text">{{ $t('referra') }}</p>
+        <p class="item-text" v-html="$t('referra')">{{ $t('referra') }}</p>
         <p class="item-text item-bottom">
           {{ systemInfo.crfiRewardTotal | decimals }}
         </p>
