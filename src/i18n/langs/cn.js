@@ -1,9 +1,9 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
   // menubar
-  dashboard: '首页',
-  cFILInvest: 'cFIL 投入',
-  CRFIInvest: 'CRFI 投入',
+  dashboard: 'Home',
+  cFILInvest: 'cFIL',
+  CRFIInvest: 'CRFI',
   wallet: '钱包', // ? 保留关键字
   aaa: 'AAA',
 
@@ -15,25 +15,25 @@ const cn = {
   inexecution: '无法执行',
 
   // Header
-  staking: 'Staking',
-  aboutCrossFi: '关于',
+  staking: '借贷',
+  aboutCrossFi: '官网',
   auditReport: '安全审计',
-  supportCenter: '支持中心',
-  referralRewards: '推荐奖',
+  supportCenter: '文档',
+  referralRewards: '邀请',
   admin: '管理',
 
   // home
-  filStatistics: 'FIL 使用占比',
-  crfiStatistics: 'CRFI 总数',
-  fileCoinDepositTotal: '总存款',
+  filStatistics: 'cFIL统计',
+  crfiStatistics: 'CRFI统计',
+  fileCoinDepositTotal: 'cFIL<br/>总存入',
   // fileCoinDepositTotal: 'FIL 质押总数',
-  lendingTotal: '总借出',
+  lendingTotal: 'cFIL<br/>总借出',
   crfiDepositTotal: 'CRFI质押总数',
   referralRewards: '推荐奖',
 
   // CFIL
-  cFILInvestment: 'cFIL 投入',
-  CRFIInvestment: 'CRFI 投入',
+  cFILInvestment: 'cFIL STAKING',
+  CRFIInvestment: 'CRFI STAKING',
   totalDeposit: '总质押',
   // purchase: '购买',
   // purchaseAmount: '购买数',
@@ -43,16 +43,16 @@ const cn = {
   walletBalance: '钱包余额',
   balance: '余额',
   swap: '兑换',
-  stake: '质押',
-  myPositions: '我的',
+  stake: '存力质押',
+  myPositions: '我的存款',
   profit: '收益',
 
   // stake
-  stake: '算力质押',
-  stake1: '算力质押',
+  stake: '借贷',
+  stake1: '存力质押',
   staking: '理财中',
   staking: '借贷',
-  sFILAssets: 'sFIL 数量',
+  sFILAssets: 'sFIL 余额',
   pledge: '质押',
   borrow: '借',
   loanApy: '借贷年化',
@@ -69,10 +69,10 @@ const cn = {
   availableMarket: '可用池余额',
   confirm: '确认',
   totalIssue: '总发行',
-  name: '称呼',
+  name: '姓名',
   email: 'EMAIL',
   company: '公司',
-  nodeNumber: '联系电话',
+  nodeNumber: '节点编号',
   toastPaymentDue: '低于最低贷款额.',
 
   cFILRepay: 'cFIL 归还',
@@ -80,9 +80,9 @@ const cn = {
   walletBalance: '钱包余额',
 
   // rewards
-  referralRewards: '推荐奖',
-  claim: '取出',
-  claimedRewards: '取出推荐奖',
+  referralRewards: '邀请',
+  claim: '复制邀请链接',
+  claimedRewards: '我的奖励',
 
   // swap
   filSwap: 'FIL 兑换',
@@ -144,7 +144,7 @@ const cn = {
   income: '收入',
   currentInvest: '当前投资',
   fast: '快',
-  onDemand: '即将',
+  onDemand: '活期',
   expireDate: '期满',
 
   // admin

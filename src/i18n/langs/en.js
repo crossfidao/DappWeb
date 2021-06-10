@@ -2,8 +2,8 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 const cn = {
   // menubar
   dashboard: 'Home',
-  cFILInvest: 'cFIL Invest',
-  CRFIInvest: 'CRFI Invest',
+  cFILInvest: 'cFIL',
+  CRFIInvest: 'CRFI',
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
 
@@ -15,25 +15,25 @@ const cn = {
   inexecution: 'There are transactions in progress...',
 
   // Header
-  staking: 'Staking',
-  aboutCrossFi: 'About CrossFi',
+  staking: 'Borrow',
+  aboutCrossFi: 'Official Website',
   auditReport: 'Audit Report',
-  supportCenter: 'Support Center',
-  referralRewards: 'Referral Rewards',
-  admin: 'admin',
+  supportCenter: 'Docs',
+  referralRewards: 'Invite',
+  admin: 'Admin',
 
   // home
   filStatistics: 'FIL Statistics',
   crfiStatistics: 'CRFI Statistics',
   // fileCoinDepositTotal: 'Filecoin Deposit Total ',
-  fileCoinDepositTotal: 'Total deposit',
-  lendingTotal: 'Lending<br/> Total',
-  crfiDepositTotal: 'CRFI Deposit Total',
-  referralRewards: 'Referral Rewards',
+  fileCoinDepositTotal: 'Deposit Total',
+  lendingTotal: 'Lending Total',
+  crfiDepositTotal: 'Deposit Total',
+  referralRewards: 'Output Total',
 
   // CFIL
-  cFILInvestment: 'cFIL Investment',
-  CRFIInvestment: 'CRFI Investment',
+  cFILInvestment: 'cFIL STAKING',
+  CRFIInvestment: 'CRFI STAKING',
   totalDeposit: 'Total Deposit',
 
   day: 'Days',
@@ -42,13 +42,14 @@ const cn = {
   walletBalance: 'Wallet Balance',
   balance: 'Balance',
   swap: 'SWAP',
-  stake: 'Stake',
-  myPositions: 'My Positions',
+  stake: 'Storage pledge',
+  myPositions: 'My Stake',
   profit: 'Profit',
 
   // stake
-  stake: 'Stake',
-  staking: 'Staking',
+  stake: 'Borrow',
+  stake1: 'stake',
+  staking: 'Storage pledge',
   sFILAssets: 'sFIL Assets',
   pledge: 'Pledge',
   borrow: 'Borrow',
@@ -77,9 +78,9 @@ const cn = {
   walletBalance: 'wallet Balance',
 
   // rewards
-  referralRewards: 'Referral Rewards',
-  claim: 'Claim',
-  claimedRewards: 'Claimed Rewards',
+  referralRewards: 'Invite',
+  claim: 'Copy invite link',
+  claimedRewards: 'My Reward',
 
   // swap
   filSwap: 'FIL SWAP',

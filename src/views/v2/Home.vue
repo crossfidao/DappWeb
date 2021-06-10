@@ -23,7 +23,7 @@
     </h4>
     <div class="items">
       <div class="item bg" style="background: #2b67c1">
-        <p class="item-text">{{ $t('fileCoinDepositTotal') }}</p>
+        <p class="item-text" v-html="$t('fileCoinDepositTotal')"></p>
         <p class="item-text item-bottom">
           {{ systemInfo.nowInvestCFil | decimals }}
         </p>

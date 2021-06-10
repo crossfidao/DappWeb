@@ -56,6 +56,7 @@
           <van-field
             class="field"
             center
+            :border="false"
             clearable
             v-model="value"
             :placeholder="$t('purchaseAmount')"
@@ -100,6 +101,7 @@
           <van-field
             class="field"
             center
+            :border="false"
             clearable
             v-model="repayValue"
             :placeholder="$t('purchaseAmount')"
@@ -198,12 +200,16 @@ export default {
         mode: 4,
         value: this.value,
       })
+      this.showMask = false
+      this.value = ''
     },
     handleRepayConfirm() {
       this.stake({
         mode: 5,
         value: this.repayValue,
       })
+      this.showRepayMask = false
+      this.repayValue = ''
     },
   },
 }

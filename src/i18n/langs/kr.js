@@ -1,9 +1,9 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
 const kr = {
   // menubar
-  dashboard: '홈 페이지',
-  cFILInvest: 'cFIL 투자',
-  CRFIInvest: 'CRFI 투자',
+  dashboard: 'Home',
+  cFILInvest: 'cFIL',
+  CRFIInvest: 'CRFI',
   wallet: '지갑', // ? 保留关键字
   aaa: '지갑',
 
@@ -15,24 +15,24 @@ const kr = {
   inexecution: '현재 거래가 진행중 입니다.',
 
   // Header
-  staking: '스테이킹',
-  aboutCrossFi: 'CrossFi 정보',
+  staking: '대출',
+  aboutCrossFi: '홈페이지',
   auditReport: '감사 보고서',
-  supportCenter: '고객센터',
-  referralRewards: '러퍼럴 보상',
+  supportCenter: '문서',
+  referralRewards: '추천',
   admin: '관리자',
 
   // home
   filStatistics: 'FIL 통계',
   crfiStatistics: 'CRFI 통계',
-  fileCoinDepositTotal: '총 예금',
-  lendingTotal: '총 대출',
-  crfiDepositTotal: '총 CRFI 예금',
-  referralRewards: '러퍼럴 보상',
+  fileCoinDepositTotal: '예금총액',
+  lendingTotal: '대출총액',
+  crfiDepositTotal: '예금총액',
+  referralRewards: '인출총액',
 
   // CFIL
-  cFILInvestment: 'cFIL 투자',
-  CRFIInvestment: 'CRFI 투자',
+  cFILInvestment: 'cFIL 스테이킹',
+  CRFIInvestment: 'CRFI 스테이킹',
   totalDeposit: '총 예금',
 
   day: '일',
@@ -41,16 +41,17 @@ const kr = {
   walletBalance: '지갑 잔고',
   balance: '잔고',
   swap: '스왑',
-  stake: '스테이크',
-  myPositions: '내 위치',
+  stake: '파워저장',
+  myPositions: 'STAKE 내역',
   profit: '수익',
 
   // stake
-  stake: '스테이크',
-  staking: '스테이킹',
+  stake: '대출',
+  stake1: '대출',
+  staking: '파워저당',
   sFILAssets: 'sFIL 자산',
   pledge: '보증',
-  borrow: '차용',
+  borrow: '대출',
   loanApy: '대출 연이자',
   newProfit: '새로운 수익',
   paymentDue: '지불 기한',
@@ -65,7 +66,7 @@ const kr = {
   availableMarket: '사용가능한 마켓',
   confirm: '확인',
   totalIssue: '총 발행',
-  name: '이름',
+  name: '성함',
   email: '이메일',
   company: '회사',
   nodeNumber: '노드 번호',
@@ -76,9 +77,9 @@ const kr = {
   walletBalance: '지갑 잔고',
 
   // rewards
-  referralRewards: '러퍼럴 보상',
-  claim: '청구',
-  claimedRewards: '청구된 보상',
+  referralRewards: '추천',
+  claim: '초대장 링크 복사',
+  claimedRewards: '추천보상',
 
   // swap
   filSwap: 'FIL 스왑',
@@ -141,7 +142,7 @@ const kr = {
   income: '수입',
   currentInvest: '현재 투자',
   fast: '빠른',
-  onDemand: '요청시 즉시',
+  onDemand: '수시 입출금',
   expireDate: '기간 만료',
 
   // admin

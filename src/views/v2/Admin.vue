@@ -515,7 +515,6 @@ export default {
         } = element
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
-        console.log(NewCFilInterestRate)
         if (NewCFilInterestRate) {
           NewCFilInterestRate = NewCFilInterestRate * 100
           NewCFilInterestRate = utils.fromWei(NewCFilInterestRate.toString())
@@ -543,8 +542,6 @@ export default {
   },
   watch: {
     systemInfo(val) {
-      console.log('val systemInfo', val)
-
       this.affRate = utils.fromWei(this.systemInfo.affRate) * 100
       this.affRateLimit = utils.fromWei(this.systemInfo.affRequire)
     },
@@ -574,7 +571,6 @@ export default {
     ]),
     changeRate(key) {
       if (key === 'crfiPrice') {
-        console.log(key, this.rate.crfiPrice)
         this.setKeyValue({ key, value: this.rate.crfiPrice })
       } else if (key === 'cfilPrice') {
         this.setKeyValue({ key, value: this.rate.cfilPrice })
@@ -608,7 +604,6 @@ export default {
     },
     // 拒绝
     handleRefuse(data) {
-      console.log('dflkdfd;k', data)
       this.curItem = data
       let { SID } = data
       this.$dialog
@@ -617,7 +612,6 @@ export default {
           message: '确定拒绝该用户的申请吗？',
         })
         .then(async () => {
-          console.log('SID', SID)
           this.deleteStaking({ SID })
           // on confirm
         })
@@ -665,9 +659,7 @@ export default {
     },
     // 更改利率
     handleRate() {
-      console.log('item', this.curItem)
       if (this.isDemand) {
-        console.log('活期')
         this.handleDemandRate()
       } else {
         this.handleChangeRate()
@@ -685,7 +677,6 @@ export default {
     },
     handleDemandRate() {
       let { Type } = this.curItem
-      console.log('type', Type)
       this.ChangeDemandRate({
         ID: Type,
         crfi: this.CRFL,
@@ -695,12 +686,10 @@ export default {
     },
     handleChangeRate() {
       let { ID, CFilInterestRate, CRFIInterestRate } = this.curItem
-      console.log('id', ID)
       if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
         this.$toast('请填写0-100的数字')
         return
       }
-      console.log('ID', ID)
       this.ChangePackageRate({
         ID,
         crfi: this.CRFL,

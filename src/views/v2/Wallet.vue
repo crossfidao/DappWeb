@@ -61,7 +61,8 @@
           >
             {{ $t('withdraw') }}
           </span>
-          <div class="item-rate" v-if="item.Type == 0">
+          <!-- <div class="item-rate" v-if="item.Type == 0">
+            {{ item.CRFIInterestRate }}
             CRFI: +{{ item.CRFIInterestRate | rate }}% cFIL: +
             {{ item.CFilInterestRate | rate }}%
           </div>
@@ -70,6 +71,23 @@
             {{ item.CFilInterestRate | rate }}% CRFI: +{{
               item.CRFIInterestRate | rate
             }}%
+          </div> -->
+
+          <div class="item-rate" v-if="item.Type == 0">
+            <span> CRFI: {{ getRate(item) | rate }}% </span>
+            <span>+</span>
+            <span>
+              CFIL:
+              {{ getCFilRate(item) | rate }}%
+            </span>
+          </div>
+          <div class="item-rate" v-else>
+            <span>
+              CFIL:
+              {{ getCFilRate(item) | rate }}%
+            </span>
+            <span>+</span>
+            <span> CRFI: {{ getRate(item) | rate }}% </span>
           </div>
           <p class="item-balance">{{ item.Amount | decimals }}</p>
           <div class="income-box" v-if="item.Type == 0">
@@ -109,6 +127,7 @@
 
 <script>
 import moment from 'moment'
+import BigNumber from 'bignumber.js'
 import { mapActions, mapMutations } from 'vuex'
 export default {
   data() {
@@ -117,6 +136,12 @@ export default {
     }
   },
   computed: {
+    cfilPrice() {
+      return this.$store.state.cfilPrice
+    },
+    crfiPrice() {
+      return this.$store.state.crfiPrice
+    },
     wallet() {
       return this.$store.state.wallet
     },
@@ -137,6 +162,47 @@ export default {
     ...mapActions(['Withdraw', 'WithdrawDemand']),
     getEndTime(value) {
       return moment(value * 1000).format('YYYY-MM-DD')
+    },
+    getRate(data) {
+      let { Type, Amount = 1, CRFIInterestRate } = data
+      if (Amount == 0) {
+        Amount = 1
+      }
+      console.log(
+        'wode',
+        data,
+        Type,
+        CRFIInterestRate,
+        this.crfiPrice,
+        this.cfilPrice,
+      )
+
+      if (Type == 1) {
+        // CFil
+        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+          return CRFIInterestRate
+        }
+        let result = new BigNumber(this.crfiPrice)
+          .times(new BigNumber(CRFIInterestRate))
+          .div(new BigNumber(this.cfilPrice))
+        return result.toString()
+      } else {
+        return CRFIInterestRate
+      }
+    },
+    getCFilRate(data) {
+      let { Type, CFilInterestRate } = data
+      if (Type == 0) {
+        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+          return CFilInterestRate
+        }
+        let result = new BigNumber(this.cfilPrice)
+          .times(new BigNumber(CFilInterestRate))
+          .div(new BigNumber(this.crfiPrice))
+        return result.toString()
+      } else {
+        return CFilInterestRate
+      }
     },
   },
 }

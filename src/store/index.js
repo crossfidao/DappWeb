@@ -309,7 +309,12 @@ export default new Vuex.Store({
       let walletCFil = await CFilContract.callContract('balanceOf', [address])
       let { CFil, Lending } = state.loanInvest
       let total = new BigNumber(CFil).plus(new BigNumber(Lending))
-      if (new BigNumber(walletCFil).comparedTo(total) == 1) {
+      console.log(CFil, Lending, total.toString())
+      if (
+        new BigNumber(walletCFil).comparedTo(
+          new BigNumber(CFil).plus(new BigNumber(Lending)),
+        ) == 1
+      ) {
         return utils.fromWei(total.toString())
       } else {
         return utils.fromWei(walletCFil)
@@ -389,6 +394,7 @@ export default new Vuex.Store({
         } = e
         if (Type === '0') {
           CRFIList.push({
+            Type,
             CFilInterestRate,
             CRFIInterestRate,
             Days,
@@ -399,6 +405,7 @@ export default new Vuex.Store({
           })
         } else {
           CFilList.push({
+            Type,
             CFilInterestRate,
             CRFIInterestRate,
             Days,
@@ -409,12 +416,12 @@ export default new Vuex.Store({
           })
         }
       })
+      console.log(123, demandCRFI)
       CFilList.unshift({
         Days: '0',
         Amount: '0',
         ...demandCFil,
       })
-      console.log(demandCFil, demandCRFI)
       CRFIList.unshift({
         Days: '0',
         Amount: '0',
@@ -486,9 +493,8 @@ export default new Vuex.Store({
       let list = await crossLend.callContract('GetInvestRecords', [address])
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
-
+      console.log('dfdf', demandCRFI)
       let arr = JSON.parse(JSON.stringify(interestDetail))
-      console.log('arrarr', arr, interestDetail)
       let loanInterest = arr.pop()
       let demandCFilInterest = arr.pop()
       let demandCRFIInterest = arr.pop()
@@ -502,16 +508,18 @@ export default new Vuex.Store({
       }
 
       if (demandCFil.Amount != 0) {
-        let CRFIInterestRate =
-          data.demandCFil.NewCRFIInterestRate == 0
-            ? data.demandCFil.CRFIInterestRate
-            : data.demandCFil.NewCRFIInterestRate
-        let CFilInterestRate =
-          data.demandCFil.NewCFilInterestRate == 0
-            ? data.demandCFil.CFilInterestRate
-            : data.demandCFil.NewCFilInterestRate
+        // let CRFIInterestRate =
+        //   data.demandCFil.NewCRFIInterestRate == 0
+        //     ? data.demandCFil.CRFIInterestRate
+        //     : data.demandCFil.NewCRFIInterestRate
+        // let CFilInterestRate =
+        //   data.demandCFil.NewCFilInterestRate == 0
+        //     ? data.demandCFil.CFilInterestRate
+        //     : data.demandCFil.NewCFilInterestRate
 
-        console.log('demandCFilInterest', demandCFilInterest)
+        let CRFIInterestRate = data.demandCFil.CRFIInterestRate
+        let CFilInterestRate = data.demandCFil.CFilInterestRate
+        console.log('cfil rate', CRFIInterestRate, CFilInterestRate)
         userList.unshift({
           ...demandCFil,
           CRFIInterestRate,
@@ -525,14 +533,17 @@ export default new Vuex.Store({
         commit('setCFilDemandTotalAmount', demandCFil)
       }
       if (demandCRFI.Amount != 0) {
-        let CRFIInterestRate =
-          data.demandCFil.NewCRFIInterestRate == 0
-            ? data.demandCFil.CRFIInterestRate
-            : data.demandCFil.NewCRFIInterestRate
-        let CFilInterestRate =
-          data.demandCFil.NewCFilInterestRate == 0
-            ? data.demandCFil.CFilInterestRate
-            : data.demandCFil.NewCFilInterestRate
+        // let CRFIInterestRate =
+        //   data.demandCFil.NewCRFIInterestRate == 0
+        //     ? data.demandCFil.CRFIInterestRate
+        //     : data.demandCFil.NewCRFIInterestRate
+        // let CFilInterestRate =
+        //   data.demandCFil.NewCFilInterestRate == 0
+        //     ? data.demandCFil.CFilInterestRate
+        //     : data.demandCFil.NewCFilInterestRate
+
+        let CRFIInterestRate = data.demandCRFI.CRFIInterestRate
+        let CFilInterestRate = data.demandCRFI.CFilInterestRate
         userList.unshift({
           ...demandCRFI,
           CRFIInterestRate,
@@ -793,7 +804,6 @@ export default new Vuex.Store({
     // 修改邀请返利最低限制
     async ChangeAffRateLimit({ state, commit, dispatch }, data) {
       let { value } = data
-      console.log(value)
       value = utils.toWei(value.toString())
       try {
         await crossLend.executeContract(
@@ -906,6 +916,7 @@ export default new Vuex.Store({
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
       )
+      console.log(ID, Type, value, inviteValue, betys)
       let contract = Type == 0 ? CRFIContract : CFilContract
 
       try {
@@ -927,9 +938,19 @@ export default new Vuex.Store({
       let SFil = ''
       if (mode == 4) {
         let paymentDue = utils.fromWei(state.loanCFil.PaymentDue)
+        let { walletSFil } = state.wallet
+        console.log(walletSFil)
         if (parseFloat(value) < parseFloat(paymentDue)) {
           // console.log('xiaoyu')
           Toast(i18n.t('toastPaymentDue'))
+          return
+        }
+        if (
+          new BigNumber(utils.toWei(value)).comparedTo(
+            new BigNumber(walletSFil),
+          ) == 1
+        ) {
+          Toast(i18n.t('balanceToast'))
           return
         }
         SFil = await crossLend.callContract('calcCFilToSFil', [
