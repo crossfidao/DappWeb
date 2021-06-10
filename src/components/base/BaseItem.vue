@@ -172,19 +172,14 @@ export default {
     },
     getRate(data) {
       let { Type, Amount = 1, CRFIInterestRate } = data
+      console.log('price', this.cfilPrice, this.crfiPrice)
       if (Amount == 0) {
         Amount = 1
       }
-      console.log(
-        'goumia',
-        Type,
-        CRFIInterestRate,
-        this.crfiPrice,
-        this.cfilPrice,
-      )
+
       if (Type == 1) {
         // CFil
-        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+        if (this.crfiPrice == 1 || this.cfilPrice == 1) {
           return CRFIInterestRate
         }
         let result = new BigNumber(this.crfiPrice)
@@ -198,7 +193,7 @@ export default {
     getCFilRate(data) {
       let { Type, CFilInterestRate } = data
       if (Type == 0) {
-        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+        if (this.crfiPrice == 1 || this.cfilPrice == 1) {
           return CFilInterestRate
         }
         let result = new BigNumber(this.cfilPrice)
@@ -219,7 +214,6 @@ export default {
         this.$toast(this.$t('toast'))
         return
       }
-      console.log('info', this.info)
       if (!this.info.ID) {
         this.demandBuyCoin({
           ...this.info,

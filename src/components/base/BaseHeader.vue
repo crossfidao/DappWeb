@@ -30,7 +30,7 @@
         <div class="pop-menu">
           <router-link tag="div" to="/staking" class="pop-menu-item">
             <van-icon name="arrow-left" />
-            <span class="text">{{ $t('staking') }}</span>
+            <span class="text">{{ $t('borrowMenu') }}</span>
           </router-link>
           <div class="pop-menu-item">
             <van-icon name="arrow-left" />

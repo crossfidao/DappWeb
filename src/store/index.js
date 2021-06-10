@@ -308,14 +308,35 @@ export default new Vuex.Store({
       let address = state.userAddress
       let walletCFil = await CFilContract.callContract('balanceOf', [address])
       let { CFil, Lending } = state.loanInvest
-      let total = new BigNumber(CFil).plus(new BigNumber(Lending))
-      console.log(CFil, Lending, total.toString())
-      if (
-        new BigNumber(walletCFil).comparedTo(
-          new BigNumber(CFil).plus(new BigNumber(Lending)),
-        ) == 1
-      ) {
-        return utils.fromWei(total.toString())
+      let BN = utils.BN
+      let total = new BN(CFil).add(new BN(Lending)).div(new BN(1))
+      let tmp = total.div(new BN(1000))
+      let target = total.add(tmp)
+
+      // let a = total.mul(new BN(1))
+      // console.log(
+      //   'to',
+      //   total1.toString(),
+      //   total1.toNumber(),
+      //   a,
+      //   a.toString(),
+      //   a.toNumber(),
+      // )
+      // if (new BigNumber(walletCFil).comparedTo(total1) == 1) {
+      //   return utils.fromWei(total1.toString())
+      // } else {
+      //   return utils.fromWei(walletCFil)
+      // }
+      // console.log(
+      //   new BigNumber(walletCFil).comparedTo(total1),
+      //   total1,
+      //   new BN(total1.toString()),
+      //   total1.times(1.1).toString(),
+      // )
+
+      // console.log(123, total, new BN(2.2).mod(new BN(1)).toNumber())
+      if (new BN(walletCFil).cmp(target) == 1) {
+        return utils.fromWei(target.toString())
       } else {
         return utils.fromWei(walletCFil)
       }
@@ -416,7 +437,6 @@ export default new Vuex.Store({
           })
         }
       })
-      console.log(123, demandCRFI)
       CFilList.unshift({
         Days: '0',
         Amount: '0',
@@ -493,7 +513,6 @@ export default new Vuex.Store({
       let list = await crossLend.callContract('GetInvestRecords', [address])
       let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
-      console.log('dfdf', demandCRFI)
       let arr = JSON.parse(JSON.stringify(interestDetail))
       let loanInterest = arr.pop()
       let demandCFilInterest = arr.pop()
@@ -519,7 +538,6 @@ export default new Vuex.Store({
 
         let CRFIInterestRate = data.demandCFil.CRFIInterestRate
         let CFilInterestRate = data.demandCFil.CFilInterestRate
-        console.log('cfil rate', CRFIInterestRate, CFilInterestRate)
         userList.unshift({
           ...demandCFil,
           CRFIInterestRate,
@@ -916,7 +934,6 @@ export default new Vuex.Store({
         ['uint256', 'uint256', 'address'],
         [0, ID, invite],
       )
-      console.log(ID, Type, value, inviteValue, betys)
       let contract = Type == 0 ? CRFIContract : CFilContract
 
       try {
@@ -939,7 +956,6 @@ export default new Vuex.Store({
       if (mode == 4) {
         let paymentDue = utils.fromWei(state.loanCFil.PaymentDue)
         let { walletSFil } = state.wallet
-        console.log(walletSFil)
         if (parseFloat(value) < parseFloat(paymentDue)) {
           // console.log('xiaoyu')
           Toast(i18n.t('toastPaymentDue'))
@@ -1019,146 +1035,146 @@ export default new Vuex.Store({
         dispatch('init')
       } catch (e) {}
     },
-    async initData({ state, commit }) {
-      let address = state.userAddress
-      let systemInfo = await corsslend.callContract('GetSystemInfo', [])
-      let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
-      commit('setSystemInfo', {
-        affRate,
-        crfiInterestPool,
-        cfilInterestPool,
-      })
-      let res = await corsslend.callContract('GetInvestInfo', [0, address])
+    // async initData({ state, commit }) {
+    //   let address = state.userAddress
+    //   let systemInfo = await corsslend.callContract('GetSystemInfo', [])
+    //   let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
+    //   commit('setSystemInfo', {
+    //     affRate,
+    //     crfiInterestPool,
+    //     cfilInterestPool,
+    //   })
+    //   let res = await corsslend.callContract('GetInvestInfo', [0, address])
 
-      let {
-        id,
-        admin,
-        crfi,
-        cfil,
-        cfilInterest,
-        cfilDemandInterest,
-        crfiInterest,
-        crfiDemandInterest,
-        totalAffFD,
-      } = res
-      commit('setUserInfo', {
-        id,
-        admin,
-        crfi,
-        cfil,
-        cfilInterest,
-        crfiDemandInterest,
-        cfilDemandInterest,
-        crfiInterest,
-        totalAffFD,
-      })
-      // if (admin) {
-      //   router.replace('/admin')
-      // }
-      // 获取余额
-      // TODO: //cfilInterestPoo
-      let watlletCRFI = await crfiContract.callContract('balanceOf', [address])
-      let watlletcfil = await eFileContract.callContract('balanceOf', [address])
-      let BN = utils.BN
-      let totalEfil = new BN(cfilDemandInterest).add(new BN(cfilInterest))
-      let totalFD = new BN(crfiDemandInterest).add(new BN(crfiInterest))
-      commit('setBalance', {
-        admin,
-        crfi,
-        totalFD,
-        cfil,
-        totalEfil,
-        watlletCRFI,
-        watlletcfil,
-        cfilInterest,
-        crfiInterest,
-        totalAffFD,
-      })
+    //   let {
+    //     id,
+    //     admin,
+    //     crfi,
+    //     cfil,
+    //     cfilInterest,
+    //     cfilDemandInterest,
+    //     crfiInterest,
+    //     crfiDemandInterest,
+    //     totalAffFD,
+    //   } = res
+    //   commit('setUserInfo', {
+    //     id,
+    //     admin,
+    //     crfi,
+    //     cfil,
+    //     cfilInterest,
+    //     crfiDemandInterest,
+    //     cfilDemandInterest,
+    //     crfiInterest,
+    //     totalAffFD,
+    //   })
+    //   // if (admin) {
+    //   //   router.replace('/admin')
+    //   // }
+    //   // 获取余额
+    //   // TODO: //cfilInterestPoo
+    //   let watlletCRFI = await crfiContract.callContract('balanceOf', [address])
+    //   let watlletcfil = await eFileContract.callContract('balanceOf', [address])
+    //   let BN = utils.BN
+    //   let totalEfil = new BN(cfilDemandInterest).add(new BN(cfilInterest))
+    //   let totalFD = new BN(crfiDemandInterest).add(new BN(crfiInterest))
+    //   commit('setBalance', {
+    //     admin,
+    //     crfi,
+    //     totalFD,
+    //     cfil,
+    //     totalEfil,
+    //     watlletCRFI,
+    //     watlletcfil,
+    //     cfilInterest,
+    //     crfiInterest,
+    //     totalAffFD,
+    //   })
 
-      // 获取列表
-      let list = await corsslend.callContract('GetPackages', [])
-      let { demandCRFI, demandCFil, financialPackages } = list
-      let list1 = await corsslend.callContract('GetInvestRecords', [address])
-      let records = list1.records
-      let crfiList = []
-      let cfilList = []
-      financialPackages.forEach((element, index) => {
-        let { Type, ID } = element
-        let deposited = new BN(0)
-        for (let i = 0; i < records.length; i++) {
-          if (records[i].PackageID == ID) {
-            deposited = deposited.add(new BN(records[i].Amount))
-          }
-        }
+    //   // 获取列表
+    //   let list = await corsslend.callContract('GetPackages', [])
+    //   let { demandCRFI, demandCFil, financialPackages } = list
+    //   let list1 = await corsslend.callContract('GetInvestRecords', [address])
+    //   let records = list1.records
+    //   let crfiList = []
+    //   let cfilList = []
+    //   financialPackages.forEach((element, index) => {
+    //     let { Type, ID } = element
+    //     let deposited = new BN(0)
+    //     for (let i = 0; i < records.length; i++) {
+    //       if (records[i].PackageID == ID) {
+    //         deposited = deposited.add(new BN(records[i].Amount))
+    //       }
+    //     }
 
-        if (Type == 0) {
-          crfiList.push({
-            ...element,
-            deposited: deposited,
-          })
-        } else {
-          cfilList.push({
-            ...element,
-            deposited: deposited,
-          })
-        }
-      })
-      crfiList.unshift({
-        ...demandCRFI,
-        deposited: list1.demandCRFI.Amount,
-      })
-      cfilList.unshift({
-        ...demandCFil,
-        deposited: list1.demandCFil.Amount,
-      })
-      commit('setFdList', crfiList)
-      commit('setEFilList', cfilList)
-      commit('setDemandFD', {
-        ...demandCRFI,
-      })
+    //     if (Type == 0) {
+    //       crfiList.push({
+    //         ...element,
+    //         deposited: deposited,
+    //       })
+    //     } else {
+    //       cfilList.push({
+    //         ...element,
+    //         deposited: deposited,
+    //       })
+    //     }
+    //   })
+    //   crfiList.unshift({
+    //     ...demandCRFI,
+    //     deposited: list1.demandCRFI.Amount,
+    //   })
+    //   cfilList.unshift({
+    //     ...demandCFil,
+    //     deposited: list1.demandCFil.Amount,
+    //   })
+    //   commit('setFdList', crfiList)
+    //   commit('setEFilList', cfilList)
+    //   commit('setDemandFD', {
+    //     ...demandCRFI,
+    //   })
 
-      let FDInterestRate =
-        demandCRFI.NewFDInterestRate == 0
-          ? demandCRFI.FDInterestRate
-          : demandCRFI.NewFDInterestRate
+    //   let FDInterestRate =
+    //     demandCRFI.NewFDInterestRate == 0
+    //       ? demandCRFI.FDInterestRate
+    //       : demandCRFI.NewFDInterestRate
 
-      let EFilInterestRate =
-        demandCRFI.NewEFilInterestRate == 0
-          ? demandCRFI.EFilInterestRate
-          : demandCRFI.NewEFilInterestRate
+    //   let EFilInterestRate =
+    //     demandCRFI.NewEFilInterestRate == 0
+    //       ? demandCRFI.EFilInterestRate
+    //       : demandCRFI.NewEFilInterestRate
 
-      let FDInterestRate1 =
-        demandCFil.NewFDInterestRate == 0
-          ? demandCFil.FDInterestRate
-          : demandCFil.NewFDInterestRate
+    //   let FDInterestRate1 =
+    //     demandCFil.NewFDInterestRate == 0
+    //       ? demandCFil.FDInterestRate
+    //       : demandCFil.NewFDInterestRate
 
-      let EFilInterestRate1 =
-        demandCFil.NewEFilInterestRate == 0
-          ? demandCFil.EFilInterestRate
-          : demandCFil.NewEFilInterestRate
+    //   let EFilInterestRate1 =
+    //     demandCFil.NewEFilInterestRate == 0
+    //       ? demandCFil.EFilInterestRate
+    //       : demandCFil.NewEFilInterestRate
 
-      commit('setDemandEFil', {
-        ...demandCFil,
-      })
-      commit('setUserList', list1.records)
-      commit('setUserDemandList', [
-        {
-          ...list1.demandEFil,
-          Type: 1,
-          FDInterestRate: FDInterestRate1,
-          EFilInterestRate: EFilInterestRate1,
-        },
-        {
-          ...list1.demandFD,
-          Type: 0,
-          FDInterestRate,
-          EFilInterestRate,
-        },
-      ])
-      // 获取 fileCoin 地址
-      let fileCoin = localStorage.getItem(state.userAddress)
-      commit('setFileAddr', fileCoin)
-    },
+    //   commit('setDemandEFil', {
+    //     ...demandCFil,
+    //   })
+    //   commit('setUserList', list1.records)
+    //   commit('setUserDemandList', [
+    //     {
+    //       ...list1.demandEFil,
+    //       Type: 1,
+    //       FDInterestRate: FDInterestRate1,
+    //       EFilInterestRate: EFilInterestRate1,
+    //     },
+    //     {
+    //       ...list1.demandFD,
+    //       Type: 0,
+    //       FDInterestRate,
+    //       EFilInterestRate,
+    //     },
+    //   ])
+    //   // 获取 fileCoin 地址
+    //   let fileCoin = localStorage.getItem(state.userAddress)
+    //   commit('setFileAddr', fileCoin)
+    // },
   },
   modules: {},
 })

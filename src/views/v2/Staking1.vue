@@ -1,9 +1,9 @@
 <template>
   <div class="container home">
-    <BaseHeader :isBack="true" :title="$t('staking')" />
+    <BaseHeader :isBack="true" :title="$t('stake')" />
     <div class="content">
       <div class="items">
-        <h4 class="item-title">{{ $t('staking') }}</h4>
+        <h4 class="item-title">{{ $t('stake') }}</h4>
         <div class="item">
           <span class="item-label">{{ $t('totalIssue') }}:</span>
           <span class="item-content">{{ totalSupply | decimals }}</span>
@@ -64,7 +64,6 @@ export default {
   },
   async mounted() {
     this.totalSupply = await this.getTotalSupply()
-    console.log('dkfldlkf', this.totalSupply)
   },
   methods: {
     ...mapMutations(['setUserAddress']),
@@ -78,7 +77,8 @@ export default {
       ) {
         return
       }
-      await this.applyStaking(JSON.stringify(this.params))
+      this.applyStaking(JSON.stringify(this.params))
+      this.$router.replace('/staking')
     },
     getStyle(index) {
       let target = index % 5

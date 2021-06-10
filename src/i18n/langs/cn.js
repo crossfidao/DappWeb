@@ -22,6 +22,8 @@ const cn = {
   referralRewards: '邀请',
   admin: '管理',
 
+  borrowMenu: '借贷',
+
   // home
   filStatistics: 'cFIL统计',
   crfiStatistics: 'CRFI统计',
@@ -30,6 +32,7 @@ const cn = {
   lendingTotal: 'cFIL<br/>总借出',
   crfiDepositTotal: 'CRFI质押总数',
   referralRewards: '推荐奖',
+  referra: 'CRFI总产出',
 
   // CFIL
   cFILInvestment: 'cFIL STAKING',

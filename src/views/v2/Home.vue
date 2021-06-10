@@ -46,7 +46,7 @@
         </p>
       </div>
       <div class="item">
-        <p class="item-text">{{ $t('referralRewards') }}</p>
+        <p class="item-text">{{ $t('referra') }}</p>
         <p class="item-text item-bottom">
           {{ systemInfo.crfiRewardTotal | decimals }}
         </p>

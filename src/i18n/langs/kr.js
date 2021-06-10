@@ -22,6 +22,8 @@ const kr = {
   referralRewards: '추천',
   admin: '관리자',
 
+  borrowMenu: '대출',
+
   // home
   filStatistics: 'FIL 통계',
   crfiStatistics: 'CRFI 통계',
@@ -29,6 +31,7 @@ const kr = {
   lendingTotal: '대출총액',
   crfiDepositTotal: '예금총액',
   referralRewards: '인출총액',
+  referra: '인출총액',
 
   // CFIL
   cFILInvestment: 'cFIL 스테이킹',
@@ -47,7 +50,7 @@ const kr = {
 
   // stake
   stake: '대출',
-  stake1: '대출',
+  stake1: '파워저당',
   staking: '파워저당',
   sFILAssets: 'sFIL 자산',
   pledge: '보증',
@@ -142,7 +145,7 @@ const kr = {
   income: '수입',
   currentInvest: '현재 투자',
   fast: '빠른',
-  onDemand: '수시 입출금',
+  onDemand: '수시<br/>입출금',
   expireDate: '기간 만료',
 
   // admin

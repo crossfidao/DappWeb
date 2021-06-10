@@ -21,6 +21,7 @@ const cn = {
   supportCenter: 'Docs',
   referralRewards: 'Invite',
   admin: 'Admin',
+  borrowMenu: 'Borrow',
 
   // home
   filStatistics: 'FIL Statistics',
@@ -30,6 +31,7 @@ const cn = {
   lendingTotal: 'Lending Total',
   crfiDepositTotal: 'Deposit Total',
   referralRewards: 'Output Total',
+  referra: 'total output',
 
   // CFIL
   cFILInvestment: 'cFIL STAKING',
@@ -48,7 +50,7 @@ const cn = {
 
   // stake
   stake: 'Borrow',
-  stake1: 'stake',
+  stake1: 'Storage pledge',
   staking: 'Storage pledge',
   sFILAssets: 'sFIL Assets',
   pledge: 'Pledge',

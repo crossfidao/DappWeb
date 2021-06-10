@@ -23,7 +23,6 @@ export default {
   },
   computed: {
     CRFIList() {
-      console.log('listsdsd', this.$store.state.CRFIList)
       return this.$store.state.CRFIList
     },
     showLoading() {

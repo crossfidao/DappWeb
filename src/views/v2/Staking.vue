@@ -1,9 +1,9 @@
 <template>
   <div class="container home">
-    <BaseHeader :isBack="true" :title="$t('staking')" />
+    <BaseHeader :isBack="true" :title="$t('stake')" />
     <div class="content">
       <div class="stake" style="text-align: right">
-        <router-link tag="span" to="/staking1" class="stake-btn">
+        <router-link tag="span" replace to="/staking1" class="stake-btn">
           {{ $t('stake1') }}
         </router-link>
       </div>

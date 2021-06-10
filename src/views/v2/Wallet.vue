@@ -42,9 +42,16 @@
 
       <div class="item" v-for="(item, index) in userList" :key="index">
         <div class="item-left">
-          <p class="item-date" style="padding: 8px 0; flex: 1">
-            {{ item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand') }}
+          <p
+            class="item-date"
+            style="padding: 8px 0; flex: 1"
+            v-html="
+              item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand')
+            "
+          >
+            {{}}
           </p>
+
           <p
             class="item-coin item-coin-c"
             :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
@@ -168,18 +175,10 @@ export default {
       if (Amount == 0) {
         Amount = 1
       }
-      console.log(
-        'wode',
-        data,
-        Type,
-        CRFIInterestRate,
-        this.crfiPrice,
-        this.cfilPrice,
-      )
 
       if (Type == 1) {
         // CFil
-        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+        if (this.crfiPrice == 1 || this.cfilPrice == 1) {
           return CRFIInterestRate
         }
         let result = new BigNumber(this.crfiPrice)
@@ -193,7 +192,7 @@ export default {
     getCFilRate(data) {
       let { Type, CFilInterestRate } = data
       if (Type == 0) {
-        if (this.crfiPrice == 0 || this.cfilPrice == 0) {
+        if (this.crfiPrice == 1 || this.cfilPrice == 1) {
           return CFilInterestRate
         }
         let result = new BigNumber(this.cfilPrice)

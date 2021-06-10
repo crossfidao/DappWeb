@@ -1,5 +1,5 @@
 // 合约地址
-export const CROSSLEND_ADDRESS = '0x92ad0b67ad1d879b131df1ed2373ec73c6ccc40b'
+export const CROSSLEND_ADDRESS = '0xffb177f059b3a641ee8f485ee578b98644415ba8'
 
 export const CRFI_ADDRESS = '0x1ccbf9217c06a641e88059578b5bf984e21f11ff'
 
