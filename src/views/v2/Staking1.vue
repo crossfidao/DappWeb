@@ -3,7 +3,7 @@
     <BaseHeader :isBack="true" :title="$t('stake')" />
     <div class="content">
       <div class="items">
-        <h4 class="item-title">{{ $t('stake') }}</h4>
+        <h4 class="item-title">{{ $t('stake1') }}</h4>
         <div class="item">
           <span class="item-label">{{ $t('totalIssue') }}:</span>
           <span class="item-content">{{ totalSupply | decimals }}</span>

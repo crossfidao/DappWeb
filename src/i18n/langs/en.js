@@ -113,8 +113,8 @@ const cn = {
     'Filecoin transfered to this address will be automatically redeemed to cFil in 1:1 ratio',
   contract: 'contract',
   repurchase: 'repurchase',
-  withdraw: 'withdraw',
-  withdrawAll: 'withdraw All',
+  withdraw: 'Withdraw',
+  withdrawAll: 'Profit withdrawal',
   eFilDesc: 'cFil can be redeemed in 1:1 ratio by Filecoin',
   FDDesc: 'CRFI can be obtained by staking and mining',
   eFilPlaceholder: 'please input your cFil selling amount',
@@ -162,10 +162,13 @@ const cn = {
   config: 'configuration',
 
   // toast
+  minNumberToast: 'Minimum Exchange Quantity is 0.1 cFil.',
+
   balanceToast: 'insufficient balance, please input after double check',
   toast: 'please input the amount of your buyin',
   empty: 'empty',
-
+  // placeholder
+  placeholderFilecoin: 'Please enter the withdrawal amount.',
   message: {
     name: 'Alice',
   },

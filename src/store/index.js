@@ -101,6 +101,8 @@ export default new Vuex.Store({
       Pledge: '0',
       CFil: '0',
     },
+    burnCFilFee: '',
+    burnCFilRateCRFI: '',
   },
   getters: {
     pledgeRate: state => {
@@ -289,6 +291,12 @@ export default new Vuex.Store({
       state.crfiPrice = data.crfiPrice
       state.cfilPrice = data.cfilPrice
     },
+    setBurnCFilFee(state, value) {
+      state.burnCFilFee = value
+    },
+    setBurnCFilRateCRFI(state, value) {
+      state.burnCFilRateCRFI = value
+    },
   },
   actions: {
     // 获取key - value
@@ -383,6 +391,17 @@ export default new Vuex.Store({
           })
         })
     },
+    async changeCFilFee({ state, commit }, data) {
+      let { value } = data
+      console.log('value', value)
+      value = utils.toWei(value.toString())
+      await CFilContract.executeContract(
+        'ChangeBurnCFilFee',
+        [value.toString()],
+        state.userAddress,
+      )
+      dispatch('init')
+    },
     // 初始化
     async init({ state, commit, dispatch }) {
       let address = state.userAddress
@@ -394,6 +413,14 @@ export default new Vuex.Store({
         cfilPrice: cfilPrice || 1,
         crfiPrice: crfiPrice || 1,
       })
+
+      let burnCFilFee = await CFilContract.callContract('burnCFilFee', [])
+      let burnCFilRateCRFI = await CFilContract.callContract(
+        'burnCFilRateCRFI',
+        [],
+      )
+      commit('setBurnCFilFee', burnCFilFee)
+      commit('setBurnCFilRateCRFI', burnCFilRateCRFI)
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
       commit('setSystemInfo', systemInfo)
@@ -732,6 +759,7 @@ export default new Vuex.Store({
       let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
       return crfiValue.toString()
     },
+
     async RepurchaseMax({ state }) {
       let tmp = state.wallet.walletCFil
       let tmpCRFI = state.wallet.walletCRFI
@@ -753,7 +781,8 @@ export default new Vuex.Store({
         Toast(i18n.t('eFilPlaceholder'))
         return
       }
-      if (value < 10) {
+      // 数量限制测试环境放开，上线重新使用
+      if (value < 0.1) {
         Toast(i18n.t('minNumberToast'))
         return
       }
@@ -770,7 +799,7 @@ export default new Vuex.Store({
       //   [fileCoin],
       // )
       if (res == 0) {
-        await CRFIContract.executeContract(
+        await CFilContract.executeContract(
           'burn',
           [value, betys1],
           state.userAddress,
@@ -779,12 +808,15 @@ export default new Vuex.Store({
         return
       }
       let rate = utils.fromWei(res)
+      // 计算crfi
       let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
       // if (balanceCRFI.comparedTo(crfiValue) == -1) {
       //   Toast(i18n.t('balanceToast'))
       //   return
       // }
       // let crfiValue = value.times(new BigNumber(utils.fromWei(res)))
+      // 手续费、crfi余额、
+
       if (balanceCFil.comparedTo(value) == -1) {
         Toast(i18n.t('balanceToast'))
         return
@@ -863,7 +895,10 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
-
+    // 活期提现
+    /**
+     * @param {*} PackageID 提取的投资ID
+     */
     async WithdrawDemand({ state, commit, dispatch }, type) {
       try {
         await crossLend.executeContract(
@@ -897,6 +932,7 @@ export default new Vuex.Store({
         dispatch('init')
       } catch (e) {}
     },
+    // 充值CRFI池子
     async chargeCRFI({ state, commit, dispatch }, data) {
       let { value } = data
       let betys = CRFIContract.web3.eth.abi.encodeParameters(
@@ -1035,146 +1071,6 @@ export default new Vuex.Store({
         dispatch('init')
       } catch (e) {}
     },
-    // async initData({ state, commit }) {
-    //   let address = state.userAddress
-    //   let systemInfo = await corsslend.callContract('GetSystemInfo', [])
-    //   let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
-    //   commit('setSystemInfo', {
-    //     affRate,
-    //     crfiInterestPool,
-    //     cfilInterestPool,
-    //   })
-    //   let res = await corsslend.callContract('GetInvestInfo', [0, address])
-
-    //   let {
-    //     id,
-    //     admin,
-    //     crfi,
-    //     cfil,
-    //     cfilInterest,
-    //     cfilDemandInterest,
-    //     crfiInterest,
-    //     crfiDemandInterest,
-    //     totalAffFD,
-    //   } = res
-    //   commit('setUserInfo', {
-    //     id,
-    //     admin,
-    //     crfi,
-    //     cfil,
-    //     cfilInterest,
-    //     crfiDemandInterest,
-    //     cfilDemandInterest,
-    //     crfiInterest,
-    //     totalAffFD,
-    //   })
-    //   // if (admin) {
-    //   //   router.replace('/admin')
-    //   // }
-    //   // 获取余额
-    //   // TODO: //cfilInterestPoo
-    //   let watlletCRFI = await crfiContract.callContract('balanceOf', [address])
-    //   let watlletcfil = await eFileContract.callContract('balanceOf', [address])
-    //   let BN = utils.BN
-    //   let totalEfil = new BN(cfilDemandInterest).add(new BN(cfilInterest))
-    //   let totalFD = new BN(crfiDemandInterest).add(new BN(crfiInterest))
-    //   commit('setBalance', {
-    //     admin,
-    //     crfi,
-    //     totalFD,
-    //     cfil,
-    //     totalEfil,
-    //     watlletCRFI,
-    //     watlletcfil,
-    //     cfilInterest,
-    //     crfiInterest,
-    //     totalAffFD,
-    //   })
-
-    //   // 获取列表
-    //   let list = await corsslend.callContract('GetPackages', [])
-    //   let { demandCRFI, demandCFil, financialPackages } = list
-    //   let list1 = await corsslend.callContract('GetInvestRecords', [address])
-    //   let records = list1.records
-    //   let crfiList = []
-    //   let cfilList = []
-    //   financialPackages.forEach((element, index) => {
-    //     let { Type, ID } = element
-    //     let deposited = new BN(0)
-    //     for (let i = 0; i < records.length; i++) {
-    //       if (records[i].PackageID == ID) {
-    //         deposited = deposited.add(new BN(records[i].Amount))
-    //       }
-    //     }
-
-    //     if (Type == 0) {
-    //       crfiList.push({
-    //         ...element,
-    //         deposited: deposited,
-    //       })
-    //     } else {
-    //       cfilList.push({
-    //         ...element,
-    //         deposited: deposited,
-    //       })
-    //     }
-    //   })
-    //   crfiList.unshift({
-    //     ...demandCRFI,
-    //     deposited: list1.demandCRFI.Amount,
-    //   })
-    //   cfilList.unshift({
-    //     ...demandCFil,
-    //     deposited: list1.demandCFil.Amount,
-    //   })
-    //   commit('setFdList', crfiList)
-    //   commit('setEFilList', cfilList)
-    //   commit('setDemandFD', {
-    //     ...demandCRFI,
-    //   })
-
-    //   let FDInterestRate =
-    //     demandCRFI.NewFDInterestRate == 0
-    //       ? demandCRFI.FDInterestRate
-    //       : demandCRFI.NewFDInterestRate
-
-    //   let EFilInterestRate =
-    //     demandCRFI.NewEFilInterestRate == 0
-    //       ? demandCRFI.EFilInterestRate
-    //       : demandCRFI.NewEFilInterestRate
-
-    //   let FDInterestRate1 =
-    //     demandCFil.NewFDInterestRate == 0
-    //       ? demandCFil.FDInterestRate
-    //       : demandCFil.NewFDInterestRate
-
-    //   let EFilInterestRate1 =
-    //     demandCFil.NewEFilInterestRate == 0
-    //       ? demandCFil.EFilInterestRate
-    //       : demandCFil.NewEFilInterestRate
-
-    //   commit('setDemandEFil', {
-    //     ...demandCFil,
-    //   })
-    //   commit('setUserList', list1.records)
-    //   commit('setUserDemandList', [
-    //     {
-    //       ...list1.demandEFil,
-    //       Type: 1,
-    //       FDInterestRate: FDInterestRate1,
-    //       EFilInterestRate: EFilInterestRate1,
-    //     },
-    //     {
-    //       ...list1.demandFD,
-    //       Type: 0,
-    //       FDInterestRate,
-    //       EFilInterestRate,
-    //     },
-    //   ])
-    //   // 获取 fileCoin 地址
-    //   let fileCoin = localStorage.getItem(state.userAddress)
-    //   commit('setFileAddr', fileCoin)
-    // },
   },
   modules: {},
 })

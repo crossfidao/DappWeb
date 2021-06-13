@@ -37,11 +37,11 @@
               </van-button>
             </div>
           </div>
-          <!-- 修改crfiPrice -->
+          <!-- 修改cfil 汇率 -->
           <div class="charge-title" style="margin: 0 32px">
             <span>
-              汇率设置（crfiPrice）
-              {{ crfiPrice | decimals }}</span
+              cfil兑换燃烧crfi比例（crfiPrice）
+              {{ burnCFilRateCRFI | decimals }}</span
             >
           </div>
           <div class="charge" style="margin: 0 32px">
@@ -52,6 +52,24 @@
               v-model="rate.crfiPrice"
             />
             <van-button class="charge-btn" @click="changeRate('crfiPrice')">
+              修改
+            </van-button>
+          </div>
+          <!-- 修改crfiPrice -->
+          <div class="charge-title" style="margin: 0 32px">
+            <span>
+              cfil 兑换手续费
+              {{ burnCFilFee | decimals }}</span
+            >
+          </div>
+          <div class="charge" style="margin: 0 32px">
+            <van-field
+              class="price-input"
+              placeholder="请输入cFil兑换手续费"
+              border
+              v-model="burnCFilFeeValue"
+            />
+            <van-button class="charge-btn" @click="changeCFilFeeConfirm()">
               修改
             </van-button>
           </div>
@@ -433,9 +451,16 @@ export default {
         PledgeRate: '',
         PaymentDue: '',
       },
+      burnCFilFeeValue: '',
     }
   },
   computed: {
+    burnCFilRateCRFI() {
+      return this.$store.state.burnCFilRateCRFI
+    },
+    burnCFilFee() {
+      return this.$store.state.burnCFilFee
+    },
     cfilPrice() {
       return this.$store.state.cfilPrice
     },
@@ -568,7 +593,14 @@ export default {
       'deleteStaking',
       'changeLoanRate',
       'setKeyValue',
+      'changeCFilFee',
     ]),
+    changeCFilFeeConfirm() {
+      console.log('dfd', this.burnCFilFeeValue)
+      this.changeCFilFee({
+        value: this.burnCFilFeeValue,
+      })
+    },
     changeRate(key) {
       if (key === 'crfiPrice') {
         this.setKeyValue({ key, value: this.rate.crfiPrice })
@@ -686,7 +718,7 @@ export default {
     },
     handleChangeRate() {
       let { ID, CFilInterestRate, CRFIInterestRate } = this.curItem
-      if (!(parseFloat(this.CRFL) > 0 && parseFloat(this.CRFL) < 100)) {
+      if (!(parseFloat(this.CRFL) > 0)) {
         this.$toast('请填写0-100的数字')
         return
       }

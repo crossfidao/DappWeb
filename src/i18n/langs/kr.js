@@ -105,6 +105,8 @@ const kr = {
   copyText: '복사 완료',
 
   // home
+
+  withdrawAll: '수익 출금',
   fileconinAddress: 'Filecoin 주소',
   invite: '나의 홍보 코드',
   inviteText:
@@ -113,7 +115,7 @@ const kr = {
     '이 주소로 전송된 파일 코인은 1:1 비율로 cFil로 자동 전환됩니다.',
   contract: '계약',
   repurchase: '환매',
-  withdraw: '출금',
+  withdraw: '원금 출금',
   eFilDesc: 'cFil은 Filecoin으로 1:1 비율로 교환 할 수 있습니다.',
   FDDesc: 'CRFI는 스테이킹 및 마이닝을 통해 얻을 수 있습니다.',
   eFilPlaceholder: 'cFil 판매량을 입력해 주십시오',
@@ -145,7 +147,7 @@ const kr = {
   income: '수입',
   currentInvest: '현재 투자',
   fast: '빠른',
-  onDemand: '수시<br/>입출금',
+  onDemand: '수시입출금',
   expireDate: '기간 만료',
 
   // admin
@@ -161,10 +163,13 @@ const kr = {
   config: '설정',
 
   // toast
+  minNumberToast: '최소 교환 수량은 0.1 cFil 입니다.',
+
   balanceToast: '잔액이 부족합니다. 재확인 후 입력해 주십시오.',
   toast: '구매 개수를 입력해 주십시오.',
   empty: '공백',
-
+  // placeholder
+  placeholderFilecoin: '출금수량을 입력해 주십시오.',
   message: {
     name: 'Alice',
   },

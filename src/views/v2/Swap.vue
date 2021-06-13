@@ -70,7 +70,7 @@
                 :border="false"
                 clearable
                 v-model="value"
-                :placeholder="$t('purchaseAmount')"
+                :placeholder="$t('placeholderFilecoin')"
               />
               <span class="max" @click="handleMax">{{ $t('max') }}</span>
             </div>

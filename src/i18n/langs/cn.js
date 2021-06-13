@@ -114,8 +114,8 @@ const cn = {
   exchangeDesc: '发送到该地址的Fil代币将会以1:1的比例自动转换到cFil。',
   contract: '合约',
   repurchase: '赎回',
-  withdraw: '取出',
-  withdrawAll: '全部提现',
+  withdraw: '赎回',
+  withdrawAll: '提取收益',
   eFilDesc: 'cFil可以与Filecoin以1:1的比例交换。',
   FDDesc: 'CRFI可以质押和理财',
   eFilPlaceholder: '请输入cFil兑换量',
@@ -163,10 +163,13 @@ const cn = {
   config: '设定',
 
   // toast
+  minNumberToast: '最少兑换数量0.1个',
   balanceToast: '余额不足。请再次确认后输入',
   toast: '请输入您购买的数量',
   empty: '空白',
 
+  // placeholder
+  placeholderFilecoin: '请输入兑换数量',
   message: {
     name: 'Alice',
   },
