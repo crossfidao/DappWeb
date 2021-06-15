@@ -291,8 +291,8 @@ export default {
 }
 
 .item {
-  width: 328px;
-  margin: 0 auto 12px;
+  // width: 328px;
+  margin: 0 24px 12px;
   background: #333b4b;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   border-radius: 10px;
