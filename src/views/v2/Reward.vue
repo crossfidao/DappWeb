@@ -4,36 +4,111 @@
     <div class="content">
       <h4 class="title">{{ $t('referralRewards') }}</h4>
       <div class="items">
-        <div class="logo"></div>
-        <div class="items-content">
-          {{ userInfo.totalAffCRFI | decimals }}
+        <div class="logo-item">
+          <div class="logo"></div>
+          <div class="items-content">
+            {{
+              userInfo &&
+                userInfo.uInfoView &&
+                userInfo.uInfoView.totalAffCRFI | decimals
+            }}
+          </div>
         </div>
-        <div class="item-btn">
-          <span
-            class="tag-read btn"
-            :data-clipboard-text="inviteLink"
-            @click="copy"
-          >
-            {{ $t('claim') }}
-          </span>
+        <div class="logo-item">
+          <div class="logo cfil"></div>
+          <div class="items-content">
+            {{
+              userInfo &&
+                userInfo.uInfoView &&
+                userInfo.uInfoView.totalAffCFil | decimals
+            }}
+          </div>
         </div>
       </div>
+      <div class="item-btn">
+        <span
+          class="tag-read btn"
+          :data-clipboard-text="inviteLink"
+          @click="copy"
+        >
+          {{ $t('claim') }}
+        </span>
+      </div>
     </div>
-
-    <h4 class="title" style="margin-bottom: 42px">
+    <!-- <h4 class="title" style="margin-bottom: 42px">
       {{ $t('claimedRewards') }}
-    </h4>
-    <!-- <van-empty description="暂无数据" size="0px" image="" /> -->
-    <div class="item" v-for="item in rewardsList" :key="item.indexed">
-      <span class="item-logo"></span>
-      <div class="item-right">
-        <p class="price">+ {{ item.amount | decimals }} CRFI</p>
-        <p class="address">
-          {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
-        </p>
-        <p class="date">{{ getDate(item.timestamp) }}</p>
+    </h4> -->
+    <div class="tabs" style="height: 46px">
+      <div
+        class="tabs-item"
+        :class="{ active: active === index }"
+        v-for="(item, index) in tabs"
+        :key="item.name"
+        @click="handleClick(index)"
+      >
+        {{ $t(item.name) }}
+        <span class="line"></span>
       </div>
     </div>
+    <template v-if="active === 0">
+      <div class="item" v-for="item in rewardsList" :key="item.indexed">
+        <span class="item-logo"></span>
+        <div class="item-right">
+          <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
+          <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
+          <p class="address">
+            {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
+          </p>
+          <p class="date">{{ getDate(item.timestamp) }}</p>
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      <div class="item" v-for="item in promoteList" :key="item.indexed">
+        <span class="item-logo"></span>
+        <div class="item-right">
+          <!-- <p class="amount">
+            + {{ item.amount | decimals }}
+            {{ item.Type == 0 ? 'CRFI' : 'CFIL' }}
+          </p> -->
+          <!-- <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p> -->
+          <p class="address">
+            {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
+          </p>
+          <p class="date">{{ getDate(item.timestamp) }}</p>
+        </div>
+      </div>
+    </template>
+    <!-- <van-tabs v-model="active" background="#3f4b5d">
+      <van-tab :title="$t('claimedRewards')">
+        <div class="item" v-for="item in rewardsList" :key="item.indexed">
+          <span class="item-logo"></span>
+          <div class="item-right">
+            <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
+            <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
+            <p class="address">
+              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
+            </p>
+            <p class="date">{{ getDate(item.timestamp) }}</p>
+          </div>
+        </div>
+      </van-tab>
+      <van-tab :title="$t('caimedPromote')">
+        <div class="item" v-for="item in rewardsList" :key="item.indexed">
+          <span class="item-logo"></span>
+          <div class="item-right">
+            <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
+            <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
+            <p class="address">
+              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
+            </p>
+            <p class="date">{{ getDate(item.timestamp) }}</p>
+          </div>
+        </div>
+      </van-tab>
+    </van-tabs> -->
+
+    <!-- <van-empty description="暂无数据" size="0px" image="" /> -->
   </div>
 </template>
 
@@ -44,9 +119,18 @@ import { mapActions, mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      active: 0,
       showMask: false,
       currentRate: 0,
       value: '',
+      tabs: [
+        {
+          name: 'claimedRewards',
+        },
+        {
+          name: 'caimedPromote',
+        },
+      ],
     }
   },
   computed: {
@@ -63,6 +147,13 @@ export default {
     rewardsList() {
       return this.$store.state.rewardsList
     },
+    promoteList() {
+      console.log(
+        'this.$store.state.pormoteList',
+        this.$store.state.promoteList,
+      )
+      return this.$store.state.promoteList
+    },
     text() {
       return this.currentRate.toFixed(0) + '%'
     },
@@ -74,7 +165,15 @@ export default {
   },
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['getRewardList']),
+    ...mapActions(['getRewardList', 'getPromoteList']),
+    handleClick(index) {
+      this.active = index
+      if (index == 0) {
+        this.getRewardList()
+      } else {
+        this.getPromoteList()
+      }
+    },
     getStyle(index) {
       let target = index % 5
       let arr = ['#F57620', '#B406C3', '#3655E7', '#7CB732', '#6D06C3']
@@ -105,6 +204,33 @@ export default {
 /deep/ .van-empty__image {
   display: none;
 }
+
+.tabs {
+  display: flex;
+  align-items: center;
+  // background: #3f495a;
+  margin: 0 32px;
+  padding: 0 12px;
+  font-size: 16px;
+  &-item {
+    height: 46px;
+    line-height: 46px;
+    margin-right: 24px;
+    position: relative;
+  }
+  .active {
+    .line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 42px;
+      height: 3px;
+      background: #18ced2;
+      border-radius: 10px;
+    }
+  }
+}
+
 .home {
   z-index: 99;
   height: 100%;
@@ -121,21 +247,30 @@ export default {
 }
 .content {
   padding: 0 32px;
+  border-radius: 10px;
 }
 .logo {
   width: 42px;
   height: 42px;
   background: url('../../assets/images/1.png') no-repeat;
   background-size: cover;
-  margin: 0 auto 40px;
+  margin: 0 auto 12px;
 }
 
+.cfil {
+  background: url('../../assets/images/logo.png') no-repeat;
+  background-size: cover;
+}
 .items {
+  display: flex;
+  justify-content: space-around;
   background: #3f4c5d;
   margin-top: 15px;
   opacity: 1;
-  border-radius: 13px;
+  // border-radius: 13px;
   padding: 16px 16px 0;
+  border-top-left-radius: 13px;
+  border-top-right-radius: 13px;
   font-size: 16px;
   font-family: Montserrat;
   font-weight: 500;
@@ -151,7 +286,7 @@ export default {
   align-items: center;
   background: #3f4b5d;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-  margin: 0 24px 42px;
+  margin: 24px 24px 12px;
   border-radius: 17px;
   padding: 32px 24px;
   font-size: 14px;
@@ -167,8 +302,13 @@ export default {
     margin-right: 32px;
   }
   &-btn {
+    border-bottom-left-radius: 13px;
+    border-bottom-right-radius: 13px;
+    background: #3f4b5d;
     display: flex;
     justify-content: center;
+    font-size: 14px;
+    font-family: Montserrat;
     .btn {
       width: 127px;
       height: 36px;
@@ -183,8 +323,14 @@ export default {
   &-right {
     flex: 1;
   }
+  .amount {
+    font-size: 18px;
+    font-family: Segoe UI;
+    font-weight: bold;
+    color: #ffffff;
+  }
   .price {
-    font-size: 22px;
+    font-size: 14px;
     font-family: Segoe UI;
     font-weight: bold;
     color: #ffffff;

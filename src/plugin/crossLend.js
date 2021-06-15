@@ -14,6 +14,49 @@ export const crossLendAbi = [
              {
                indexed: true,
                internalType: 'address',
+               name: 'affer',
+               type: 'address',
+             },
+             {
+               indexed: true,
+               internalType: 'address',
+               name: 'sender',
+               type: 'address',
+             },
+             {
+               indexed: true,
+               internalType: 'uint256',
+               name: 'affPackageTimes',
+               type: 'uint256',
+             },
+             {
+               indexed: false,
+               internalType: 'uint256',
+               name: 'amount',
+               type: 'uint256',
+             },
+             {
+               indexed: false,
+               internalType: 'uint256',
+               name: 'packageID',
+               type: 'uint256',
+             },
+             {
+               indexed: false,
+               internalType: 'uint256',
+               name: 'timestamp',
+               type: 'uint256',
+             },
+           ],
+           name: 'AffBought',
+           type: 'event',
+         },
+         {
+           anonymous: false,
+           inputs: [
+             {
+               indexed: true,
+               internalType: 'address',
                name: 'receiver',
                type: 'address',
              },
@@ -32,7 +75,19 @@ export const crossLendAbi = [
              {
                indexed: false,
                internalType: 'uint256',
-               name: 'amount',
+               name: 'crfiInterest',
+               type: 'uint256',
+             },
+             {
+               indexed: false,
+               internalType: 'uint256',
+               name: 'cfilInterest',
+               type: 'uint256',
+             },
+             {
+               indexed: false,
+               internalType: 'uint256',
+               name: 'packageID',
                type: 'uint256',
              },
              {
@@ -43,62 +98,6 @@ export const crossLendAbi = [
              },
            ],
            name: 'AffEvent',
-           type: 'event',
-         },
-         {
-           anonymous: false,
-           inputs: [
-             {
-               indexed: true,
-               internalType: 'address',
-               name: 'addr',
-               type: 'address',
-             },
-             {
-               indexed: false,
-               internalType: 'uint256',
-               name: 'ftype',
-               type: 'uint256',
-             },
-             {
-               indexed: false,
-               internalType: 'uint256',
-               name: 'amount',
-               type: 'uint256',
-             },
-           ],
-           name: 'buyDemandEvent',
-           type: 'event',
-         },
-         {
-           anonymous: false,
-           inputs: [
-             {
-               indexed: true,
-               internalType: 'address',
-               name: 'addr',
-               type: 'address',
-             },
-             {
-               indexed: true,
-               internalType: 'address',
-               name: 'affAddr',
-               type: 'address',
-             },
-             {
-               indexed: true,
-               internalType: 'uint256',
-               name: 'packageID',
-               type: 'uint256',
-             },
-             {
-               indexed: false,
-               internalType: 'uint256',
-               name: 'amount',
-               type: 'uint256',
-             },
-           ],
-           name: 'buyFinancialEvent',
            type: 'event',
          },
          {
@@ -145,14 +144,10 @@ export const crossLendAbi = [
              { internalType: 'uint256', name: 'dayTimes', type: 'uint256' },
              {
                internalType: 'uint256',
-               name: 'crfiInterestRate',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
                name: 'cfilInterestRate',
                type: 'uint256',
              },
+             { internalType: 'uint256', name: 'weight', type: 'uint256' },
            ],
            name: 'AddPackage',
            outputs: [],
@@ -178,10 +173,10 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
-           inputs: [],
-           name: 'CalcDurationTime',
-           outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-           stateMutability: 'view',
+           inputs: [{ internalType: 'bool', name: 'enable', type: 'bool' }],
+           name: 'ChangeAffCFil',
+           outputs: [],
+           stateMutability: 'nonpayable',
            type: 'function',
          },
          {
@@ -202,23 +197,10 @@ export const crossLendAbi = [
          },
          {
            inputs: [
-             {
-               internalType: 'enum FinancialType',
-               name: 'fType',
-               type: 'uint8',
-             },
-             {
-               internalType: 'uint256',
-               name: 'crfiInterestRate',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'cfilInterestRate',
-               type: 'uint256',
-             },
+             { internalType: 'uint256', name: 'crfi', type: 'uint256' },
+             { internalType: 'uint256', name: 'cfil', type: 'uint256' },
            ],
-           name: 'ChangeDemandRate',
+           name: 'ChangeCRFIMinerPerDay',
            outputs: [],
            stateMutability: 'nonpayable',
            type: 'function',
@@ -239,14 +221,10 @@ export const crossLendAbi = [
              { internalType: 'uint256', name: 'packageID', type: 'uint256' },
              {
                internalType: 'uint256',
-               name: 'crfiInterestRate',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
                name: 'cfilInterestRate',
                type: 'uint256',
              },
+             { internalType: 'uint256', name: 'weight', type: 'uint256' },
            ],
            name: 'ChangePackageRate',
            outputs: [],
@@ -272,54 +250,6 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
-           inputs: [
-             { internalType: 'uint256', name: 'packageID', type: 'uint256' },
-             { internalType: 'bool', name: 'deleteFlag', type: 'bool' },
-           ],
-           name: 'DeletePackage',
-           outputs: [],
-           stateMutability: 'nonpayable',
-           type: 'function',
-         },
-         {
-           inputs: [],
-           name: 'GetAllFinancialPackage',
-           outputs: [
-             {
-               components: [
-                 {
-                   internalType: 'enum FinancialType',
-                   name: 'Type',
-                   type: 'uint8',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'deleteFlag',
-                   type: 'uint256',
-                 },
-                 { internalType: 'uint256', name: 'Days', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CFilInterestRate',
-                   type: 'uint256',
-                 },
-                 { internalType: 'uint256', name: 'ID', type: 'uint256' },
-                 { internalType: 'uint256', name: 'Total', type: 'uint256' },
-               ],
-               internalType: 'struct FinancialPackage[]',
-               name: 'packages',
-               type: 'tuple[]',
-             },
-           ],
-           stateMutability: 'view',
-           type: 'function',
-         },
-         {
            inputs: [],
            name: 'GetFinancialPackage',
            outputs: [
@@ -330,23 +260,29 @@ export const crossLendAbi = [
                    name: 'Type',
                    type: 'uint8',
                  },
-                 {
-                   internalType: 'uint256',
-                   name: 'deleteFlag',
-                   type: 'uint256',
-                 },
                  { internalType: 'uint256', name: 'Days', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
                  {
                    internalType: 'uint256',
                    name: 'CFilInterestRate',
                    type: 'uint256',
                  },
+                 {
+                   internalType: 'uint256',
+                   name: 'CRFIInterestRateDyn',
+                   type: 'uint256',
+                 },
                  { internalType: 'uint256', name: 'ID', type: 'uint256' },
+                 { internalType: 'uint256', name: 'Weight', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamCFil',
+                   type: 'uint256',
+                 },
                  { internalType: 'uint256', name: 'Total', type: 'uint256' },
                ],
                internalType: 'struct FinancialPackage[]',
@@ -365,22 +301,44 @@ export const crossLendAbi = [
            name: 'GetInvestInfo',
            outputs: [
              { internalType: 'bool', name: 'admin', type: 'bool' },
-             { internalType: 'uint256', name: 'id', type: 'uint256' },
              {
-               internalType: 'uint256',
-               name: 'nowInvestCRFI',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'nowInvestCFil',
-               type: 'uint256',
-             },
-             { internalType: 'uint256', name: 'totalAffCRFI', type: 'uint256' },
-             {
-               internalType: 'uint256',
-               name: 'totalAffTimes',
-               type: 'uint256',
+               components: [
+                 { internalType: 'address', name: 'Addr', type: 'address' },
+                 { internalType: 'uint256', name: 'ID', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalAffTimes',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalAffPackageTimes',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalAffCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalAffCFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'nowInvestFinCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'nowInvestFinCFil',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct InvestInfoView',
+               name: 'uInfoView',
+               type: 'tuple',
              },
            ],
            stateMutability: 'view',
@@ -392,6 +350,7 @@ export const crossLendAbi = [
            outputs: [
              {
                components: [
+                 { internalType: 'uint256', name: 'RecordID', type: 'uint256' },
                  {
                    internalType: 'enum FinancialType',
                    name: 'Type',
@@ -404,108 +363,22 @@ export const crossLendAbi = [
                  },
                  { internalType: 'uint256', name: 'Days', type: 'uint256' },
                  { internalType: 'uint256', name: 'EndTime', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CFilInterestRate',
-                   type: 'uint256',
-                 },
                  { internalType: 'uint256', name: 'AffID', type: 'uint256' },
                  { internalType: 'uint256', name: 'Amount', type: 'uint256' },
                  {
                    internalType: 'uint256',
-                   name: 'ReleaseTime',
+                   name: 'ParamCRFI',
                    type: 'uint256',
                  },
                  {
                    internalType: 'uint256',
-                   name: 'StartTime',
+                   name: 'ParamCFil',
                    type: 'uint256',
                  },
                ],
                internalType: 'struct QueueData[]',
                name: 'records',
                type: 'tuple[]',
-             },
-             {
-               components: [
-                 { internalType: 'uint256', name: 'Amount', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'FixInterestCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCFil',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'FixInterestCFil',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NowCRFIInterest',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NowCFilInterest',
-                   type: 'uint256',
-                 },
-               ],
-               internalType: 'struct DemandInvest',
-               name: 'demandCRFI',
-               type: 'tuple',
-             },
-             {
-               components: [
-                 { internalType: 'uint256', name: 'Amount', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'FixInterestCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCFil',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'FixInterestCFil',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NowCRFIInterest',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NowCFilInterest',
-                   type: 'uint256',
-                 },
-               ],
-               internalType: 'struct DemandInvest',
-               name: 'demandCFil',
-               type: 'tuple',
              },
              {
                components: [
@@ -549,6 +422,7 @@ export const crossLendAbi = [
            outputs: [
              {
                components: [
+                 { internalType: 'uint256', name: 'RecordID', type: 'uint256' },
                  {
                    internalType: 'enum FinancialType',
                    name: 'Type',
@@ -561,26 +435,16 @@ export const crossLendAbi = [
                  },
                  { internalType: 'uint256', name: 'Days', type: 'uint256' },
                  { internalType: 'uint256', name: 'EndTime', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CFilInterestRate',
-                   type: 'uint256',
-                 },
                  { internalType: 'uint256', name: 'AffID', type: 'uint256' },
                  { internalType: 'uint256', name: 'Amount', type: 'uint256' },
                  {
                    internalType: 'uint256',
-                   name: 'ReleaseTime',
+                   name: 'ParamCRFI',
                    type: 'uint256',
                  },
                  {
                    internalType: 'uint256',
-                   name: 'StartTime',
+                   name: 'ParamCFil',
                    type: 'uint256',
                  },
                ],
@@ -610,134 +474,34 @@ export const crossLendAbi = [
                    name: 'Type',
                    type: 'uint8',
                  },
-                 {
-                   internalType: 'uint256',
-                   name: 'deleteFlag',
-                   type: 'uint256',
-                 },
                  { internalType: 'uint256', name: 'Days', type: 'uint256' },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
                  {
                    internalType: 'uint256',
                    name: 'CFilInterestRate',
                    type: 'uint256',
                  },
+                 {
+                   internalType: 'uint256',
+                   name: 'CRFIInterestRateDyn',
+                   type: 'uint256',
+                 },
                  { internalType: 'uint256', name: 'ID', type: 'uint256' },
+                 { internalType: 'uint256', name: 'Weight', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamCFil',
+                   type: 'uint256',
+                 },
                  { internalType: 'uint256', name: 'Total', type: 'uint256' },
                ],
                internalType: 'struct FinancialPackage[]',
                name: 'financialPackages',
                type: 'tuple[]',
-             },
-             {
-               components: [
-                 {
-                   internalType: 'enum FinancialType',
-                   name: 'Type',
-                   type: 'uint8',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ChangeFlag',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NewCRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CFilInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NewCFilInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'UpdateTime',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCFil',
-                   type: 'uint256',
-                 },
-                 { internalType: 'uint256', name: 'Total', type: 'uint256' },
-               ],
-               internalType: 'struct DemandPackage',
-               name: 'demandCRFI',
-               type: 'tuple',
-             },
-             {
-               components: [
-                 {
-                   internalType: 'enum FinancialType',
-                   name: 'Type',
-                   type: 'uint8',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ChangeFlag',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NewCRFIInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'CFilInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'NewCFilInterestRate',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'UpdateTime',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCRFI',
-                   type: 'uint256',
-                 },
-                 {
-                   internalType: 'uint256',
-                   name: 'ParamCFil',
-                   type: 'uint256',
-                 },
-                 { internalType: 'uint256', name: 'Total', type: 'uint256' },
-               ],
-               internalType: 'struct DemandPackage',
-               name: 'demandCFil',
-               type: 'tuple',
              },
              {
                components: [
@@ -776,43 +540,88 @@ export const crossLendAbi = [
            inputs: [],
            name: 'GetSystemInfo',
            outputs: [
-             { internalType: 'uint256', name: 'personNum', type: 'uint256' },
-             { internalType: 'uint256', name: 'affRate', type: 'uint256' },
-             { internalType: 'uint256', name: 'affRequire', type: 'uint256' },
              {
-               internalType: 'uint256',
-               name: 'nowInvestCRFI',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'nowInvestCFil',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'cfilInterestPool',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'crfiInterestPool',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'crfiRewardTotal',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'cfilLendingTotal',
-               type: 'uint256',
-             },
-             {
-               internalType: 'uint256',
-               name: 'avaiCFilAmount',
-               type: 'uint256',
+               components: [
+                 { internalType: 'uint256', name: 'AffRate', type: 'uint256' },
+                 {
+                   internalType: 'uint256',
+                   name: 'AffRequire',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'EnableAffCFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'NewInvestID',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'nowInvestCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'nowInvestCFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'cfilInterestPool',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'crfiInterestPool',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'cfilLendingTotal',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'crfiRewardTotal',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'avaiCFilAmount',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalWeightCFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'totalWeightCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'crfiMinerPerDayCFil',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'crfiMinerPerDayCRFI',
+                   type: 'uint256',
+                 },
+                 {
+                   internalType: 'uint256',
+                   name: 'ParamUpdateTime',
+                   type: 'uint256',
+                 },
+               ],
+               internalType: 'struct SystemInfoView',
+               name: 'sInfoView',
+               type: 'tuple',
              },
            ],
            stateMutability: 'view',
@@ -821,13 +630,6 @@ export const crossLendAbi = [
          {
            inputs: [],
            name: 'OneDayTime',
-           outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-           stateMutability: 'view',
-           type: 'function',
-         },
-         {
-           inputs: [],
-           name: 'OneDayTimes',
            outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
            stateMutability: 'view',
            type: 'function',
@@ -852,7 +654,11 @@ export const crossLendAbi = [
            type: 'function',
          },
          {
-           inputs: [],
+           inputs: [
+             { internalType: 'uint256', name: 'packageID', type: 'uint256' },
+             { internalType: 'bool', name: 'only', type: 'bool' },
+             { internalType: 'uint256', name: 'maxNum', type: 'uint256' },
+           ],
            name: 'Withdraw',
            outputs: [],
            stateMutability: 'nonpayable',
@@ -872,19 +678,6 @@ export const crossLendAbi = [
              { internalType: 'uint256', name: 'amount', type: 'uint256' },
            ],
            name: 'WithdrawCRFIInterestPool',
-           outputs: [],
-           stateMutability: 'nonpayable',
-           type: 'function',
-         },
-         {
-           inputs: [
-             {
-               internalType: 'uint256',
-               name: 'financialType',
-               type: 'uint256',
-             },
-           ],
-           name: 'WithdrawDemand',
            outputs: [],
            stateMutability: 'nonpayable',
            type: 'function',
@@ -921,6 +714,11 @@ export const crossLendAbi = [
                      {
                        components: [
                          {
+                           internalType: 'uint256',
+                           name: 'RecordID',
+                           type: 'uint256',
+                         },
+                         {
                            internalType: 'enum FinancialType',
                            name: 'Type',
                            type: 'uint8',
@@ -942,16 +740,6 @@ export const crossLendAbi = [
                          },
                          {
                            internalType: 'uint256',
-                           name: 'CRFIInterestRate',
-                           type: 'uint256',
-                         },
-                         {
-                           internalType: 'uint256',
-                           name: 'CFilInterestRate',
-                           type: 'uint256',
-                         },
-                         {
-                           internalType: 'uint256',
                            name: 'AffID',
                            type: 'uint256',
                          },
@@ -962,12 +750,12 @@ export const crossLendAbi = [
                          },
                          {
                            internalType: 'uint256',
-                           name: 'ReleaseTime',
+                           name: 'ParamCRFI',
                            type: 'uint256',
                          },
                          {
                            internalType: 'uint256',
-                           name: 'StartTime',
+                           name: 'ParamCFil',
                            type: 'uint256',
                          },
                        ],

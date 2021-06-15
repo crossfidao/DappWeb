@@ -83,6 +83,7 @@ const cn = {
   referralRewards: 'Invite',
   claim: 'Copy invite link',
   claimedRewards: 'My Reward',
+  caimedPromote: 'My invitation',
 
   // swap
   filSwap: 'FIL SWAP',

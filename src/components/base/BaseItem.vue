@@ -22,9 +22,12 @@
     </div>
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
-      <p>
+      <p class="item-total-number">
         {{ info.Total | decimals }}
         <!-- 11{{ info.Amount || 0 | decimals }} {{ info.Type == 0 ? 'CRFI' : 'CFIL' }} -->
+        <span class="item-total-type">{{
+          info.Type == 0 ? 'CRFI' : 'cFIL'
+        }}</span>
       </p>
     </div>
     <van-overlay
@@ -85,7 +88,7 @@
           />
         </div>
         <p class="mask-desc">
-          <span class="icon CRFI"></span>
+          <span class="icon" :class="info.Type == 0 ? 'CRFI' : 'cFIL'"> </span>
           <span>
             {{ info.Type == 0 ? 'CRFI' : 'cFIL' }} {{ $t('balance') }}
           </span>
@@ -171,8 +174,7 @@ export default {
       return null
     },
     getRate(data) {
-      let { Type, Amount = 1, CRFIInterestRate } = data
-      console.log('price', this.cfilPrice, this.crfiPrice)
+      let { Type, Amount = 1, CRFIInterestRate, CRFIInterestRateDyn } = data
       if (Amount == 0) {
         Amount = 1
       }
@@ -180,14 +182,14 @@ export default {
       if (Type == 1) {
         // CFil
         if (this.crfiPrice == 1 || this.cfilPrice == 1) {
-          return CRFIInterestRate
+          return CRFIInterestRateDyn
         }
         let result = new BigNumber(this.crfiPrice)
-          .times(new BigNumber(CRFIInterestRate))
+          .times(new BigNumber(CRFIInterestRateDyn))
           .div(new BigNumber(this.cfilPrice))
         return result.toString()
       } else {
-        return CRFIInterestRate
+        return CRFIInterestRateDyn
       }
     },
     getCFilRate(data) {
@@ -214,19 +216,20 @@ export default {
         this.$toast(this.$t('toast'))
         return
       }
-      if (!this.info.ID) {
-        this.demandBuyCoin({
-          ...this.info,
-          value: this.value,
-          inviteValue: this.inviteValue,
-        })
-      } else {
-        this.buyCoin({
-          ...this.info,
-          value: this.value,
-          inviteValue: this.inviteValue,
-        })
-      }
+
+      this.buyCoin({
+        ...this.info,
+        value: this.value,
+        inviteValue: this.inviteValue,
+      })
+      // if (!this.info.ID) {
+      //   this.demandBuyCoin({
+      //     ...this.info,
+      //     value: this.value,
+      //     inviteValue: this.inviteValue,
+      //   })
+      // } else {
+      // }
       this.showMask = false
       this.value = ''
     },
@@ -240,14 +243,14 @@ export default {
   flex-direction: column;
   justify-content: center;
   width: 265px;
-  height: 88px;
+  // height: 88px;
   background: #6d06c3;
   background-image: url('../../assets/images/bowen.png') !important;
   background-size: cover;
   background-repeat: no-repeat;
   margin: 0 auto 9px;
   opacity: 1;
-  padding: 12px;
+  padding: 16px;
   border-radius: 13px;
   font-size: 13px;
   color: #fff;
@@ -265,7 +268,8 @@ export default {
   &-rate {
     display: flex;
     align-items: center;
-
+    padding: 10px 0 16px 0;
+    border-bottom: 1px solid #c1c1c1;
     font-family: Segoe UI;
     font-weight: bold;
     line-height: 16px;
@@ -274,12 +278,25 @@ export default {
   }
   &-total {
     margin-top: 10px;
-    text-align: right;
-    font-size: 11px;
+    text-align: left;
+    font-size: 12px;
     font-family: Segoe UI;
     font-weight: 600;
     line-height: 13px;
     color: #ffffff;
+    &-number {
+      margin-top: 4px;
+      font-weight: 500;
+      font-size: 22px;
+      line-height: 100%;
+      color: #ffffff;
+    }
+    &-type {
+      font-style: normal;
+      font-weight: 500;
+      font-size: 12px;
+      color: #ffffff;
+    }
   }
 }
 .icon {

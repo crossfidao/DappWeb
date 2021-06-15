@@ -86,6 +86,7 @@ const cn = {
   referralRewards: '邀请',
   claim: '复制邀请链接',
   claimedRewards: '我的奖励',
+  caimedPromote: '我的推广',
 
   // swap
   filSwap: 'FIL 兑换',

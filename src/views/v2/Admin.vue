@@ -4,6 +4,15 @@
     <div class="content">
       <van-tabs v-model="active">
         <van-tab title="管理页面">
+          <div class="switch">
+            <span>开启 cfil 邀请返利</span>
+            <van-switch
+              size="24px"
+              v-model="EnableAffCFil"
+              :value="EnableAffCFil"
+              @input="handleChangeEnableAffCFil"
+            />
+          </div>
           <div class="items">
             <div class="title">
               <span> {{ $t('inviteRate') }}</span>
@@ -40,8 +49,8 @@
           <!-- 修改cfil 汇率 -->
           <div class="charge-title" style="margin: 0 32px">
             <span>
-              cfil兑换燃烧crfi比例（crfiPrice）
-              {{ burnCFilRateCRFI | decimals }}</span
+              cfil兑换燃烧crfi比例
+              {{ burnCFilRateCRFI | rate }} %</span
             >
           </div>
           <div class="charge" style="margin: 0 32px">
@@ -49,9 +58,12 @@
               class="price-input"
               placeholder="请输入cFil汇率"
               border
-              v-model="rate.crfiPrice"
+              v-model="burnCFilRateCRFIValue"
             />
-            <van-button class="charge-btn" @click="changeRate('crfiPrice')">
+            <van-button
+              class="charge-btn"
+              @click="ChangeBurnCFilRateCRFIConfirm"
+            >
               修改
             </van-button>
           </div>
@@ -73,10 +85,28 @@
               修改
             </van-button>
           </div>
+          <!-- 修改crfiPrice -->
+          <div class="charge-title" style="margin: 0 32px">
+            <span>
+              汇率设置（crfiPrice）
+              {{ crfiPrice | decimals }}
+            </span>
+          </div>
+          <div class="charge" style="margin: 0 32px">
+            <van-field
+              class="price-input"
+              placeholder="请输入cFil汇率"
+              border
+              v-model="rate.crfiPrice"
+            />
+            <van-button class="charge-btn" @click="changeRate('crfiPrice')">
+              修改
+            </van-button>
+          </div>
           <!-- 修改cfilPrice -->
           <div class="charge-title" style="margin: 0 32px">
             <span>
-              汇率设置（cfilPrice）
+              汇率设置（cfilPrice）111
               {{ cfilPrice | decimals }}
             </span>
           </div>
@@ -127,6 +157,34 @@
               {{ $t('charge') }}
             </van-button>
           </div>
+          <!-- 设置每日产出 -->
+          <div class="items">
+            <h4 class="title">每日产出CRFI</h4>
+            <div class="item">
+              <div class="item-content">
+                <div class="price">
+                  <h5 class="price-title">CRFI</h5>
+                  <span class="price-text">
+                    {{ systemInfo.crfiMinerPerDayCRFI | decimals }}
+                  </span>
+                </div>
+                <div class="price">
+                  <h5 class="price-title">cFil</h5>
+                  <span class="price-text">
+                    {{ systemInfo.crfiMinerPerDayCFil | decimals }}
+                  </span>
+                </div>
+              </div>
+              <van-button
+                class="item-btn"
+                type="primary"
+                size="mormal"
+                @click="handleEditDay()"
+              >
+                {{ $t('edit') }}
+              </van-button>
+            </div>
+          </div>
           <div class="items">
             <h4 class="title">CRFI {{ $t('investment') }}</h4>
             <div class="item" v-for="item in crfiList" :key="item.date">
@@ -142,7 +200,7 @@
                 <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cFil' }}</p>
               </div>
               <div class="item-content">
-                <div class="price" v-show="item.NewCRFIInterestRate">
+                <!-- <div class="price" v-show="item.NewCRFIInterestRate">
                   <h5 class="price-title">CRFI {{ $t('rate') }}(新):</h5>
                   <span class="price-text">
                     {{ item.NewCRFIInterestRate }}
@@ -157,14 +215,12 @@
                   </span>
 
                   <span>%</span>
-                </div>
+                </div> -->
                 <div class="price">
-                  <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
+                  <h5 class="price-title">CRFI 权重:</h5>
                   <span class="price-text" v-if="!item.show">
-                    {{ item.CRFIInterestRate }}
+                    {{ item.Weight | decimals }}
                   </span>
-
-                  <span>%</span>
                 </div>
 
                 <div class="price">
@@ -201,7 +257,7 @@
                 <p class="date-bg">{{ item.Type == 0 ? 'CRFI' : 'cFil' }}</p>
               </div>
               <div class="item-content">
-                <div class="price" v-show="item.NewCRFIInterestRate">
+                <!-- <div class="price" v-show="item.NewCRFIInterestRate">
                   <h5 class="price-title">CRFI {{ $t('rate') }}（新）:</h5>
                   <span class="price-text">
                     {{ item.NewCRFIInterestRate }}
@@ -216,14 +272,12 @@
                   </span>
 
                   <span>%</span>
-                </div>
+                </div> -->
                 <div class="price">
-                  <h5 class="price-title">CRFI {{ $t('rate') }}:</h5>
+                  <h5 class="price-title">CRFI 权重:</h5>
                   <span class="price-text" v-if="!item.show">
-                    {{ item.CRFIInterestRate }}
+                    {{ item.Weight | decimals }}
                   </span>
-
-                  <span>%</span>
                 </div>
 
                 <div class="price">
@@ -341,14 +395,14 @@
 
     <van-overlay class="mask" :show="showMask" @click.self="showMask = false">
       <div class="mask-content">
-        <h4 class="mask-title">Filcoin {{ $t('repurchase') }}</h4>
+        <h4 class="mask-title">修改利率和权重</h4>
         <div class="form">
           <van-field
             class="field"
             center
             clearable
             v-model="CRFL"
-            placeholder="请填写CRFL利率（%）"
+            placeholder="请填写CRFL权重"
           />
           <van-field
             class="field"
@@ -363,6 +417,39 @@
             {{ $t('cancel') }}
           </div>
           <div class="footer-btn" @click="handleRate">
+            {{ $t('confirm') }}
+          </div>
+        </div>
+      </div>
+    </van-overlay>
+    <van-overlay
+      class="mask"
+      :show="showDayMask"
+      @click.self="showMask = false"
+    >
+      <div class="mask-content">
+        <h4 class="mask-title">修改每日产出</h4>
+        <div class="form">
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="CRFIDay"
+            placeholder="请填写CRFL每日产出"
+          />
+          <van-field
+            class="field"
+            center
+            clearable
+            v-model="cfilDay"
+            placeholder="请填写cFil每日产出"
+          />
+        </div>
+        <div class="footer">
+          <div class="footer-btn" @click="showDayMask = false">
+            {{ $t('cancel') }}
+          </div>
+          <div class="footer-btn" @click="handleRateDay">
             {{ $t('confirm') }}
           </div>
         </div>
@@ -431,14 +518,16 @@ export default {
       active: 0,
       show: false,
       showMask: false,
+      showDayMask: false,
       showEdit: false,
-      isDemand: false,
       affRate: '',
       affRateLimit: '',
 
       curItem: null,
       CRFL: '',
       cfil: '',
+      CRFIDay: '',
+      cfilDay: '',
       value: '',
       CRFIValue: '',
       curItem: null,
@@ -452,6 +541,8 @@ export default {
         PaymentDue: '',
       },
       burnCFilFeeValue: '',
+      burnCFilRateCRFIValue: '',
+      EnableAffCFil: false,
     }
   },
   computed: {
@@ -482,41 +573,28 @@ export default {
     eFilList() {
       let list = this.$store.state.CFilList
       let tmp = []
+      let BN = utils.BN
       list.forEach(element => {
-        // element.show = false
         let {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
-          NewCFilInterestRate,
-          NewCRFIInterestRate,
+          CRFIInterestRateDyn,
           ID,
+          Weight,
           Type,
-          deleteFlag,
         } = element
 
-        if (NewCFilInterestRate) {
-          NewCFilInterestRate = NewCFilInterestRate * 100
-          NewCFilInterestRate = utils.fromWei(NewCFilInterestRate.toString())
-        }
-        if (NewCRFIInterestRate) {
-          NewCRFIInterestRate = NewCRFIInterestRate * 100
-          NewCRFIInterestRate = utils.fromWei(NewCRFIInterestRate.toString())
-        }
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
-
-        CRFIInterestRate = CRFIInterestRate * 100
-        CRFIInterestRate = utils.fromWei(CRFIInterestRate.toString())
         tmp.push({
           Days,
           CFilInterestRate,
           CRFIInterestRate,
-          NewCFilInterestRate,
-          NewCRFIInterestRate,
+          CRFIInterestRateDyn,
           ID,
           Type,
-          deleteFlag,
+          Weight,
         })
       })
 
@@ -532,34 +610,20 @@ export default {
           Days,
           CFilInterestRate,
           CRFIInterestRate,
-          NewCFilInterestRate,
-          NewCRFIInterestRate,
           ID,
           Type,
-          deleteFlag,
+          Weight,
         } = element
         CFilInterestRate = CFilInterestRate * 100
         CFilInterestRate = utils.fromWei(CFilInterestRate.toString())
-        if (NewCFilInterestRate) {
-          NewCFilInterestRate = NewCFilInterestRate * 100
-          NewCFilInterestRate = utils.fromWei(NewCFilInterestRate.toString())
-        }
-        if (NewCRFIInterestRate) {
-          NewCRFIInterestRate = NewCRFIInterestRate * 100
-          NewCRFIInterestRate = utils.fromWei(NewCRFIInterestRate.toString())
-        }
 
-        CRFIInterestRate = CRFIInterestRate * 100
-        CRFIInterestRate = utils.fromWei(CRFIInterestRate.toString())
         tmp.push({
           Days,
           CFilInterestRate,
           CRFIInterestRate,
-          NewCFilInterestRate,
-          NewCRFIInterestRate,
           ID,
           Type,
-          deleteFlag,
+          Weight,
         })
       })
       return tmp
@@ -567,8 +631,9 @@ export default {
   },
   watch: {
     systemInfo(val) {
-      this.affRate = utils.fromWei(this.systemInfo.affRate) * 100
-      this.affRateLimit = utils.fromWei(this.systemInfo.affRequire)
+      this.EnableAffCFil = val.EnableAffCFil == 1
+      this.affRate = utils.fromWei(val.AffRate) * 100
+      this.affRateLimit = utils.fromWei(val.AffRequire)
     },
     loanCFil(val) {
       this.getParams(val)
@@ -594,9 +659,20 @@ export default {
       'changeLoanRate',
       'setKeyValue',
       'changeCFilFee',
+      'ChangeBurnCFilRateCRFI',
+      'ChangeAffCFil',
+      'ChangeCRFIMinerPerDay',
     ]),
+    // 更改cfil邀请返利
+    handleChangeEnableAffCFil() {
+      this.ChangeAffCFil(this.EnableAffCFil)
+    },
+    ChangeBurnCFilRateCRFIConfirm() {
+      this.ChangeBurnCFilRateCRFI({
+        value: this.burnCFilRateCRFIValue,
+      })
+    },
     changeCFilFeeConfirm() {
-      console.log('dfd', this.burnCFilFeeValue)
       this.changeCFilFee({
         value: this.burnCFilFeeValue,
       })
@@ -672,30 +748,27 @@ export default {
     },
     handleEdit(item) {
       this.curItem = item
-      let {
-        Days = undefined,
-        CFilInterestRate,
-        CRFIInterestRate,
-      } = this.curItem
-      this.CRFL = CRFIInterestRate
+      let { CFilInterestRate, Weight } = this.curItem
+      this.CRFL = utils.fromWei(Weight)
       this.cfil = CFilInterestRate
-      this.isDemand = Days == 0
       this.curItem = item
       this.showMask = true
-      // if (item.show) {
-      //   item.show = false
-      // } else {
-      //   item.show = true
-      // }
-      // item.show = !item.show
+    },
+    handleEditDay() {
+      this.CRFIDay = utils.fromWei(this.systemInfo.crfiMinerPerDayCRFI)
+      this.cfilDay = utils.fromWei(this.systemInfo.crfiMinerPerDayCFil)
+      this.showDayMask = true
+    },
+    handleRateDay() {
+      this.ChangeCRFIMinerPerDay({
+        CRFI: this.CRFIDay,
+        cfil: this.cfilDay,
+      })
+      this.showDayMask = false
     },
     // 更改利率
     handleRate() {
-      if (this.isDemand) {
-        this.handleDemandRate()
-      } else {
-        this.handleChangeRate()
-      }
+      this.handleChangeRate()
     },
     handleAffRate() {
       this.ChangeAffRate({
@@ -717,15 +790,15 @@ export default {
       this.showMask = false
     },
     handleChangeRate() {
-      let { ID, CFilInterestRate, CRFIInterestRate } = this.curItem
+      let { ID } = this.curItem
       if (!(parseFloat(this.CRFL) > 0)) {
         this.$toast('请填写0-100的数字')
         return
       }
       this.ChangePackageRate({
         ID,
-        crfi: this.CRFL,
         cfil: this.cfil,
+        crfi: this.CRFL,
       })
       this.showMask = false
     },
@@ -741,6 +814,7 @@ export default {
 /deep/ .van-dialog__header {
   color: #333;
 }
+
 .about {
   background: #3f495a url('../../assets/images/bg.png') no-repeat;
   background-size: cover;
@@ -755,7 +829,16 @@ export default {
   // padding: 0 24px;
   // padding-top: 130px;
 }
-
+.switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 5px;
+  margin: 12px 32px 0;
+  font-size: 14px;
+  background: #fff;
+}
 // 配置
 .title {
   display: flex;

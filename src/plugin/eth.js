@@ -96,6 +96,7 @@ export default class Contract {
           throw e.message
         }
       } catch (e) {
+        console.log('dfd', e)
         // Toast(e.toString())
         console.log(e.message.code)
         store.commit('setLoading', false)

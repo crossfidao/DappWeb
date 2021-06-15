@@ -2,47 +2,23 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '@/i18n/i18n'
-import Contract from '@/plugin/eth'
 import BigNumber from 'bignumber.js'
-var ethUtil = require('ethereumjs-util')
 var sigUtil = require('eth-sig-util')
+var ethUtil = require('ethereumjs-util')
 
 import {
   CROSSLEND_ADDRESS,
-  CRFI_ADDRESS,
   CFIL_ADDRESS,
-  SFIL_ADDRESS,
+  crossLend,
+  utils,
+  CRFIContract,
+  CFilContract,
+  SFilContract,
 } from '@/config'
+
 import { Toast } from 'vant'
 
-import { crossLendAbi } from '@/plugin/crossLend.js'
-import { CRFIAbi } from '@/plugin/CRFI.js'
-import { CFilAbi } from '@/plugin/CFil.js'
-import { SFilAbi } from '@/plugin/SFil.js'
-
 Vue.use(Vuex)
-
-const crossLend = new Contract({
-  address: CROSSLEND_ADDRESS,
-  abi: crossLendAbi,
-})
-
-const utils = crossLend.web3.utils
-
-const CRFIContract = new Contract({
-  address: CRFI_ADDRESS,
-  abi: CRFIAbi,
-})
-
-const CFilContract = new Contract({
-  address: CFIL_ADDRESS,
-  abi: CFilAbi,
-})
-
-const SFilContract = new Contract({
-  address: SFIL_ADDRESS,
-  abi: SFilAbi,
-})
 
 export default new Vuex.Store({
   state: {
@@ -96,6 +72,7 @@ export default new Vuex.Store({
       PledgeRate: '0',
     },
     rewardsList: [],
+    promoteList: [],
     loanInvest: {
       Lending: '0',
       Pledge: '0',
@@ -282,7 +259,10 @@ export default new Vuex.Store({
       state.loanCFil = data
     },
     setRewardsList(state, data) {
-      state.rewardsList.unshift(data)
+      state.rewardsList = data
+    },
+    setPromoteList(state, data) {
+      state.promoteList = data
     },
     setLoanInvest(state, data) {
       state.loanInvest = data
@@ -299,6 +279,49 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    // 修改 cfil 兑换燃烧crfi比例
+    async ChangeBurnCFilRateCRFI({ state }, data) {
+      let { value } = data
+      value = utils.toWei(value.toString()) / 100
+      await CFilContract.executeContract(
+        'ChangeBurnCFilRateCRFI',
+        [value.toString()],
+        state.userAddress,
+      )
+      dispatch('init')
+    },
+    // 修改手续费
+    async changeCFilFee({ state, commit, dispatch }, data) {
+      let { value } = data
+      value = utils.toWei(value.toString())
+      await CFilContract.executeContract(
+        'ChangeBurnCFilFee',
+        [value.toString()],
+        state.userAddress,
+      )
+      dispatch('init')
+    },
+    // 设置每日产出
+    async ChangeCRFIMinerPerDay({ state, dispatch }, data) {
+      let address = state.userAddress
+      let { CRFI, cfil } = data
+      let res = await crossLend.executeContract(
+        'ChangeCRFIMinerPerDay',
+        [utils.toWei(CRFI), utils.toWei(cfil)],
+        address,
+      )
+      dispatch('init')
+    },
+    // 设置cfil 邀请返利
+    async ChangeAffCFil({ state, dispatch }, bool) {
+      let address = state.userAddress
+      let res = await crossLend.executeContract(
+        'ChangeAffCFil',
+        [bool],
+        address,
+      )
+      dispatch('init')
+    },
     // 获取key - value
     async getKeyValue({ state }, key) {
       let res = await crossLend.callContract('GetMap', [key])
@@ -385,23 +408,47 @@ export default new Vuex.Store({
         )
         .then(function(events) {
           // same results as the optional callback above
+          let arr = []
           events.forEach(e => {
             let { returnValues } = e
-            commit('setRewardsList', returnValues)
+            arr.push(returnValues)
           })
+          commit('setRewardsList', arr)
         })
     },
-    async changeCFilFee({ state, commit }, data) {
-      let { value } = data
-      console.log('value', value)
-      value = utils.toWei(value.toString())
-      await CFilContract.executeContract(
-        'ChangeBurnCFilFee',
-        [value.toString()],
-        state.userAddress,
-      )
-      dispatch('init')
+    // 获取推广列表
+    async getPromoteList({ state, commit }) {
+      let address = state.userAddress
+      crossLend.contract
+        .getPastEvents(
+          'AffBought',
+          {
+            filter: {
+              affer: [address],
+            }, // Using an array means OR: e.g. 20 or 23
+            fromBlock: 0,
+            toBlock: 'latest',
+          },
+          function(error, events) {},
+        )
+        .then(function(events) {
+          // same results as the optional callback above
+          let arr = []
+          events.forEach(e => {
+            let { returnValues } = e
+            let { packageID } = returnValues
+            let item = null
+            item = state.CRFIList.find(n => n.ID == packageID)
+            if (!item) {
+              item = state.CFilList.find(n => n.ID == packageID)
+            }
+            let { Type } = item
+            arr.push({ ...returnValues, Type })
+          })
+          commit('setPromoteList', arr)
+        })
     },
+
     // 初始化
     async init({ state, commit, dispatch }) {
       let address = state.userAddress
@@ -426,7 +473,8 @@ export default new Vuex.Store({
       commit('setSystemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
-      let { financialPackages, demandCFil, demandCRFI, loanCFil } = data
+
+      let { financialPackages, loanCFil } = data
       commit('setLoanCFil', loanCFil)
       let CRFIList = []
       let CFilList = []
@@ -435,9 +483,11 @@ export default new Vuex.Store({
           Type,
           CFilInterestRate,
           CRFIInterestRate,
+          CRFIInterestRateDyn,
           Days,
           ID,
           Total,
+          Weight,
           deleteFlag,
         } = e
         if (Type === '0') {
@@ -445,9 +495,11 @@ export default new Vuex.Store({
             Type,
             CFilInterestRate,
             CRFIInterestRate,
+            CRFIInterestRateDyn,
             Days,
             ID,
             Total,
+            Weight,
             deleteFlag,
             Amount: '0',
           })
@@ -456,31 +508,21 @@ export default new Vuex.Store({
             Type,
             CFilInterestRate,
             CRFIInterestRate,
+            CRFIInterestRateDyn,
             Days,
             ID,
             Total,
+            Weight,
             deleteFlag,
             Amount: '0',
           })
         }
       })
-      CFilList.unshift({
-        Days: '0',
-        Amount: '0',
-        ...demandCFil,
-      })
-      CRFIList.unshift({
-        Days: '0',
-        Amount: '0',
-        ...demandCRFI,
-      })
+
       commit('setCRFIList', CRFIList)
       commit('setCFilList', CFilList)
       dispatch('getUserWallet')
-      dispatch('getInvestList', {
-        demandCFil,
-        demandCRFI,
-      })
+      dispatch('getInvestList')
       let fileCoin = localStorage.getItem(state.userAddress)
       commit('setFileAddr', fileCoin)
     },
@@ -538,12 +580,11 @@ export default new Vuex.Store({
       let address = state.userAddress
       let userList = []
       let list = await crossLend.callContract('GetInvestRecords', [address])
-      let { records, demandCFil, demandCRFI, loanInvest, interestDetail } = list
+
+      let { records, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
       let arr = JSON.parse(JSON.stringify(interestDetail))
       let loanInterest = arr.pop()
-      let demandCFilInterest = arr.pop()
-      let demandCRFIInterest = arr.pop()
       let recordsInterest = arr
       if (interestDetail.length > 0) {
         commit('setLoanInvest', {
@@ -552,67 +593,52 @@ export default new Vuex.Store({
           CFil: loanInterest[1],
         })
       }
-
-      if (demandCFil.Amount != 0) {
-        // let CRFIInterestRate =
-        //   data.demandCFil.NewCRFIInterestRate == 0
-        //     ? data.demandCFil.CRFIInterestRate
-        //     : data.demandCFil.NewCRFIInterestRate
-        // let CFilInterestRate =
-        //   data.demandCFil.NewCFilInterestRate == 0
-        //     ? data.demandCFil.CFilInterestRate
-        //     : data.demandCFil.NewCFilInterestRate
-
-        let CRFIInterestRate = data.demandCFil.CRFIInterestRate
-        let CFilInterestRate = data.demandCFil.CFilInterestRate
-        userList.unshift({
-          ...demandCFil,
-          CRFIInterestRate,
-          CFilInterestRate,
-          CFilInterest: demandCFilInterest[1],
-          CRFIInterest: demandCFilInterest[0],
-          Type: 1,
-
-          Days: '0',
-        })
-        commit('setCFilDemandTotalAmount', demandCFil)
-      }
-      if (demandCRFI.Amount != 0) {
-        // let CRFIInterestRate =
-        //   data.demandCFil.NewCRFIInterestRate == 0
-        //     ? data.demandCFil.CRFIInterestRate
-        //     : data.demandCFil.NewCRFIInterestRate
-        // let CFilInterestRate =
-        //   data.demandCFil.NewCFilInterestRate == 0
-        //     ? data.demandCFil.CFilInterestRate
-        //     : data.demandCFil.NewCFilInterestRate
-
-        let CRFIInterestRate = data.demandCRFI.CRFIInterestRate
-        let CFilInterestRate = data.demandCRFI.CFilInterestRate
-        userList.unshift({
-          ...demandCRFI,
-          CRFIInterestRate,
-          CFilInterestRate,
-          CFilInterest: demandCRFIInterest[1],
-          CRFIInterest: demandCRFIInterest[0],
-          Type: 0,
-          Days: '0',
-        })
-        commit('setCRFIDemandTotalAmount', demandCRFI)
-      }
+      let BN = utils.BN
       records.forEach((e, index) => {
-        let { Type, PackageID } = e
+        let { Type, Days, PackageID } = e
 
         if (Type == 0) {
           commit('setCRFITotalAmount', e)
         } else {
           commit('setCFilTotalAmount', e)
         }
-        userList.push({
-          ...e,
-          CRFIInterest: recordsInterest[index][0],
-          CFilInterest: recordsInterest[index][1],
-        })
+        let item = userList.find(n => n.PackageID === PackageID && Days == 0)
+        let itemIndex = userList.findIndex(
+          n => n.PackageID === PackageID && Days == 0,
+        )
+
+        // let CFilInterestRate, CRFIInterestRateDyn
+        let packageList = Type == 0 ? state.CRFIList : state.CFilList
+        let { CFilInterestRate, CRFIInterestRateDyn } = packageList.find(
+          n => n.ID == PackageID,
+        )
+
+        if (item) {
+          let { Amount, CRFIInterest, CFilInterest } = item
+          Amount = new BN(Amount).add(new BN(e.Amount))
+          CRFIInterest = new BN(CRFIInterest)
+            .add(new BN(recordsInterest[index][0]))
+            .toString()
+          CFilInterest = new BN(CFilInterest)
+            .add(new BN(recordsInterest[index][1]))
+            .toString()
+          userList[itemIndex] = {
+            ...e,
+            Amount,
+            CFilInterest,
+            CRFIInterest,
+            CFilInterestRate,
+            CRFIInterestRateDyn,
+          }
+        } else {
+          userList.push({
+            ...e,
+            CRFIInterest: recordsInterest[index][0],
+            CFilInterest: recordsInterest[index][1],
+            CFilInterestRate,
+            CRFIInterestRateDyn,
+          })
+        }
       })
       commit('setUserList', userList)
     },
@@ -759,7 +785,6 @@ export default new Vuex.Store({
       let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
       return crfiValue.toString()
     },
-
     async RepurchaseMax({ state }) {
       let tmp = state.wallet.walletCFil
       let tmpCRFI = state.wallet.walletCRFI
@@ -867,12 +892,12 @@ export default new Vuex.Store({
     // 修改利率
     async ChangePackageRate({ state, commit, dispatch }, data) {
       let { ID, crfi, cfil } = data
-      crfi = utils.toWei(crfi.toString()) / 100
+      crfi = utils.toWei(crfi.toString())
       cfil = utils.toWei(cfil.toString()) / 100
       try {
         await crossLend.executeContract(
           'ChangePackageRate',
-          [ID, crfi.toString(), cfil.toString()],
+          [ID, cfil.toString(), crfi.toString()],
           state.userAddress,
         )
         dispatch('init')
@@ -895,6 +920,7 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
+
     // 活期提现
     /**
      * @param {*} PackageID 提取的投资ID
@@ -909,8 +935,18 @@ export default new Vuex.Store({
         dispatch('init')
       } catch (e) {}
     },
-    async Withdraw({ state, dispatch }) {
-      await crossLend.executeContract('Withdraw', [], state.userAddress)
+    // opcode 0xfe not defined
+    /**
+     *
+     * @param {Boolean} isDemond 是否为全部提现
+     * @param {Number} PackageID 理财ID
+     */
+    async Withdraw({ state, dispatch }, { PackageID, bool }) {
+      await crossLend.executeContract(
+        'Withdraw',
+        [PackageID, bool, 0],
+        state.userAddress,
+      )
       dispatch('init')
       try {
       } catch (e) {}

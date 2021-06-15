@@ -35,97 +35,90 @@
       </div>
       <h4 class="title">{{ $t('myPositions') }}</h4>
       <div style="text-align: right; margin-bottom: 24px; margin-right: 24px; ">
-        <span @click="Withdraw" class="withdraw" style="background: #18CED2">
+        <span @click="withdrawAll" class="withdraw" style="background: #18CED2">
           {{ $t('withdrawAll') }}
         </span>
       </div>
 
       <div class="item" v-for="(item, index) in userList" :key="index">
-        <div class="item-left">
-          <p
-            class="item-date"
-            style="padding: 8px 0; flex: 1"
-            v-html="
-              item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand')
-            "
-          >
-            {{}}
-          </p>
+        <div class="box">
+          <div class="item-left">
+            <p
+              class="item-date"
+              style="padding: 8px 0; flex: 1"
+              v-html="
+                item.Days != 0 ? item.Days + ' ' + $t('day') : $t('onDemand')
+              "
+            ></p>
 
-          <p
-            class="item-coin item-coin-c"
-            :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
-          >
-            {{ item.Type == 0 ? 'CRFI' : 'CFil' }}
-          </p>
+            <p
+              class="item-coin item-coin-c"
+              :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
+            >
+              {{ item.Type == 0 ? 'CRFI' : 'CFil' }}
+            </p>
+          </div>
+          <div class="item-right">
+            <p class="item-balance">{{ item.Amount | decimals }}</p>
+            <div class="item-rate" v-if="item.Type == 0">
+              <span> CRFI: {{ getRate(item) | rate }}% </span>
+              <span>+</span>
+              <span>
+                CFIL:
+                {{ getCFilRate(item) | rate }}%
+              </span>
+            </div>
+            <div class="item-rate" v-else>
+              <span>
+                CFIL:
+                {{ getCFilRate(item) | rate }}%
+              </span>
+              <span>+</span>
+              <span> CRFI: {{ getRate(item) | rate }}% </span>
+            </div>
+
+            <div class="endtime">
+              <!-- {{ $t('profit') }}: -->
+              <van-count-down
+                :time="getEndTime(item.EndTime)"
+                :format="
+                  'DD' + $t('day') + 'HH' + $t('hour') + 'mm' + $t('minu')
+                "
+              />
+              <!-- {{ item.EndTime && getEndTime(item.EndTime) }} -->
+              <!-- {{ getEndTime(item.EndTime) }} -->
+            </div>
+          </div>
         </div>
-        <div class="item-right">
+        <div class="item-set">
+          <div class="item-income" v-if="item.Type == 0">
+            <div class="income">
+              <p>CRFI {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
+            </div>
+            <div class="income">
+              <p>cFil {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
+            </div>
+          </div>
+          <div class="item-income" v-else>
+            <div class="income">
+              <p>cFil {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
+            </div>
+            <div class="income">
+              <p>CRFI {{ $t('profit') }}</p>
+              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
+            </div>
+          </div>
           <span
             class="withdraw"
             :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
-            @click="WithdrawDemand(item.Type)"
+            @click="WithdrawDemand(item.PackageID)"
             v-if="item.Days == 0"
           >
             {{ $t('withdraw') }}
           </span>
-          <!-- <div class="item-rate" v-if="item.Type == 0">
-            {{ item.CRFIInterestRate }}
-            CRFI: +{{ item.CRFIInterestRate | rate }}% cFIL: +
-            {{ item.CFilInterestRate | rate }}%
-          </div>
-          <div class="item-rate" v-else>
-            cFIL: +
-            {{ item.CFilInterestRate | rate }}% CRFI: +{{
-              item.CRFIInterestRate | rate
-            }}%
-          </div> -->
-
-          <div class="item-rate" v-if="item.Type == 0">
-            <span> CRFI: {{ getRate(item) | rate }}% </span>
-            <span>+</span>
-            <span>
-              CFIL:
-              {{ getCFilRate(item) | rate }}%
-            </span>
-          </div>
-          <div class="item-rate" v-else>
-            <span>
-              CFIL:
-              {{ getCFilRate(item) | rate }}%
-            </span>
-            <span>+</span>
-            <span> CRFI: {{ getRate(item) | rate }}% </span>
-          </div>
-          <p class="item-balance">{{ item.Amount | decimals }}</p>
-          <div class="income-box" v-if="item.Type == 0">
-            <div class="income">
-              <!-- {{ $t('profit') }}: -->
-              {{ item.EndTime && getEndTime(item.EndTime) }}
-              <!-- {{ getEndTime(item.EndTime) }} -->
-            </div>
-            <div class="income">
-              <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
-            </div>
-            <div class="income">
-              <p>cFil {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
-            </div>
-          </div>
-          <div class="income-box" v-else>
-            <div class="income">
-              <!-- {{ $t('profit') }}: -->
-              {{ item.EndTime && getEndTime(item.EndTime) }}
-            </div>
-            <div class="income">
-              <p>cFil {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
-            </div>
-            <div class="income">
-              <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -166,12 +159,27 @@ export default {
 
   methods: {
     ...mapMutations(['setUserAddress']),
-    ...mapActions(['Withdraw', 'WithdrawDemand']),
+    ...mapActions(['Withdraw']),
     getEndTime(value) {
+      let now = parseInt(new Date().getTime())
+      console.log(value)
+      return value * 1000 - now
       return moment(value * 1000).format('YYYY-MM-DD')
     },
+    withdrawAll() {
+      this.Withdraw({
+        PackageID: 0,
+        bool: false,
+      })
+    },
+    WithdrawDemand(ID) {
+      this.Withdraw({
+        PackageID: ID,
+        bool: true,
+      })
+    },
     getRate(data) {
-      let { Type, Amount = 1, CRFIInterestRate } = data
+      let { Type, Amount = 1, CRFIInterestRateDyn } = data
       if (Amount == 0) {
         Amount = 1
       }
@@ -179,14 +187,14 @@ export default {
       if (Type == 1) {
         // CFil
         if (this.crfiPrice == 1 || this.cfilPrice == 1) {
-          return CRFIInterestRate
+          return CRFIInterestRateDyn
         }
         let result = new BigNumber(this.crfiPrice)
-          .times(new BigNumber(CRFIInterestRate))
+          .times(new BigNumber(CRFIInterestRateDyn))
           .div(new BigNumber(this.cfilPrice))
         return result.toString()
       } else {
-        return CRFIInterestRate
+        return CRFIInterestRateDyn
       }
     },
     getCFilRate(data) {
@@ -208,6 +216,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+/deep/ .van-count-down {
+  color: #fff;
+}
 .container {
   display: flex;
   flex-direction: column;
@@ -258,13 +269,13 @@ export default {
 .withdraw {
   display: inline-block;
   //
-  width: 73px;
-  height: 20px;
-  line-height: 20px;
+  height: 30px;
+  line-height: 30px;
   background: #ffffff;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
   opacity: 1;
   border-radius: 5px;
+  padding: 0 8px;
   text-align: center;
   font-size: 10px;
   font-family: Montserrat;
@@ -282,9 +293,7 @@ export default {
 }
 
 .item {
-  display: flex;
   width: 328px;
-  // height: 104px;
   margin: 0 auto 12px;
   background: #333b4b;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
@@ -293,6 +302,9 @@ export default {
   color: #fff;
   font-size: 10px;
   font-family: Segoe UI;
+  .box {
+    display: flex;
+  }
   &-left {
     display: flex;
     flex-direction: column;
@@ -302,7 +314,6 @@ export default {
     background: #404b5d;
     margin-right: 12px;
     border-radius: 10px;
-    // line-height: 1;
     font-size: 14px;
     font-family: Segoe UI;
     font-weight: bold;
@@ -313,6 +324,10 @@ export default {
       align-items: center;
       justify-content: center;
     }
+  }
+  .endtime {
+    text-align: left;
+    margin: 10px 0 0;
   }
   &-coin {
     height: 24px;
@@ -335,7 +350,8 @@ export default {
     text-align: left;
   }
   &-balance {
-    margin: 10px 0 10px;
+    text-align: left;
+    margin: 0px 0 10px;
     font-size: 22px;
     font-weight: bold;
     line-height: 26px;
@@ -348,7 +364,11 @@ export default {
   }
   .income {
     margin-left: 10px;
+    display: flex;
+    align-items: center;
+    height: 28px;
     &-text {
+      margin-left: 4px;
       font-size: 9px;
       font-family: Segoe UI;
       font-weight: 400;
@@ -356,6 +376,14 @@ export default {
       color: #22d18c;
       opacity: 1;
     }
+  }
+  &-set {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #c1c1c1;
   }
 }
 

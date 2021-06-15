@@ -2,7 +2,7 @@
   <div class="container">
     <BaseHeader />
     <!-- <h4 class="title">{{ $t('dashboard') }}</h4> -->
-    <h4 class="title2">{{ $t('filStatistics') }}</h4>
+    <!-- <h4 class="title2">{{ $t('filStatistics') }}</h4> -->
     <div class="circle" style="text-align: center">
       <van-circle
         size="135"
@@ -18,6 +18,7 @@
       >
       </van-circle>
     </div>
+    <h4 class="title2">{{ $t('filStatistics') }}</h4>
     <h4 class="title2" style="margin-bottom: 20px">
       <!-- {{ $t('filStatistics') }} -->
     </h4>

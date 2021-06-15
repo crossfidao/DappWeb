@@ -32,15 +32,15 @@
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('borrowMenu') }}</span>
           </router-link>
-          <div class="pop-menu-item">
+          <div class="pop-menu-item" @click="gotoOfficial">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('aboutCrossFi') }}</span>
           </div>
-          <div class="pop-menu-item">
+          <div class="pop-menu-item" @click="gotoSafe">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('auditReport') }}</span>
           </div>
-          <div class="pop-menu-item">
+          <div class="pop-menu-item" @click="gotoDoc">
             <van-icon name="arrow-left" />
             <span class="text">{{ $t('supportCenter') }}</span>
           </div>
@@ -168,6 +168,16 @@ export default {
     handleClick() {},
     handleApp() {
       this.$router.push('/apply')
+    },
+    gotoSafe() {
+      location.href =
+        'https://docs.crossfimain.com/english/security-audit-report'
+    },
+    gotoDoc() {
+      location.href = 'https://docs.crossfimain.com/'
+    },
+    gotoOfficial() {
+      location.href = 'https://www.crossfimain.com'
     },
   },
 }

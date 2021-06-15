@@ -83,6 +83,7 @@ const kr = {
   referralRewards: '추천',
   claim: '초대장 링크 복사',
   claimedRewards: '추천보상',
+  caimedPromote: '나의 추천',
 
   // swap
   filSwap: 'FIL 스왑',
