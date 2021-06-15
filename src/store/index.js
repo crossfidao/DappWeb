@@ -11,6 +11,7 @@ import {
   CFIL_ADDRESS,
   crossLend,
   utils,
+  API_HOST,
   CRFIContract,
   CFilContract,
   SFilContract,
@@ -723,7 +724,7 @@ export default new Vuex.Store({
 
                 // sendToServerForVerification(signature)
                 axios
-                  .get('https://clserver.mm.comeonbtc.com:8443/get_addr', {
+                  .get(API_HOST + '/get_addr', {
                     // .get('http://10.30.0.1:9980/get_addr', {
                     params: {
                       eth_addr: state.userAddress,
@@ -738,6 +739,7 @@ export default new Vuex.Store({
                       },
                     } = response
                     commit('setFileAddr', FilAddr)
+                    console.log('succ', FilAddr)
                     localStorage.setItem(state.userAddress, FilAddr)
                     resolve()
                   })
@@ -813,7 +815,8 @@ export default new Vuex.Store({
       }
 
       let balanceCFil = new BigNumber(state.wallet.walletCFil)
-      let balanceCRFI = new BigNumber(state.balance.watlletCRFI)
+      let balanceCRFI = new BigNumber(state.wallet.walletCRFI)
+
       value = new BigNumber(utils.toWei(value.toString() || 0))
       // 获取汇率
       // TODO: 比例为0时直接调用CFil burn方法
@@ -841,13 +844,17 @@ export default new Vuex.Store({
       // }
       // let crfiValue = value.times(new BigNumber(utils.fromWei(res)))
       // 手续费、crfi余额、
-
-      if (balanceCFil.comparedTo(value) == -1) {
+      if (
+        balanceCFil.comparedTo(value) == -1 ||
+        balanceCRFI.comparedTo(crfiValue) == -1 ||
+        value.comparedTo(new BigNumber(state.burnCFilFee)) == -1
+      ) {
         Toast(i18n.t('balanceToast'))
         return
       }
+
       if (fileCoin == '') {
-        Toast(i18n.t('toastFileCoin'))
+        Toast(i18n.t('FilecoinPlaceholder'))
         return
       }
 

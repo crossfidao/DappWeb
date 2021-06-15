@@ -106,7 +106,7 @@
           <!-- 修改cfilPrice -->
           <div class="charge-title" style="margin: 0 32px">
             <span>
-              汇率设置（cfilPrice）111
+              汇率设置（cfilPrice）
               {{ cfilPrice | decimals }}
             </span>
           </div>

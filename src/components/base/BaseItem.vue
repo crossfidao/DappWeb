@@ -1,7 +1,7 @@
 <template>
   <div class="item" @click.capture="showMask = true" :style="getStyle(index)">
     <div class="item-title">
-      <span>APY</span>
+      <span>APY: {{ getApy() | rate }}%</span>
       <span class="item-date">
         {{ info.Days != 0 ? info.Days + ' ' + $t('day') : $t('onDemand') }}
       </span>
@@ -15,11 +15,12 @@
       <span>+</span>
       <span class="icon cFIL"></span>
       <span>
-        CFIL:
+        cFIL:
         <!-- {{ info.CFilInterestRate | rate }}% -->
         {{ getCFilRate(info) | rate }}%
       </span>
     </div>
+    <div class="line"></div>
     <div class="item-total">
       <p>{{ $t('totalDeposit') }}</p>
       <p class="item-total-number">
@@ -55,7 +56,7 @@
           <p class="mask-item-text">
             <span>CRFI: {{ getRate(info) | rate }}%</span>
             <span> + </span>
-            <span>CFIL: {{ getCFilRate(info) | rate }}%</span>
+            <span>cFIL: {{ getCFilRate(info) | rate }}%</span>
           </p>
         </div>
         <!-- <div class="mask-text">
@@ -173,6 +174,12 @@ export default {
       }
       return null
     },
+    getApy() {
+      let crfi = this.getRate(this.info)
+      let cfil = this.getCFilRate(this.info)
+
+      return new BigNumber(crfi).plus(new BigNumber(cfil))
+    },
     getRate(data) {
       let { Type, Amount = 1, CRFIInterestRate, CRFIInterestRateDyn } = data
       if (Amount == 0) {
@@ -265,16 +272,22 @@ export default {
     line-height: 15px;
     color: #ffffff;
   }
+
   &-rate {
     display: flex;
     align-items: center;
     padding: 10px 0 16px 0;
-    border-bottom: 1px solid #c1c1c1;
+    // border-bottom: 1px solid #c1c1c1;
     font-family: Segoe UI;
     font-weight: bold;
     line-height: 16px;
     color: #ffffff;
     text-align: left;
+  }
+  .line {
+    height: 1px;
+    background: #ffffff;
+    opacity: 0.1;
   }
   &-total {
     margin-top: 10px;

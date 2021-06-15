@@ -55,7 +55,7 @@
               class="item-coin item-coin-c"
               :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
             >
-              {{ item.Type == 0 ? 'CRFI' : 'CFil' }}
+              {{ item.Type == 0 ? 'CRFI' : 'cFIL' }}
             </p>
           </div>
           <div class="item-right">
@@ -64,32 +64,31 @@
               <span> CRFI: {{ getRate(item) | rate }}% </span>
               <span>+</span>
               <span>
-                CFIL:
+                cFIL:
                 {{ getCFilRate(item) | rate }}%
               </span>
             </div>
             <div class="item-rate" v-else>
               <span>
-                CFIL:
+                cFIL:
                 {{ getCFilRate(item) | rate }}%
               </span>
               <span>+</span>
               <span> CRFI: {{ getRate(item) | rate }}% </span>
             </div>
 
-            <div class="endtime">
-              <!-- {{ $t('profit') }}: -->
+            <div class="endtime flex" v-if="item.Days != 0">
+              <span style="margin-right: 2px"> {{ $t('Remaining') }}</span>
               <van-count-down
                 :time="getEndTime(item.EndTime)"
-                :format="
-                  'DD' + $t('day') + 'HH' + $t('hour') + 'mm' + $t('minu')
-                "
+                :format="'DD' + $t('d') + 'HH' + $t('h') + 'mm' + $t('m')"
               />
               <!-- {{ item.EndTime && getEndTime(item.EndTime) }} -->
               <!-- {{ getEndTime(item.EndTime) }} -->
             </div>
           </div>
         </div>
+        <div class="line"></div>
         <div class="item-set">
           <div class="item-income" v-if="item.Type == 0">
             <div class="income">
@@ -97,13 +96,13 @@
               <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
             </div>
             <div class="income">
-              <p>cFil {{ $t('profit') }}</p>
+              <p>cFIL {{ $t('profit') }}</p>
               <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
             </div>
           </div>
           <div class="item-income" v-else>
             <div class="income">
-              <p>cFil {{ $t('profit') }}</p>
+              <p>cFIL {{ $t('profit') }}</p>
               <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
             </div>
             <div class="income">
@@ -162,7 +161,6 @@ export default {
     ...mapActions(['Withdraw']),
     getEndTime(value) {
       let now = parseInt(new Date().getTime())
-      console.log(value)
       return value * 1000 - now
       return moment(value * 1000).format('YYYY-MM-DD')
     },
@@ -326,6 +324,8 @@ export default {
     }
   }
   .endtime {
+    display: flex;
+    align-items: center;
     text-align: left;
     margin: 10px 0 0;
   }
@@ -348,6 +348,11 @@ export default {
   }
   &-rate {
     text-align: left;
+  }
+  .line {
+    margin-top: 10px;
+    height: 1px;
+    background: #414c5b;
   }
   &-balance {
     text-align: left;
@@ -381,9 +386,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 12px;
-    padding-top: 16px;
-    border-top: 1px solid #c1c1c1;
+    padding-top: 15px;
   }
 }
 

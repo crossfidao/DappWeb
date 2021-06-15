@@ -41,6 +41,11 @@ const cn = {
   // purchase: '购买',
   // purchaseAmount: '购买数',
   day: '天',
+  Remaining: '剩余',
+
+  d: '天',
+  h: '时',
+  m: '分',
 
   // Wallet
   walletBalance: '钱包余额',
@@ -95,6 +100,16 @@ const cn = {
   swapPlaceholder: '请输入个数.',
   addressPlaceholder: '请输入收款账户',
   cfilSwap: 'cFIL 兑换',
+  exchangeDescription: '兑换说明',
+  exchangeDescriptiontext1: '最小兑换数量：5个',
+  exchangeDescriptiontext2: '兑换到账时间：10到30分钟',
+  exchangeDescriptiontext3:
+    'cFIL为FIL的1:1锚定代币，用户可以在任意时刻把cFIL兑换成FIL',
+  exchangeDescriptiontext7: '兑换费用:              0.02cFIL',
+  exchangeDescriptiontext4: '最小兑换数量：任意数量',
+  exchangeDescriptiontext5: '兑换到账时间：10到120分钟',
+  exchangeDescriptiontext6:
+    'cFIL为FIL的1:1锚定代币，用户可以在任意时刻把cFIL兑换成FIL',
 
   // base
   assets: '资产',
@@ -168,6 +183,7 @@ const cn = {
   balanceToast: '余额不足。请再次确认后输入',
   toast: '请输入您购买的数量',
   empty: '空白',
+  toastFileCoin: '请输入Filecoin地址',
 
   // placeholder
   placeholderFilecoin: '请输入兑换数量',

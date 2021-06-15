@@ -25,7 +25,7 @@ const kr = {
   borrowMenu: '대출',
 
   // home
-  filStatistics: 'FIL 통계',
+  filStatistics: 'cFIL통계',
   crfiStatistics: 'CRFI 통계',
   fileCoinDepositTotal: '예금총액',
   lendingTotal: '대출총액',
@@ -39,6 +39,11 @@ const kr = {
   totalDeposit: '총 예금',
 
   day: '일',
+
+  Remaining: '남은시간',
+  d: '일',
+  h: '시',
+  m: '분',
 
   // Wallet
   walletBalance: '지갑 잔고',
@@ -92,6 +97,18 @@ const kr = {
   swapPlaceholder: '개수를 입력해 주십시오.',
   addressPlaceholder: '파일코인 주소를 입력해 주십시오.',
   cfilSwap: 'cFIL 스왑',
+
+  exchangeDescription: '교환 설명',
+  exchangeDescriptiontext1: '최소 교환 수량은 5개 입니다.',
+  exchangeDescriptiontext2: '교환 후 입금은 10~30분 정도 소요됩니다.',
+  exchangeDescriptiontext3:
+    'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
+
+  exchangeDescriptiontext7: '교환 비용              0.02cFIL      ',
+  exchangeDescriptiontext4: '최소 교환 수량      임의의 수량',
+  exchangeDescriptiontext5: '교환 신청 후 입금은 10~120분 정도 소요됩니다.',
+  exchangeDescriptiontext6:
+    'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
 
   // base
   assets: '자산',

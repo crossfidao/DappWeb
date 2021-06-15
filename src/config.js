@@ -11,6 +11,8 @@ export const CFIL_ADDRESS = '0x7117983d3be99e1cbe296dfeaf034c91db3cd02b'
 
 export const SFIL_ADDRESS = '0x97c4cf2c2318171aa9c075bf66b27be57321aeee'
 
+export const API_HOST = 'https://clserver.mm.comeonbtc.com:8443'
+
 import Contract from '@/plugin/eth'
 import { CRFIAbi } from '@/plugin/CRFI.js'
 import { CFilAbi } from '@/plugin/CFil.js'

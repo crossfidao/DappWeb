@@ -45,6 +45,12 @@
             </div>
           </div>
         </div>
+        <div class="desc">
+          <h4 class="desc-title">{{ $t('exchangeDescription') }}</h4>
+          <p class="desc-text">1.{{ $t('exchangeDescriptiontext1') }}</p>
+          <p class="desc-text">2.{{ $t('exchangeDescriptiontext2') }}</p>
+          <p class="desc-text">3.{{ $t('exchangeDescriptiontext3') }}</p>
+        </div>
       </template>
       <div v-show="current == 1">
         <h4 class="title" style="margin-bottom: 12px">
@@ -88,6 +94,13 @@
             </div>
           </div>
         </div>
+        <div class="desc">
+          <h4 class="desc-title">{{ $t('exchangeDescription') }}</h4>
+          <p class="desc-text">1.{{ $t('exchangeDescriptiontext4') }}</p>
+          <p class="desc-text">2.{{ $t('exchangeDescriptiontext7') }}</p>
+          <p class="desc-text">3.{{ $t('exchangeDescriptiontext5') }}</p>
+          <p class="desc-text">4.{{ $t('exchangeDescriptiontext6') }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -111,6 +124,7 @@ export default {
   },
   computed: {
     FileAddr() {
+      console.log('filecoin', this.$store.state.FilAddr)
       return this.$store.state.FilAddr
     },
     userFileAddr() {
@@ -146,7 +160,6 @@ export default {
     },
     handleClick() {
       this.current = this.current == 0 ? 1 : 0
-      console.log(this.code)
       if (this.current == 1) {
         this.code = null
       } else {
@@ -171,7 +184,6 @@ export default {
       return `background: ${arr[target]}`
     },
     copy() {
-      localStorage.removeItem(this.userAddress)
       var clipboard = new Clipboard('.tag-read')
       clipboard.on('success', e => {
         this.$toast(this.$t('copySucc'))
@@ -216,7 +228,7 @@ export default {
 .container {
   overflow: auto;
   height: 100%;
-  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+  background: #3f495a;
 
   background-size: cover;
   color: #fff;
@@ -501,5 +513,21 @@ export default {
 }
 /deep/ .van-field__control {
   color: #fff;
+}
+
+.desc {
+  font-family: PingFang SC;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 18px;
+  color: #c2c7d4;
+  text-align: left;
+  &-title {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+    color: #f79735;
+  }
 }
 </style>

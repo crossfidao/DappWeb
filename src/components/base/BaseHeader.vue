@@ -6,11 +6,15 @@
       </router-link>
       <van-icon name="arrow-left" v-else size="24" @click="$router.back()" />
       <span v-if="title" class="header-title">{{ title }}</span>
-      <span v-show="showLoading">pending</span>
+      <!-- <span v-show="showLoading">pending</span> -->
       <div class="right">
         <div class="address">
           <span class="address-icon"></span>
-          <span class="address-text">{{ address }}</span>
+          <span class="address-text" v-if="!showLoading">{{ address }}</span>
+          <span class="address-pending" v-else>
+            <i style="margin-right: 4px">pending</i>
+            <van-loading type="spinner" size="20px" />
+          </span>
         </div>
         <span class="icon" @click="showpop = true"></span>
         <!-- <van-icon :name="line" size="28" @click="showpop = true" /> -->
@@ -206,6 +210,10 @@ export default {
     background: url(../../assets/icon/Group.png) no-repeat;
     background-size: cover;
     margin-right: 5px;
+  }
+  &-pending {
+    display: flex;
+    align-items: center;
   }
 }
 .header {

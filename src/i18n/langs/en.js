@@ -24,7 +24,7 @@ const cn = {
   borrowMenu: 'Borrow',
 
   // home
-  filStatistics: 'FIL Statistics',
+  filStatistics: 'cFIL Statistics',
   crfiStatistics: 'CRFI Statistics',
   // fileCoinDepositTotal: 'Filecoin Deposit Total ',
   fileCoinDepositTotal: 'Deposit<br/>Total',
@@ -39,6 +39,10 @@ const cn = {
   totalDeposit: 'Total Deposit',
 
   day: 'Days',
+  Remaining: 'Remaining',
+  d: 'D',
+  h: 'H',
+  m: 'M',
 
   // Wallet
   walletBalance: 'Wallet Balance',
@@ -92,6 +96,18 @@ const cn = {
   swapPlaceholder: 'Please input the amount',
   addressPlaceholder: 'Please input your filecoin address',
   cfilSwap: 'cFIL SWAP',
+  exchangeDescription: 'Exchange Description',
+  exchangeDescriptiontext1: 'The minimum exchange quantity is 5.',
+  exchangeDescriptiontext2:
+    'The deposit takes about 10 to 30 minutes after the exchange.',
+  exchangeDescriptiontext3:
+    'cFIL is a 1:1 token of FIL, and users can exchange cFIL with FIL at any time.',
+  exchangeDescriptiontext7: 'Exchange cost              0.02cFIL      ',
+  exchangeDescriptiontext4: 'Minimum Exchange Quantity      Any quantity',
+  exchangeDescriptiontext5:
+    'The deposit takes about 10 to 120 minutes after applying for an exchange.',
+  exchangeDescriptiontext6:
+    'cFIL is a 1:1 token of FIL, and users can exchange cFIL with FIL at any time.',
 
   // base
   assets: 'assets',
