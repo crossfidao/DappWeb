@@ -311,11 +311,11 @@
               </van-button>
             </h4>
             <div class="item" style="color: #fff">
-              <div class="label">抵押率</div>
+              <div class="label">借贷利率</div>
               <div class="input">{{ loanCFil.APY | rate }} %</div>
             </div>
             <div class="item" style="color: #fff">
-              <div class="label">借贷利率</div>
+              <div class="label">抵押率</div>
               <div class="input">{{ loanCFil.PledgeRate | rate }} %</div>
             </div>
             <div

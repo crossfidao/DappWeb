@@ -16,8 +16,8 @@ import 'vant/lib/index.css'
 
 import VConsole from 'vconsole'
 
+new VConsole()
 if (process.env.NODE_ENV === 'production') {
-  // new VConsole()
 }
 
 Vue.use(Vant)
