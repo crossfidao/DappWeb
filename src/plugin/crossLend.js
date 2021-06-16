@@ -305,6 +305,7 @@ export const crossLendAbi = [
                components: [
                  { internalType: 'address', name: 'Addr', type: 'address' },
                  { internalType: 'uint256', name: 'ID', type: 'uint256' },
+                 { internalType: 'uint256', name: 'affID', type: 'uint256' },
                  {
                    internalType: 'uint256',
                    name: 'totalAffTimes',

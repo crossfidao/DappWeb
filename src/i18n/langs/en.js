@@ -61,7 +61,7 @@ const cn = {
   borrow: 'Borrow',
   loanApy: 'Loan APY',
   newProfit: 'New Profit',
-  paymentDue: 'Payment Due',
+  paymentDue: 'Minimum borrowing',
   pledgeRate: 'Pledge Rate',
   repay: 'Repay',
   market: 'Market',

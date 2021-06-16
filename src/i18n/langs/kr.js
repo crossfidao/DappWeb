@@ -62,7 +62,7 @@ const kr = {
   borrow: '대출',
   loanApy: '대출 연이자',
   newProfit: '새로운 수익',
-  paymentDue: '지불 기한',
+  paymentDue: '최소대출량',
   pledgeRate: '보증률',
   repay: '상환',
   market: '마켓',

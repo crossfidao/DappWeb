@@ -65,7 +65,7 @@ const cn = {
   borrow: '借',
   loanApy: '借贷年化',
   newProfit: '新收益',
-  paymentDue: '支付期限',
+  paymentDue: '最低借贷量',
   pledgeRate: '借出率',
   repay: '归还',
   market: '市场',

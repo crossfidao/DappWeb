@@ -655,6 +655,7 @@ export default new Vuex.Store({
         walletSFil,
       })
       let res = await crossLend.callContract('GetInvestInfo', [0, address])
+      console.log('user', res)
       commit('setUserInfo', res)
     },
     // 获取 SFil 总量
