@@ -18,6 +18,8 @@ export default {
     },
   },
   async mounted() {
+    let chainId = await ethereum.request({ method: 'eth_chainId' })
+    console.log('chainId', chainId)
     this.ethereum()
     if (ethereum.isConnected()) {
       // let res = await window.ethereum.request({

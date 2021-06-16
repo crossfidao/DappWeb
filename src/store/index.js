@@ -665,8 +665,10 @@ export default new Vuex.Store({
     },
     // 签名 登录
     async login({ state, commit }) {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         let timestamp = parseInt(new Date().getTime() / 1000)
+        let chainId = await ethereum.request({ method: 'eth_chainId' })
+        console.log('chainId', chainId)
         web3.currentProvider.sendAsync(
           {
             method: 'net_version',
@@ -692,7 +694,7 @@ export default new Vuex.Store({
               domain: {
                 name: 'CrossFI_ETHChallenger',
                 version: '1.0',
-                chainId: 654321,
+                chainId,
                 salt: 'asasdfiuosicvuxzoiv',
               },
               message: {
