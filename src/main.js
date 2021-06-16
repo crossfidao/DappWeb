@@ -14,11 +14,11 @@ import './assets/scss/common.scss'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 
-new VConsole()
-if (process.env.NODE_ENV === 'production') {
-}
+// new VConsole()
+// if (process.env.NODE_ENV === 'production') {
+// }
 
 Vue.use(Vant)
 import Element from 'element-ui'
