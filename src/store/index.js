@@ -669,6 +669,24 @@ export default new Vuex.Store({
       return new Promise(async (resolve, reject) => {
         let timestamp = parseInt(new Date().getTime() / 1000)
         let chainId = await ethereum.request({ method: 'eth_chainId' })
+        // * 主网 0x1
+        //  * Ropsten 0x3
+        //  * Kovan 0x2a
+        //  * Rinkeby 0x4
+        //  * Goerli 0x5
+        let chainMap = {
+          '0x1': 1,
+          '0x2a': 42,
+          '0x3': 3,
+          '0x4': 5,
+          '0x5': 6,
+        }
+        console.log(!chainMap[chainId])
+        if (!chainMap[chainId]) {
+          Toast('没有该测试链，请确认后重新登录')
+          reject()
+          return
+        }
         web3.currentProvider.sendAsync(
           {
             method: 'net_version',
@@ -694,7 +712,7 @@ export default new Vuex.Store({
               domain: {
                 name: 'CrossFI_ETHChallenger',
                 version: '1.0',
-                chainId,
+                chainId: chainMap[chainId],
                 salt: 'asasdfiuosicvuxzoiv',
               },
               message: {
