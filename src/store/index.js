@@ -668,7 +668,6 @@ export default new Vuex.Store({
       return new Promise(async (resolve, reject) => {
         let timestamp = parseInt(new Date().getTime() / 1000)
         let chainId = await ethereum.request({ method: 'eth_chainId' })
-        console.log('chainId', chainId)
         web3.currentProvider.sendAsync(
           {
             method: 'net_version',

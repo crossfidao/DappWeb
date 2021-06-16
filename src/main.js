@@ -14,6 +14,12 @@ import './assets/scss/common.scss'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 
+import VConsole from 'vconsole'
+
+if (process.env.NODE_ENV === 'production') {
+  // new VConsole()
+}
+
 Vue.use(Vant)
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

@@ -184,6 +184,7 @@ const cn = {
   toast: '请输入您购买的数量',
   empty: '空白',
   toastFileCoin: '请输入Filecoin地址',
+  networkErr: '网络错误，请切换到指定网络',
 
   // placeholder
   placeholderFilecoin: '请输入兑换数量',

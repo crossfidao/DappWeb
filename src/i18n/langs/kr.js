@@ -188,6 +188,8 @@ const kr = {
   empty: '공백',
   // placeholder
   placeholderFilecoin: '출금수량을 입력해 주십시오.',
+  networkErr: '네트워크 오류, 다른 네트워크로 변경하시기 바랍니다.',
+
   message: {
     name: 'Alice',
   },

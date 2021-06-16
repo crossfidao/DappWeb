@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { CHAINID } from '@/config.js'
 import { mapActions, mapMutations } from 'vuex'
 export default {
   computed: {
@@ -19,8 +20,12 @@ export default {
   },
   async mounted() {
     let chainId = await ethereum.request({ method: 'eth_chainId' })
-    console.log('chainId', chainId)
-    this.ethereum()
+    // this.ethereum()
+    if (chainId === CHAINID) {
+      this.ethereum()
+    } else {
+      this.$toast(this.$t('networkErr'))
+    }
     if (ethereum.isConnected()) {
       // let res = await window.ethereum.request({
       //   method: 'eth_requestAccounts',
@@ -34,7 +39,12 @@ export default {
       // "accounts" will always be an array, but it can be empty.
     })
     ethereum.on('chainChanged', chainId => {
-      console.log(chainId)
+      if (chainId === CHAINID) {
+        this.ethereum()
+      } else {
+        this.$toast(this.$t('networkErr'))
+      }
+
       // Handle the new chain.
       // Correctly handling chain changes can be complicated.
       // We recommend reloading the page unless you have good reason not to.

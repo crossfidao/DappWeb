@@ -186,6 +186,7 @@ const cn = {
   empty: 'empty',
   // placeholder
   placeholderFilecoin: 'Please enter the withdrawal amount.',
+  networkErr: 'Network error, please switch to another network',
   message: {
     name: 'Alice',
   },
