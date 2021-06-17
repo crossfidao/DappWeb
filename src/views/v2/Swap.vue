@@ -169,14 +169,16 @@ export default {
       }
     },
     // 回购
-    handleRepurchase() {
-      this.Repurchase({
-        value: this.value,
-        fileCoin: this.fileCoin,
-      })
-      this.value = ''
-      this.fileCoin = ''
-      this.showMask = false
+    async handleRepurchase() {
+      try {
+        await this.Repurchase({
+          value: this.value,
+          fileCoin: this.fileCoin,
+        })
+        this.value = ''
+        this.fileCoin = ''
+        this.showMask = false
+      } catch (e) {}
     },
     getStyle(index) {
       let target = index % 5

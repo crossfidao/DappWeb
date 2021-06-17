@@ -93,21 +93,29 @@
           <div class="item-income" v-if="item.Type == 0">
             <div class="income">
               <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
+              <p class="income-text">
+                + {{ item.CRFIInterest | decimals(10) }}
+              </p>
             </div>
             <div class="income">
               <p>cFIL {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
+              <p class="income-text">
+                + {{ item.CFilInterest | decimals(10) }}
+              </p>
             </div>
           </div>
           <div class="item-income" v-else>
             <div class="income">
               <p>cFIL {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CFilInterest | decimals }}</p>
+              <p class="income-text">
+                + {{ item.CFilInterest | decimals(10) }}
+              </p>
             </div>
             <div class="income">
               <p>CRFI {{ $t('profit') }}</p>
-              <p class="income-text">+ {{ item.CRFIInterest | decimals }}</p>
+              <p class="income-text">
+                + {{ item.CRFIInterest | decimals(10) }}
+              </p>
             </div>
           </div>
           <span

@@ -20,6 +20,7 @@ export default {
   },
   async mounted() {
     let chainId = await ethereum.request({ method: 'eth_chainId' })
+    console.log(chainId)
     // this.ethereum()
     if (chainId === CHAINID) {
       this.ethereum()

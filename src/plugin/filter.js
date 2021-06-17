@@ -10,10 +10,13 @@ Vue.filter('date', value => {
   return (value / 24 / 3600).toFixed(0)
 })
 
-Vue.filter('decimals', value => {
+Vue.filter('decimals', (value, decimals = 5) => {
+  console.log(decimals)
   value = value || '0'
   // return value
-  return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value)))).toFixed(5)
+  return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value)))).toFixed(
+    decimals,
+  )
 })
 
 Vue.filter('rate', value => {

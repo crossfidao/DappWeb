@@ -33,6 +33,7 @@ export const API_HOST = 'https://api.crossfimain.com'
 // export const SFIL_ADDRESS = '0xb3b2c4987d0f5888d38db03bcdd9beb8f8d295b8'
 
 // export const API_HOST = 'https://api.crossfimain.com'
+// export const CHAINID = '0x9fbf1'
 // export const CROSSLEND_ADDRESS = '0x7e27e8f3aa4bda26502c38ccd28a4838aeca7966'
 
 // export const CRFI_ADDRESS = '0x1ccbf9217c06a641e88059578b5bf984e21f11ff'
