@@ -849,7 +849,7 @@ export default new Vuex.Store({
       if (res == 0) {
         await CFilContract.executeContract(
           'burn',
-          [value, betys1],
+          [value.toString(), betys1],
           state.userAddress,
         )
         dispatch('init')

@@ -22,6 +22,7 @@ export const CFIL_ADDRESS = '0x0f91445A15a1353A099E742f9B51b1b41C2CbFe8'
 export const SFIL_ADDRESS = '0x642C75E5E61b3169Ed40644E14260b6f5a366d65'
 
 export const API_HOST = 'https://api.crossfimain.com'
+
 // 合约地址 官方测试链 R
 // export const CHAINID = '0x3'
 // export const CROSSLEND_ADDRESS = '0x422066b2F51bD090BAbBb499B01dB79A8F3B335a'
