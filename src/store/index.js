@@ -832,6 +832,7 @@ export default new Vuex.Store({
     },
     // 回购
     async Repurchase({ state, commit, dispatch }, data) {
+      let BN = utils.BN
       let { value, fileCoin = '' } = data
       if (value == '') {
         Toast(i18n.t('eFilPlaceholder'))
@@ -845,8 +846,7 @@ export default new Vuex.Store({
 
       let balanceCFil = new BigNumber(state.wallet.walletCFil)
       let balanceCRFI = new BigNumber(state.wallet.walletCRFI)
-
-      value = new BigNumber(utils.toWei(value.toString() || 0))
+      value = new BN(utils.toWei(value.toString() || 0))
       // 获取汇率
       // TODO: 比例为0时直接调用CFil burn方法
       let res = await CFilContract.callContract('burnCFilRateCRFI', [])
