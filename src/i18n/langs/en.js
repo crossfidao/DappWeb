@@ -6,6 +6,7 @@ const cn = {
   CRFIInvest: 'CRFI',
   wallet: 'Wallet', // ? 保留关键字
   aaa: 'Wallet',
+  loading: 'Loading...',
 
   purchase: 'Stake',
   cycle1: 'Period',
@@ -187,6 +188,7 @@ const cn = {
   // placeholder
   placeholderFilecoin: 'Please enter the withdrawal amount.',
   networkErr: 'Network error, please switch to another network',
+  errorMsg: 'Loading failed, please try again',
   message: {
     name: 'Alice',
   },

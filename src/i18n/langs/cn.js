@@ -6,7 +6,7 @@ const cn = {
   CRFIInvest: 'CRFI',
   wallet: '钱包', // ? 保留关键字
   aaa: 'AAA',
-
+  loading: '加载中',
   purchase: '质押',
   cycle1: '周期',
   profit1: 'APY',
@@ -185,6 +185,7 @@ const cn = {
   empty: '空白',
   toastFileCoin: '请输入Filecoin地址',
   networkErr: '网络错误，请切换到指定网络',
+  errorMsg: '加载失败， 请重试',
 
   // placeholder
   placeholderFilecoin: '请输入兑换数量',

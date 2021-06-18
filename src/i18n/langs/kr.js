@@ -6,6 +6,7 @@ const kr = {
   CRFIInvest: 'CRFI',
   wallet: '지갑', // ? 保留关键字
   aaa: '지갑',
+  loading: '로딩 중...',
 
   purchase: '스테이크',
   cycle1: '기간',
@@ -189,6 +190,7 @@ const kr = {
   // placeholder
   placeholderFilecoin: '출금수량을 입력해 주십시오.',
   networkErr: '네트워크 오류, 다른 네트워크로 변경하시기 바랍니다.',
+  errorMsg: '로딩 실패, 다시 시도해 주시기 바랍니다.',
 
   message: {
     name: 'Alice',

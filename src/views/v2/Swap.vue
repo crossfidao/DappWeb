@@ -103,6 +103,11 @@
         </div>
       </div>
     </div>
+    <van-overlay :show="showLoading">
+      <div class="wrapper">
+        <van-loading size="24px" vertical>{{ $t('loading') }}</van-loading>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -113,6 +118,7 @@ import Clipboard from 'clipboard'
 export default {
   data() {
     return {
+      showLoading: false,
       isLogin: false,
       showMask: false,
       current: 0,
@@ -124,7 +130,6 @@ export default {
   },
   computed: {
     FileAddr() {
-      console.log('filecoin', this.$store.state.FilAddr)
       return this.$store.state.FilAddr
     },
     userFileAddr() {
@@ -133,9 +138,9 @@ export default {
     userAddress() {
       return this.$store.state.userAddress
     },
-    showLoading() {
-      return this.$store.state.showLoading
-    },
+    // showLoading() {
+    //   return this.$store.state.showLoading
+    // },
     text() {
       return this.currentRate.toFixed(0) + '%'
     },
@@ -200,10 +205,17 @@ export default {
       })
     },
     async handleLogin() {
-      await this.login()
-      this.$nextTick(() => {
-        this.qrcode()
-      })
+      this.showLoading = true
+      try {
+        await this.login()
+        this.$nextTick(() => {
+          this.qrcode()
+          this.showLoading = false
+        })
+      } catch (e) {
+        this.showLoading = false
+        this.$toast(this.$t('errorMsg'))
+      }
     },
     qrcode() {
       if (!this.code) {
@@ -224,6 +236,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .home {
   z-index: 99;
 }

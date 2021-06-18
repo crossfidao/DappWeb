@@ -402,7 +402,7 @@ export default new Vuex.Store({
             filter: {
               receiver: [address],
             },
-            fromBlock: 0,
+            fromBlock: 12645616,
             toBlock: 'latest',
           },
           function(error, events) {},
@@ -420,6 +420,9 @@ export default new Vuex.Store({
     // 获取推广列表
     async getPromoteList({ state, commit }) {
       let address = state.userAddress
+      console.log(12, await crossLend.web3.eth.getBlockNumber())
+      let toBlock = await crossLend.web3.eth.getBlockNumber()
+      let fromBlock = toBlock - 1000
       crossLend.contract
         .getPastEvents(
           'AffBought',
@@ -427,7 +430,7 @@ export default new Vuex.Store({
             filter: {
               affer: [address],
             }, // Using an array means OR: e.g. 20 or 23
-            fromBlock: 0,
+            fromBlock: 12645616,
             toBlock: 'latest',
           },
           function(error, events) {},
@@ -756,16 +759,21 @@ export default new Vuex.Store({
                   .then(function(response) {
                     let {
                       data: {
+                        code,
                         result: { FilAddr },
                       },
                     } = response
-                    commit('setFileAddr', FilAddr)
-                    // console.log('succ', FilAddr)
-                    localStorage.setItem(state.userAddress, FilAddr)
-                    resolve()
+                    if (code === 0) {
+                      commit('setFileAddr', FilAddr)
+                      localStorage.setItem(state.userAddress, FilAddr)
+                      resolve()
+                    } else {
+                      reject()
+                    }
                   })
                   .catch(function(error) {
                     console.log(error)
+                    reject()
                   })
                 const recovered = sigUtil.recoverTypedSignature({
                   data: JSON.parse(msgParams),
