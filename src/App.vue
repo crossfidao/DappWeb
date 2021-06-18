@@ -12,31 +12,30 @@
 <script>
 import { CHAINID } from '@/config.js'
 import { mapActions, mapMutations } from 'vuex'
+import detectEthereumProvider from '@metamask/detect-provider'
+
+// this returns the provider, or null if it wasn't detected
+
 export default {
-  computed: {
-    showLoading() {
-      return this.$store.state.showLoading
-    },
+  data() {
+    return {
+      message: '',
+    }
   },
+  computed: {},
   async mounted() {
+    const provider = await detectEthereumProvider()
     let chainId = await ethereum.request({ method: 'eth_chainId' })
-    // this.ethereum()
     if (chainId === CHAINID) {
       this.ethereum()
     } else {
       this.$toast(this.$t('networkErr'))
     }
     if (ethereum.isConnected()) {
-      // let res = await window.ethereum.request({
-      //   method: 'eth_requestAccounts',
-      // })
-      // this.initData()
     }
     ethereum.on('accountsChanged', accounts => {
       this.setUserAddress(accounts[0])
       this.init()
-      // Handle the new accounts, or lack thereof.
-      // "accounts" will always be an array, but it can be empty.
     })
     ethereum.on('chainChanged', chainId => {
       if (chainId === CHAINID) {
@@ -44,11 +43,6 @@ export default {
       } else {
         this.$toast(this.$t('networkErr'))
       }
-
-      // Handle the new chain.
-      // Correctly handling chain changes can be complicated.
-      // We recommend reloading the page unless you have good reason not to.
-      // window.location.reload()
     })
   },
 
@@ -56,12 +50,16 @@ export default {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['init']),
     async ethereum() {
-      let accounts = await window.ethereum.request({
-        method: 'eth_requestAccounts',
-      })
-      if (accounts.length > 0) {
-        this.setUserAddress(accounts[0])
-        this.init()
+      try {
+        let accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        })
+        if (accounts.length > 0) {
+          this.setUserAddress(accounts[0])
+          this.init()
+        }
+      } catch (e) {
+        console.log('error', e)
       }
     },
   },
@@ -75,9 +73,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  // background: red url('./assets/images/bg.png') no-repeat !important;
-  // background: url('./assets/images/bg.png') no-repeat;
-  // background-size: cover;
 }
 
 .loading {

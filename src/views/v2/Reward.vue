@@ -148,10 +148,6 @@ export default {
       return this.$store.state.rewardsList
     },
     promoteList() {
-      console.log(
-        'this.$store.state.pormoteList',
-        this.$store.state.promoteList,
-      )
       return this.$store.state.promoteList
     },
     text() {
@@ -159,8 +155,6 @@ export default {
     },
   },
   async mounted() {
-    console.log(location)
-    console.log(location.href + '?invite=' + this.userAddress)
     this.getRewardList()
   },
   methods: {

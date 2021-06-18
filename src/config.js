@@ -51,12 +51,13 @@ import { CFilAbi } from '@/plugin/CFil.js'
 import { SFilAbi } from '@/plugin/SFil.js'
 import { crossLendAbi } from '@/plugin/crossLend.js'
 
+import Web3 from 'web3'
 export const crossLend = new Contract({
   address: CROSSLEND_ADDRESS,
   abi: crossLendAbi,
 })
 
-export const utils = crossLend.web3.utils
+export const utils = new Web3().utils
 
 export const CRFIContract = new Contract({
   address: CRFI_ADDRESS,

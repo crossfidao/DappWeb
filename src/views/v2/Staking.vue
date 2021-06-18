@@ -237,12 +237,13 @@ export default {
 }
 .stake-btn {
   display: inline-block;
-  width: 127px;
+  // width: 127px;
   height: 36px;
   line-height: 36px;
   text-align: center;
   background: #6e4af7;
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  padding: 0 12px;
   opacity: 1;
   border-radius: 10px;
   font-size: 18px;

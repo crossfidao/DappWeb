@@ -401,7 +401,7 @@ export default new Vuex.Store({
           {
             filter: {
               receiver: [address],
-            }, // Using an array means OR: e.g. 20 or 23
+            },
             fromBlock: 0,
             toBlock: 'latest',
           },
@@ -471,6 +471,8 @@ export default new Vuex.Store({
       commit('setBurnCFilRateCRFI', burnCFilRateCRFI)
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
+
+      // console.log('sys', systemInfo)
       commit('setSystemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
@@ -655,7 +657,7 @@ export default new Vuex.Store({
         walletSFil,
       })
       let res = await crossLend.callContract('GetInvestInfo', [0, address])
-      console.log('user', res)
+      // console.log('user', res)
       commit('setUserInfo', res)
     },
     // 获取 SFil 总量
@@ -681,7 +683,6 @@ export default new Vuex.Store({
           '0x4': 5,
           '0x5': 6,
         }
-        console.log(!chainMap[chainId])
         if (!chainMap[chainId]) {
           Toast('没有该测试链，请确认后重新登录')
           reject()
@@ -759,7 +760,7 @@ export default new Vuex.Store({
                       },
                     } = response
                     commit('setFileAddr', FilAddr)
-                    console.log('succ', FilAddr)
+                    // console.log('succ', FilAddr)
                     localStorage.setItem(state.userAddress, FilAddr)
                     resolve()
                   })

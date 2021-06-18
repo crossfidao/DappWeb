@@ -198,7 +198,7 @@ export default {
   display: flex;
   align-items: center;
   height: 24px;
-  width: 109px;
+  // width: 109px;
   background: #232a38;
   margin-right: 16px;
   box-shadow: 0px 1px 1px #343c4a, inset 0px 3px 9px rgba(0, 0, 0, 0.1);

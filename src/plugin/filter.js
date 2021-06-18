@@ -11,7 +11,6 @@ Vue.filter('date', value => {
 })
 
 Vue.filter('decimals', (value, decimals = 5) => {
-  console.log(decimals)
   value = value || '0'
   // return value
   return parseFloat(utils.fromWei(utils.toBN(new BigNumber(value)))).toFixed(

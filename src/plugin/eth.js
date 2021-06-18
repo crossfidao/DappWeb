@@ -1,6 +1,7 @@
 import Web3 from 'web3'
 import { Toast } from 'vant'
 import i18n from '@/i18n/i18n'
+import detectEthereumProvider from '@metamask/detect-provider'
 
 import store from '@/store'
 // web3.eth.send({
@@ -24,21 +25,22 @@ export default class Contract {
   userAddress = ''
   contract = null
   constructor({ abi, address }) {
-    this.abi = abi
-    this.address = address
-    if (typeof window.web3 != undefined) {
-      this.web3 = new Web3(window.web3.currentProvider)
-      window.web3 = this.web3
+    detectEthereumProvider().then(res => {
+      this.abi = abi
+      this.address = address
+      if (typeof window.ethereum != 'undefined') {
+        this.web3 = new Web3(res)
 
-      window.ethereum.on('accountsChanged', account => {
-        this.userAddress = account[0]
-      })
-      window.ethereum.on('connect', () => {})
-    } else {
-      this.web3 = new Web3()
-    }
+        ethereum.on('accountsChanged', account => {
+          this.userAddress = account[0]
+        })
+        ethereum.on('connect', () => {})
+      } else {
+        this.web3 = new Web3()
+      }
 
-    this.init()
+      this.init()
+    })
   }
 
   async init() {
