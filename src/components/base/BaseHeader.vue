@@ -175,7 +175,7 @@ export default {
     },
     gotoSafe() {
       location.href =
-        'https://docs.crossfimain.com/english/security-audit-report'
+        'https://docs.crossfimain.com/english/project-introduction/code/audit'
     },
     gotoDoc() {
       location.href = 'https://docs.crossfimain.com/'
