@@ -352,15 +352,15 @@
             </div>
             <div class="item-wallet">
               <span>CFIL{{ $t('balance') }}:</span>
-              <span>{{ wallet.walletCFil | decimals }}</span>
+              <span>{{ item.CFIL | decimals }}</span>
             </div>
             <div class="item-wallet">
               <span>CRFI{{ $t('balance') }}:</span>
-              <span>{{ wallet.walletCRFI | decimals }}</span>
+              <span>{{ item.CRFI | decimals }}</span>
             </div>
             <div class="item-wallet">
               <span>SFIL{{ $t('balance') }}:</span>
-              <span>{{ wallet.walletSFil | decimals }}</span>
+              <span>{{ item.SFIL | decimals }}</span>
             </div>
             <div class="item-btn">
               <van-button
@@ -663,6 +663,7 @@ export default {
       'ChangeAffCFil',
       'ChangeCRFIMinerPerDay',
     ]),
+
     // 更改cfil邀请返利
     handleChangeEnableAffCFil() {
       this.ChangeAffCFil(this.EnableAffCFil)

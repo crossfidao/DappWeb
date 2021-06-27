@@ -567,18 +567,40 @@ export default new Vuex.Store({
     async getApplyStaking({ state, commit }) {
       let res = await SFilContract.callContract('GetNowStakingApply', [])
       let arr = []
-      res.forEach(e => {
-        let { Info, Addr, SID, validIdx } = e
+
+      for (let i = 0; i < res.length; i++) {
+        let address = res[i].Addr
+        console.log(address)
+        let CFIL = await CFilContract.callContract('balanceOf', [address])
+        let CRFI = await CRFIContract.callContract('balanceOf', [address])
+        let SFIL = await SFilContract.callContract('balanceOf', [address])
+        console.log('wallet', CFIL)
+        let { Info, Addr, SID, validIdx } = res[i]
         if (Info) {
           Info = JSON.parse(Info)
         }
         arr.push({
+          CFIL,
+          CRFI,
+          SFIL,
           SID,
           Info,
           Addr,
           validIdx,
         })
-      })
+      }
+      // res.forEach(e => {
+      //   let { Info, Addr, SID, validIdx } = e
+      //   if (Info) {
+      //     Info = JSON.parse(Info)
+      //   }
+      //   arr.push({
+      //     SID,
+      //     Info,
+      //     Addr,
+      //     validIdx,
+      //   })
+      // })
       commit('setApplyList', arr)
     },
     // 获取用户投资列表
