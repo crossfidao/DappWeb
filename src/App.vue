@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { CHAINID } from '@/config.js'
+import { CHAINID, CHAINIDBSC } from '@/config.js'
 import { mapActions, mapMutations } from 'vuex'
 import detectEthereumProvider from '@metamask/detect-provider'
 
@@ -20,13 +20,15 @@ export default {
   data() {
     return {
       message: '',
+      chainId: '',
     }
   },
   computed: {},
   async mounted() {
     const provider = await detectEthereumProvider()
     let chainId = await ethereum.request({ method: 'eth_chainId' })
-    if (chainId === CHAINID) {
+    this.chainId = chainId
+    if (chainId === CHAINID || chainId === CHAINIDBSC) {
       this.ethereum()
     } else {
       this.$toast(this.$t('networkErr'))
@@ -35,10 +37,10 @@ export default {
     }
     ethereum.on('accountsChanged', accounts => {
       this.setUserAddress(accounts[0])
-      this.init()
+      this.init(chainId)
     })
     ethereum.on('chainChanged', chainId => {
-      if (chainId === CHAINID) {
+      if (chainId === CHAINID || chainId === CHAINIDBSC) {
         this.ethereum()
       } else {
         this.$toast(this.$t('networkErr'))
@@ -56,7 +58,7 @@ export default {
         })
         if (accounts.length > 0) {
           this.setUserAddress(accounts[0])
-          this.init()
+          this.init(this.chainId)
         }
       } catch (e) {
         console.log('error', e)

@@ -9,7 +9,22 @@
  * Kovan 0x2a
  * Rinkeby 0x4
  * Goerli 0x5
+ * bsc主网 0x38
+ * bsc test 0x61
  */
+// BSC主网
+export const CHAINIDBSC = '0x61'
+// 合约地址 官方测试链
+export const CROSSLEND_ADDRESSBSC = '0x1A0dD4C57e9af18FF52Cd28ef66d5ecBDFDd5433'
+
+export const CRFI_ADDRESSBSC = '0x099AC96D0602E5fa3BF4F91Bc254D145c2ef7A64'
+
+export const CFIL_ADDRESSBSC = '0x546c524068217e8f2b0C8C019736a1abb90A7159'
+
+export const SFIL_ADDRESSBSC = '0x6F8EE8F6AA4B7cE01A3C2E1e21C4887A2c0b07fD'
+
+export const API_HOSTBSC = 'http://104.219.250.197:17001'
+
 // 主网
 export const CHAINID = '0x1'
 // 合约地址 官方测试链
@@ -71,5 +86,25 @@ export const CFilContract = new Contract({
 
 export const SFilContract = new Contract({
   address: SFIL_ADDRESS,
+  abi: SFilAbi,
+})
+
+export const crossLendBSC = new Contract({
+  address: CROSSLEND_ADDRESSBSC,
+  abi: crossLendAbi,
+})
+
+export const CRFIContractBSC = new Contract({
+  address: CRFI_ADDRESSBSC,
+  abi: CRFIAbi,
+})
+
+export const CFilContractBSC = new Contract({
+  address: CFIL_ADDRESSBSC,
+  abi: CFilAbi,
+})
+
+export const SFilContractBSC = new Contract({
+  address: SFIL_ADDRESSBSC,
   abi: SFilAbi,
 })

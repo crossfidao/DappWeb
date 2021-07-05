@@ -7,15 +7,32 @@ var sigUtil = require('eth-sig-util')
 var ethUtil = require('ethereumjs-util')
 
 import {
-  CROSSLEND_ADDRESS,
-  CFIL_ADDRESS,
-  crossLend,
   utils,
-  API_HOST,
-  CRFIContract,
-  CFilContract,
-  SFilContract,
+  CROSSLEND_ADDRESS as ETH1,
+  CFIL_ADDRESS as ETH2,
+  crossLend as ETH3,
+  API_HOST as ETH4,
+  CRFIContract as ETH5,
+  CFilContract as ETH6,
+  SFilContract as ETH7,
+  CROSSLEND_ADDRESSBSC as BSC1,
+  CFIL_ADDRESSBSC as BSC2,
+  crossLendBSC as BSC3,
+  API_HOSTBSC as BSC4,
+  CRFIContractBSC as BSC5,
+  CFilContractBSC as BSC6,
+  SFilContractBSC as BSC7,
+  CHAINID,
+  CHAINIDBSC,
 } from '@/config'
+
+let CROSSLEND_ADDRESS = null
+let CFIL_ADDRESS = null
+let crossLend = null
+let API_HOST = null
+let CRFIContract = null
+let CFilContract = null
+let SFilContract = null
 
 import { Toast } from 'vant'
 
@@ -454,7 +471,24 @@ export default new Vuex.Store({
     },
 
     // 初始化
-    async init({ state, commit, dispatch }) {
+    async init({ state, commit, dispatch }, chainId) {
+      if (chainId === CHAINID) {
+        CROSSLEND_ADDRESS = ETH1
+        CFIL_ADDRESS = ETH2
+        crossLend = ETH3
+        API_HOST = ETH4
+        CRFIContract = ETH5
+        CFilContract = ETH6
+        SFilContract = ETH7
+      } else if (chainId === CHAINIDBSC) {
+        CROSSLEND_ADDRESS = BSC1
+        CFIL_ADDRESS = BSC2
+        crossLend = BSC3
+        API_HOST = BSC4
+        CRFIContract = BSC5
+        CFilContract = BSC6
+        SFilContract = BSC7
+      }
       let address = state.userAddress
 
       let cfilPrice = await crossLend.callContract('GetMap', ['cfilPrice'])
@@ -707,6 +741,8 @@ export default new Vuex.Store({
           '0x3': 3,
           '0x4': 5,
           '0x5': 6,
+          '0x38': 56,
+          '0x61': 97,
         }
         if (!chainMap[chainId]) {
           Toast('没有该测试链，请确认后重新登录')
