@@ -48,8 +48,11 @@ export default {
     })
     ethereum.on('chainChanged', chainId => {
       if (chainId === CHAINID || chainId === CHAINIDBSC) {
-        location.reload();
-        // this.ethereum()
+        // location.reload();
+        this.chainId = chainId
+        this.setChainId(chainId)
+        this.getOther()
+        this.ethereum()
       } else {
         this.$toast(this.$t('networkErr'))
       }
