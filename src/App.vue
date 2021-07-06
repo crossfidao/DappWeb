@@ -33,6 +33,7 @@ export default {
     const provider = await detectEthereumProvider()
     let chainId = await ethereum.request({ method: 'eth_chainId' })
     this.chainId = chainId
+    this.setChainId(chainId)
     this.getOther()
     if (chainId === CHAINID || chainId === CHAINIDBSC) {
       this.ethereum()
@@ -55,7 +56,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUserAddress', 'setOtherSystemInfo']),
+    ...mapMutations(['setUserAddress', 'setOtherSystemInfo', 'setChainId']),
     ...mapActions(['init']),
     async ethereum() {
       try {

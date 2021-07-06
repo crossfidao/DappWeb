@@ -40,6 +40,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    chainId: '',
     showLoading: false,
     isHome: false,
     userAddress: '',
@@ -198,6 +199,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setChainId(state, value) {
+      state.chainId = value
+    },
     setHome(state, value) {
       state.isHome = value
     },

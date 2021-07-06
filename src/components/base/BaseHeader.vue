@@ -9,7 +9,7 @@
       <!-- <span v-show="showLoading">pending</span> -->
       <div class="right">
         <div class="address">
-          <span class="address-icon"></span>
+          <span :class="`address-icon ${iconClass}`"></span>
           <span class="address-text" v-if="!showLoading">{{ address }}</span>
           <span class="address-pending" v-else>
             <i style="margin-right: 4px">pending</i>
@@ -93,6 +93,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import { CHAINIDBSC, CHAINID } from '@/config'
 export default {
   name: 'BaseHeader',
   props: {
@@ -134,6 +135,15 @@ export default {
     }
   },
   computed: {
+    iconClass() {
+      if(this.$store.state.chainId == CHAINID){
+        return 'eth'
+      } else if (this.$store.state.chainId == CHAINIDBSC){
+        return 'bsc'
+      } else{
+        return ''
+      }
+    },
     showLoading() {
       return this.$store.state.showLoading
     },
@@ -207,9 +217,19 @@ export default {
   &-icon {
     width: 18px;
     height: 18px;
-    background: url(../../assets/icon/Group.png) no-repeat;
+    background-image: url(../../assets/icon/Group.png);
+    background-repeat: no-repeat;
     background-size: cover;
     margin-right: 5px;
+    &.eth{
+      background-image: url(../../assets/icon/icon_eth.png);
+      background-color: #fff;
+      border-radius: 50%;
+    }
+    &.bsc{
+      background-image: url(../../assets/icon/icon_bsc.svg);
+      border-radius: 50%;
+    }
   }
   &-pending {
     display: flex;
