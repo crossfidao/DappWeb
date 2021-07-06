@@ -118,7 +118,6 @@ export const getETHSystemInfo = async () => {
   var crossFiAddress = CROSSLEND_ADDRESS;
   const crossFi = new web3js.eth.Contract(crossLendAbi, crossFiAddress)
   const result = await crossFi.methods.GetSystemInfo().call()
-  console.log(result, '=-=-eth=-=')
   return result
 }
 
@@ -131,6 +130,5 @@ export const getBSCSystemInfo = async () => {
   var crossFiAddress = CROSSLEND_ADDRESSBSC;
   const crossFi = new web3js.eth.Contract(crossLendAbi, crossFiAddress)
   const result = await crossFi.methods.GetSystemInfo().call()
-  console.log(result, '=-=-=bsc-=')
   return result
 }

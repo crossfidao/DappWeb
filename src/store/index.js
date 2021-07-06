@@ -205,7 +205,6 @@ export default new Vuex.Store({
       state.showLoading = value
     },
     setSystemInfo(state, data) {
-      if(!data) return
       state.systemInfo = data
     },
     setOtherSystemInfo(state, data) {

@@ -56,7 +56,9 @@ export default class Contract {
       let res = await this.contract.methods[methods](...args).call()
       return res
     } catch (e) {
-      // console.log('error', e.message)
+      console.log('合约方法methods', methods)
+      console.log('合约方法参数', args)
+      console.log('报错信息', e.message)
       Toast(e.message)
     }
   }
