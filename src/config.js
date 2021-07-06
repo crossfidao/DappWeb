@@ -108,3 +108,29 @@ export const SFilContractBSC = new Contract({
   address: SFIL_ADDRESSBSC,
   abi: SFilAbi,
 })
+
+export const getETHSystemInfo = async () => {
+  const web3js = new Web3(
+    new Web3.providers.WebsocketProvider(
+      'wss://mainnet.infura.io/ws/v3/2ed19462695646eca0cf22b11b2988f3',
+    ),
+  )
+  var crossFiAddress = CROSSLEND_ADDRESS;
+  const crossFi = new web3js.eth.Contract(crossLendAbi, crossFiAddress)
+  const result = await crossFi.methods.GetSystemInfo().call()
+  console.log(result, '=-=-eth=-=')
+  return result
+}
+
+export const getBSCSystemInfo = async () => {
+  const web3js = new Web3(
+    new Web3.providers.HttpProvider(
+      'https://data-seed-prebsc-1-s1.binance.org:8545',
+    ),
+  )
+  var crossFiAddress = CROSSLEND_ADDRESSBSC;
+  const crossFi = new web3js.eth.Contract(crossLendAbi, crossFiAddress)
+  const result = await crossFi.methods.GetSystemInfo().call()
+  console.log(result, '=-=-=bsc-=')
+  return result
+}

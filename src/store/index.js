@@ -51,6 +51,13 @@ export default new Vuex.Store({
       crfiInterestPool: '',
       cfilInterestPool: '0',
     },
+    otherSystemInfo: {
+      affRate: '0',
+      nowInvestCRFI: '',
+      cfilLendingTotal: '0',
+      crfiInterestPool: '',
+      cfilInterestPool: '0',
+    },
     balance: {
       CRFI: '0',
       cfil: '0',
@@ -198,7 +205,11 @@ export default new Vuex.Store({
       state.showLoading = value
     },
     setSystemInfo(state, data) {
+      if(!data) return
       state.systemInfo = data
+    },
+    setOtherSystemInfo(state, data) {
+      state.otherSystemInfo = data
     },
     setUserAddress(state, value) {
       state.userAddress = value

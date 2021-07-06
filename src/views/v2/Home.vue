@@ -26,13 +26,13 @@
       <div class="item bg" style="background: #2b67c1">
         <p class="item-text" v-html="$t('fileCoinDepositTotal')"></p>
         <p class="item-text item-bottom">
-          {{ systemInfo.nowInvestCFil | decimals }}
+          {{ (Number(systemInfo.nowInvestCFil) + Number(otherSystemInfo.nowInvestCFil)) | decimals }}
         </p>
       </div>
       <div class="item color" style="background: #2b67c1">
         <p class="item-text" v-html="$t('lendingTotal')"></p>
         <p class="item-text item-bottom">
-          {{ systemInfo.cfilLendingTotal | decimals }}
+          {{ (Number(systemInfo.cfilLendingTotal) + Number(otherSystemInfo.cfilLendingTotal)) | decimals }}
         </p>
       </div>
     </div>
@@ -45,13 +45,13 @@
           {{ $t('crfiDepositTotal') }}
         </p>
         <p class="item-text item-bottom">
-          {{ systemInfo.nowInvestCRFI | decimals }}
+          {{ (Number(systemInfo.nowInvestCRFI) + Number(otherSystemInfo.nowInvestCRFI)) | decimals }}
         </p>
       </div>
       <div class="item">
         <p class="item-text" v-html="$t('referra')">{{ $t('referra') }}</p>
         <p class="item-text item-bottom">
-          {{ systemInfo.crfiRewardTotal | decimals }}
+          {{ (Number(systemInfo.crfiRewardTotal) + Number(otherSystemInfo.crfiRewardTotal)) | decimals }}
         </p>
       </div>
     </div>
@@ -71,9 +71,14 @@ export default {
     systemInfo() {
       return this.$store.state.systemInfo
     },
-
+    otherSystemInfo() {
+      return this.$store.state.otherSystemInfo
+    },
     rate() {
-      let { cfilLendingTotal, nowInvestCFil } = this.systemInfo
+      let { cfilLendingTotal: a1, nowInvestCFil: a2 } = this.systemInfo
+      let { cfilLendingTotal: b1, nowInvestCFil: b2 } = this.otherSystemInfo
+      const cfilLendingTotal = Number(a1) + Number(b1)
+      const nowInvestCFil = Number(a2) + Number(b2)
       let rate = new BigNumber(cfilLendingTotal).div(
         new BigNumber(nowInvestCFil),
       )

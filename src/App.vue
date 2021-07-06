@@ -10,7 +10,12 @@
 </template>
 
 <script>
-import { CHAINID, CHAINIDBSC } from '@/config.js'
+import {
+  CHAINID,
+  CHAINIDBSC,
+  getETHSystemInfo,
+  getBSCSystemInfo,
+} from '@/config.js'
 import { mapActions, mapMutations } from 'vuex'
 import detectEthereumProvider from '@metamask/detect-provider'
 
@@ -28,6 +33,7 @@ export default {
     const provider = await detectEthereumProvider()
     let chainId = await ethereum.request({ method: 'eth_chainId' })
     this.chainId = chainId
+    this.getOther()
     if (chainId === CHAINID || chainId === CHAINIDBSC) {
       this.ethereum()
     } else {
@@ -49,7 +55,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setUserAddress']),
+    ...mapMutations(['setUserAddress', 'setOtherSystemInfo']),
     ...mapActions(['init']),
     async ethereum() {
       try {
@@ -62,6 +68,13 @@ export default {
         }
       } catch (e) {
         console.log('error', e)
+      }
+    },
+    async getOther() {
+      if (this.chainId === CHAINID){
+        this.setOtherSystemInfo(await getBSCSystemInfo())
+      }else if (this.chainId === CHAINIDBSC){
+        this.setOtherSystemInfo(await getETHSystemInfo())
       }
     },
   },
