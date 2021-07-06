@@ -77,8 +77,8 @@ export default {
     rate() {
       let { cfilLendingTotal: a1, nowInvestCFil: a2 } = this.systemInfo
       let { cfilLendingTotal: b1, nowInvestCFil: b2 } = this.otherSystemInfo
-      const cfilLendingTotal = Number(a1) + Number(b1)
-      const nowInvestCFil = Number(a2) + Number(b2)
+      const cfilLendingTotal = Number(a1 || 0) + Number(b1 || 0)
+      const nowInvestCFil = Number(a2 || 0) + Number(b2 || 0)
       let rate = new BigNumber(cfilLendingTotal).div(
         new BigNumber(nowInvestCFil),
       )

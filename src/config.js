@@ -23,7 +23,7 @@ export const CFIL_ADDRESSBSC = '0x546c524068217e8f2b0C8C019736a1abb90A7159'
 
 export const SFIL_ADDRESSBSC = '0x6F8EE8F6AA4B7cE01A3C2E1e21C4887A2c0b07fD'
 
-export const API_HOSTBSC = 'http://104.219.250.197:17001'
+export const API_HOSTBSC = 'https://test.bscbacked.crossfimain.com'
 
 // 主网
 export const CHAINID = '0x1'
@@ -125,6 +125,7 @@ export const getBSCSystemInfo = async () => {
   const web3js = new Web3(
     new Web3.providers.HttpProvider(
       'https://data-seed-prebsc-1-s1.binance.org:8545',
+      // https://bsc-dataseed.binance.org/
     ),
   )
   var crossFiAddress = CROSSLEND_ADDRESSBSC;
