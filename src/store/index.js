@@ -577,7 +577,7 @@ export default new Vuex.Store({
       commit('setCFilList', CFilList)
       dispatch('getUserWallet')
       dispatch('getInvestList')
-      let fileCoin = localStorage.getItem(state.userAddress)
+      let fileCoin = localStorage.getItem(`${chainId}${state.userAddress}`)
       commit('setFileAddr', fileCoin)
     },
     async applyStaking({ state, commit }, data) {
@@ -837,7 +837,10 @@ export default new Vuex.Store({
                     } = response
                     if (code === 0) {
                       commit('setFileAddr', FilAddr)
-                      localStorage.setItem(state.userAddress, FilAddr)
+                      localStorage.setItem(
+                        `${chainId}${state.userAddress}`,
+                        FilAddr,
+                      )
                       resolve()
                     } else {
                       reject()
