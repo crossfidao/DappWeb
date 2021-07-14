@@ -313,7 +313,12 @@ export default {
   text-align: center;
   margin-top: 10px;
   padding: 9px;
+  .qrcode {
+    width: 100%;
+  }
   /deep/ .qrcode img {
+    width: 100%;
+    height: 100%;
     // display: inline-block;
     // margin: 0 auto !important;
   }

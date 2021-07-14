@@ -13,17 +13,17 @@
  * bsc test 0x61
  */
 // BSC主网
-export const CHAINIDBSC = '0x61'
+export const CHAINIDBSC = '0x38'
 // 合约地址 官方测试链
-export const CROSSLEND_ADDRESSBSC = '0x1A0dD4C57e9af18FF52Cd28ef66d5ecBDFDd5433'
+export const CROSSLEND_ADDRESSBSC = '0x4De8E1a97acb3c71A959E947c27796EC83469f7d'
 
-export const CRFI_ADDRESSBSC = '0x099AC96D0602E5fa3BF4F91Bc254D145c2ef7A64'
+export const CRFI_ADDRESSBSC = '0xae20bc46300bab5d85612c6bc6ea87ea0f186035'
 
-export const CFIL_ADDRESSBSC = '0x546c524068217e8f2b0C8C019736a1abb90A7159'
+export const CFIL_ADDRESSBSC = '0x4eab1d37213B08C224E4C9C28efbA23DC493dFD2'
 
-export const SFIL_ADDRESSBSC = '0x6F8EE8F6AA4B7cE01A3C2E1e21C4887A2c0b07fD'
+export const SFIL_ADDRESSBSC = '0x86ef562a68e1EB7E3CEC2DE9b7a752A231Bf3CFF'
 
-export const API_HOSTBSC = 'https://test.bscbacked.crossfimain.com'
+export const API_HOSTBSC = 'https://bsc.prod.crossfimain.com'
 
 // 主网
 export const CHAINID = '0x1'
