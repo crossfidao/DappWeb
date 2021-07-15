@@ -175,6 +175,10 @@ export default {
     },
     // 回购
     async handleRepurchase() {
+      if (!/^(f1|f3).{1,}/.test(this.fileCoin)) {
+        this.$toast(this.$t('addressError'))
+        return
+      }
       try {
         await this.Repurchase({
           value: this.value,

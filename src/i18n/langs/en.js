@@ -96,6 +96,7 @@ const cn = {
   copySucc: 'Copy successfully',
   swapPlaceholder: 'Please input the amount',
   addressPlaceholder: 'Please input your filecoin address',
+  addressError: 'Address input error',
   cfilSwap: 'cFIL SWAP',
   exchangeDescription: 'Exchange Description',
   exchangeDescriptiontext1: 'The minimum exchange quantity is 5.',

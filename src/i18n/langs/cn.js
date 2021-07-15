@@ -99,6 +99,7 @@ const cn = {
   copySucc: '复制成功',
   swapPlaceholder: '请输入个数.',
   addressPlaceholder: '请输入收款账户',
+  addressError: '地址输入错误',
   cfilSwap: 'cFIL 兑换',
   exchangeDescription: '兑换说明',
   exchangeDescriptiontext1: '最小兑换数量：5个',

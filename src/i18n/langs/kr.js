@@ -97,6 +97,7 @@ const kr = {
   copySucc: '성공적으로 복사하였습니다.',
   swapPlaceholder: '개수를 입력해 주십시오.',
   addressPlaceholder: '파일코인 주소를 입력해 주십시오.',
+  addressError: '주소 입력 오류',
   cfilSwap: 'cFIL 스왑',
 
   exchangeDescription: '교환 설명',
