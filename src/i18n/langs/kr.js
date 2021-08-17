@@ -84,6 +84,8 @@ const kr = {
   cFILRepay: 'cFIL 상환',
   myLoan: '나의 대출',
   walletBalance: '지갑 잔고',
+  trusteeship: '저당파워',
+  sellWholesale: 'sfil발행량',
 
   // rewards
   referralRewards: '추천',

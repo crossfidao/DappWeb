@@ -99,6 +99,7 @@ export default new Vuex.Store({
     },
     rewardsList: [],
     promoteList: [],
+    stakingList: [],
     loanInvest: {
       Lending: '0',
       Pledge: '0',
@@ -296,6 +297,9 @@ export default new Vuex.Store({
     setPromoteList(state, data) {
       state.promoteList = data
     },
+    setStakingList(state, data) {
+      state.stakingList = data
+    },
     setLoanInvest(state, data) {
       state.loanInvest = data
     },
@@ -482,6 +486,46 @@ export default new Vuex.Store({
           })
           commit('setPromoteList', arr)
         })
+    },
+    // 获取借贷节点列表
+    async getStakingList({ state, commit }) {
+      let address = state.userAddress
+      const applyEvent = await SFilContract.contract.getPastEvents(
+        'ApplyStakingEvent', // 申请
+        {
+          filter: {
+            receiver: [address],
+          },
+          fromBlock: 12645616,
+          toBlock: 'latest',
+        },
+        function() {},
+      )
+      const stakingEvent = await SFilContract.contract.getPastEvents(
+        'IssueStakingEvent', // 实际
+        {
+          filter: {
+            receiver: [address],
+          },
+          fromBlock: 12645616,
+          toBlock: 'latest',
+        },
+        function() {},
+      )
+      let obj = {}
+      applyEvent.map(item => {
+        if (item.returnValues.info) {
+          obj[item.returnValues.sid] = JSON.parse(item.returnValues.info)
+        }
+      })
+      const list = stakingEvent.map(item => {
+        return {
+          sid: item.returnValues.sid,
+          sfilNum: item.returnValues.sfilNum,
+          detail: obj[item.returnValues.sid],
+        }
+      })
+      commit('setStakingList', list)
     },
 
     // 初始化
