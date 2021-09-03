@@ -24,6 +24,7 @@ import {
   SFilContractBSC as BSC7,
   CHAINID,
   CHAINIDBSC,
+  getETHStakingInfo,
 } from '@/config'
 
 let CROSSLEND_ADDRESS = null
@@ -490,42 +491,9 @@ export default new Vuex.Store({
     // 获取借贷节点列表
     async getStakingList({ state, commit }) {
       let address = state.userAddress
-      const applyEvent = await SFilContract.contract.getPastEvents(
-        'ApplyStakingEvent', // 申请
-        {
-          filter: {
-            receiver: [address],
-          },
-          fromBlock: 12645616,
-          toBlock: 'latest',
-        },
-        function() {},
-      )
-      const stakingEvent = await SFilContract.contract.getPastEvents(
-        'IssueStakingEvent', // 实际
-        {
-          filter: {
-            receiver: [address],
-          },
-          fromBlock: 12645616,
-          toBlock: 'latest',
-        },
-        function() {},
-      )
-      let obj = {}
-      applyEvent.map(item => {
-        if (item.returnValues.info) {
-          obj[item.returnValues.sid] = JSON.parse(item.returnValues.info)
-        }
-      })
-      const list = stakingEvent.map(item => {
-        return {
-          sid: item.returnValues.sid,
-          sfilNum: item.returnValues.sfilNum,
-          detail: obj[item.returnValues.sid],
-        }
-      })
-      commit('setStakingList', list)
+      const list1 = await getETHStakingInfo(address, 'ETH')
+      const list2 = await getETHStakingInfo(address, 'BSC')
+      commit('setStakingList', [...list1, ...list2])
     },
 
     // 初始化
