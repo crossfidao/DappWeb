@@ -275,7 +275,7 @@
         </div>
       </div>
       <div class="discription">
-        <div @click="openUrl('https://docs.crossfimain.com')">{{$t('exAskTitle')}}</div>
+        <div @click="openUrl('https://docs.crossfimain.com/english/operating-instructions/binance-smart-chain/cso-crossfi-swap-opportunity')">{{$t('exAskTitle')}}</div>
         <div class="ask">{{$t('exAsk1')}}</div>
         <div class="answer">{{$t('exAnswer1')}}</div>
         <div class="ask">{{$t('exAsk2')}}</div>
