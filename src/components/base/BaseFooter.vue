@@ -18,6 +18,7 @@
 
 <script>
 import { mapActions, mapMutations } from 'vuex'
+import { CHAINIDBSC } from '@/config'
 export default {
   name: 'BaseFooter',
   props: {
@@ -29,33 +30,6 @@ export default {
   data() {
     return {
       isBg: false,
-      tabs: [
-        {
-          path: '/',
-          name: 'dashboard',
-          icon: 'dashboard',
-        },
-        {
-          name: 'cFILInvest',
-          path: '/CFIL',
-          icon: 'cFIL',
-        },
-        {
-          name: 'CRFIInvest',
-          path: '/CRFI',
-          icon: 'CRFI',
-        },
-        {
-          name: 'exchange',
-          icon: 'exchange',
-          path: '/exchange',
-        },
-        {
-          name: 'wallet',
-          icon: 'wallet',
-          path: '/wallet',
-        }
-      ],
     }
   },
   watch: {
@@ -68,7 +42,62 @@ export default {
       }
     },
   },
-  computed: {},
+  computed: {
+    tabs() {
+      if (this.$store.state.chainId == CHAINIDBSC) {
+        return [
+          {
+            path: '/',
+            name: 'dashboard',
+            icon: 'dashboard',
+          },
+          {
+            name: 'cFILInvest',
+            path: '/CFIL',
+            icon: 'cFIL',
+          },
+          {
+            name: 'CRFIInvest',
+            path: '/CRFI',
+            icon: 'CRFI',
+          },
+          {
+            name: 'exchange',
+            icon: 'exchange',
+            path: '/exchange',
+          },
+          {
+            name: 'wallet',
+            icon: 'wallet',
+            path: '/wallet',
+          },
+        ]
+      } else {
+        return [
+          {
+            path: '/',
+            name: 'dashboard',
+            icon: 'dashboard',
+          },
+          {
+            name: 'cFILInvest',
+            path: '/CFIL',
+            icon: 'cFIL',
+          },
+          {
+            name: 'CRFIInvest',
+            path: '/CRFI',
+            icon: 'CRFI',
+          },
+          {
+            name: 'wallet',
+            icon: 'wallet',
+            path: '/wallet',
+          },
+        ]
+      }
+    },
+  },
   methods: {
     ...mapMutations(['setUserAddress']),
     ...mapActions(['initData']),
