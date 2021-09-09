@@ -128,8 +128,8 @@ export const EXContractBSC = new Contract({
 
 export const getETHSystemInfo = async () => {
   const web3js = new Web3(
-    new Web3.providers.WebsocketProvider(
-      'wss://mainnet.infura.io/ws/v3/2ed19462695646eca0cf22b11b2988f3',
+    new Web3.providers.HttpProvider(
+      'https://mainnet.infura.io/v3/ac295ebab93d4349b15ab8a63016c771',
     ),
   )
   var crossFiAddress = CROSSLEND_ADDRESS;
@@ -149,4 +149,54 @@ export const getBSCSystemInfo = async () => {
   const crossFi = new web3js.eth.Contract(crossLendAbi, crossFiAddress)
   const result = await crossFi.methods.GetSystemInfo().call()
   return result
+}
+
+export const getETHStakingInfo = async (address, type = 'ETH') => {
+  // 由于手机上部分节点调用合约超时，故写死获取质押节点的路径
+  const nodeUrl =
+    type == 'ETH'
+      ? 'https://mainnet.infura.io/v3/ac295ebab93d4349b15ab8a63016c771'
+      : 'https://bsc-dataseed.binance.org'
+  const web3js = new Web3(new Web3.providers.HttpProvider(nodeUrl))
+  var sFilAddress = type == 'ETH' ? SFIL_ADDRESS : SFIL_ADDRESSBSC;
+  const Sfil = new web3js.eth.Contract(SFilAbi, sFilAddress)
+  const applyEvent = await Sfil.getPastEvents(
+    'ApplyStakingEvent', // 申请
+    {
+      filter: {
+        receiver: [address],
+      },
+      fromBlock: 12645616,
+      toBlock: 'latest',
+    },
+    function() {},
+  )
+  const stakingEvent = await Sfil.getPastEvents(
+    'IssueStakingEvent', // 实际
+    {
+      filter: {
+        receiver: [address],
+      },
+      fromBlock: 12645616,
+      toBlock: 'latest',
+    },
+    function() {},
+  )
+  let obj = {}
+
+  applyEvent.map(item => {
+    if (item.returnValues.info) {
+      obj[item.returnValues.sid] = JSON.parse(item.returnValues.info)
+    }
+  })
+  const list = stakingEvent
+    .filter(i => Boolean(obj[i.returnValues.sid]))
+    .map(item => {
+      return {
+        sid: item.returnValues.sid,
+        sfilNum: item.returnValues.sfilNum,
+        detail: obj[item.returnValues.sid],
+      }
+    })
+  return list
 }

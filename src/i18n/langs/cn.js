@@ -80,6 +80,9 @@ const cn = {
   cFILRepay: 'cFIL 归还',
   myLoan: '我的借出',
   walletBalance: '钱包余额',
+  trusteeship: '算力质押',
+  sellWholesale: 'sfil发行量',
+
   // rewards
   referralRewards: '邀请',
   claim: '复制邀请链接',

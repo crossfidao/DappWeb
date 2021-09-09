@@ -23,6 +23,7 @@ import {
   SFilContract as ETH7,
   SFilContractBSC as BSC7,
   utils,
+  getETHStakingInfo,
 } from '@/config'
 import { Toast } from 'vant'
 
@@ -97,6 +98,7 @@ export default new Vuex.Store({
     },
     rewardsList: [],
     promoteList: [],
+    stakingList: [],
     loanInvest: {
       Lending: '0',
       Pledge: '0',
@@ -297,6 +299,9 @@ export default new Vuex.Store({
     setPromoteList(state, data) {
       state.promoteList = data
     },
+    setStakingList(state, data) {
+      state.stakingList = data
+    },
     setLoanInvest(state, data) {
       state.loanInvest = data
     },
@@ -495,6 +500,14 @@ export default new Vuex.Store({
           commit('setPromoteList', arr)
         })
     },
+    // 获取借贷节点列表
+    async getStakingList({ state, commit }) {
+      let address = state.userAddress
+      const list1 = await getETHStakingInfo(address, 'ETH')
+      const list2 = await getETHStakingInfo(address, 'BSC')
+      commit('setStakingList', [...list1, ...list2])
+    },
+
     // 初始化
     async init({ state, commit, dispatch }, chainId) {
       if (chainId === CHAINID) {

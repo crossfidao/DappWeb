@@ -85,7 +85,9 @@ const cn = {
   cFILRepay: 'cFIL Repay',
   myLoan: 'My Loan',
   walletBalance: 'wallet Balance',
-  
+  trusteeship: 'Trusteeship list',
+  sellWholesale: 'sell wholesale sFIL',
+
   // rewards
   referralRewards: 'Invite',
   claim: 'Copy invite link',
