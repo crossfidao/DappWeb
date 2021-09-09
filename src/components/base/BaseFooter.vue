@@ -46,10 +46,15 @@ export default {
           icon: 'CRFI',
         },
         {
+          name: 'exchange',
+          icon: 'exchange',
+          path: '/exchange',
+        },
+        {
           name: 'wallet',
           icon: 'wallet',
           path: '/wallet',
-        },
+        }
       ],
     }
   },
@@ -126,6 +131,9 @@ export default {
     .wallet {
       background-image: url('../../assets/icon/wallet.png');
     }
+    .exchange {
+      background-image: url('../../assets/icon/exchange.png');
+    }
   }
 }
 
@@ -151,6 +159,9 @@ export default {
 
   .wallet {
     background-image: url('../../assets/icon/wallet-active.png') !important;
+  }
+  .exchange {
+    background-image: url('../../assets/icon/exchange-active.png') !important;
   }
 }
 .bg {

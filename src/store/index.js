@@ -3,30 +3,31 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '@/i18n/i18n'
 import BigNumber from 'bignumber.js'
-var sigUtil = require('eth-sig-util')
-var ethUtil = require('ethereumjs-util')
-
 import {
-  utils,
-  CROSSLEND_ADDRESS as ETH1,
-  CFIL_ADDRESS as ETH2,
-  crossLend as ETH3,
   API_HOST as ETH4,
-  CRFIContract as ETH5,
-  CFilContract as ETH6,
-  SFilContract as ETH7,
-  CROSSLEND_ADDRESSBSC as BSC1,
-  CFIL_ADDRESSBSC as BSC2,
-  crossLendBSC as BSC3,
   API_HOSTBSC as BSC4,
-  CRFIContractBSC as BSC5,
+  CFIL_ADDRESS as ETH2,
+  CFIL_ADDRESSBSC as BSC2,
+  CFilContract as ETH6,
   CFilContractBSC as BSC6,
-  SFilContractBSC as BSC7,
   CHAINID,
   CHAINIDBSC,
-  getETHStakingInfo,
+  CRFIContract as ETH5,
+  CRFIContractBSC as BSC5,
+  crossLend as ETH3,
+  CROSSLEND_ADDRESS as ETH1,
+  CROSSLEND_ADDRESSBSC as BSC1,
+  crossLendBSC as BSC3,
+  EXContract as ETH8,
+  EXContractBSC as BSC8,
+  SFilContract as ETH7,
+  SFilContractBSC as BSC7,
+  utils,
 } from '@/config'
+import { Toast } from 'vant'
 
+var sigUtil = require('eth-sig-util')
+var ethUtil = require('ethereumjs-util')
 let CROSSLEND_ADDRESS = null
 let CFIL_ADDRESS = null
 let crossLend = null
@@ -34,11 +35,8 @@ let API_HOST = null
 let CRFIContract = null
 let CFilContract = null
 let SFilContract = null
-
-import { Toast } from 'vant'
-
+let EXContract = null
 Vue.use(Vuex)
-
 export default new Vuex.Store({
   state: {
     chainId: '',
@@ -84,7 +82,6 @@ export default new Vuex.Store({
     demandEFil: [],
     crfiList: [],
     eFilList: [],
-
     CRFIList: [],
     CFilList: [],
     wallet: {
@@ -100,7 +97,6 @@ export default new Vuex.Store({
     },
     rewardsList: [],
     promoteList: [],
-    stakingList: [],
     loanInvest: {
       Lending: '0',
       Pledge: '0',
@@ -108,13 +104,17 @@ export default new Vuex.Store({
     },
     burnCFilFee: '',
     burnCFilRateCRFI: '',
+    exchange: {
+      limit: '',
+      noLimit: '',
+    },
+    exchangeEnd: 0,
+    exchangeStart: 0,
   },
   getters: {
     pledgeRate: state => {
       let { Lending, Pledge } = state.loanInvest
-
       let rate = new BigNumber(Lending).div(new BigNumber(Pledge))
-
       if (Pledge == 0) {
         return 0
       }
@@ -164,7 +164,6 @@ export default new Vuex.Store({
     },
     cfilTotal: state => {
       let number = 0
-
       state.userList.forEach(e => {
         let { Amount, Type, EFilInterestRate, FDInterestRate } = e
         if (Type == 1) {
@@ -222,7 +221,8 @@ export default new Vuex.Store({
     setFileAddr(state, value) {
       state.FilAddr = value
     },
-    setCorsslend(state, data) {},
+    setCorsslend(state, data) {
+    },
     setUserInfo(state, data) {
       state.userInfo = data
     },
@@ -244,7 +244,6 @@ export default new Vuex.Store({
     setUserDemandList(state, data) {
       state.userDemandList = data
     },
-
     // 新增
     setCRFIList(state, data) {
       state.CRFIList = data
@@ -298,9 +297,6 @@ export default new Vuex.Store({
     setPromoteList(state, data) {
       state.promoteList = data
     },
-    setStakingList(state, data) {
-      state.stakingList = data
-    },
     setLoanInvest(state, data) {
       state.loanInvest = data
     },
@@ -313,6 +309,18 @@ export default new Vuex.Store({
     },
     setBurnCFilRateCRFI(state, value) {
       state.burnCFilRateCRFI = value
+    },
+    setExchangeLimit(state, data) {
+      state.exchange.limit = data
+    },
+    setExchangeNoLimit(state, data) {
+      state.exchange.noLimit = data
+    },
+    setExchangeEnd(state, data) {
+      state.exchangeEnd = data
+    },
+    setExchangeStart(state, data) {
+      state.exchangeStart = data
     },
   },
   actions: {
@@ -368,7 +376,6 @@ export default new Vuex.Store({
     async setKeyValue({ state, dispatch }, { key, value }) {
       let address = state.userAddress
       value = utils.toWei(value)
-
       let res = await crossLend.executeContract('SetMap', [key, value], address)
       dispatch('init')
     },
@@ -380,7 +387,6 @@ export default new Vuex.Store({
       let total = new BN(CFil).add(new BN(Lending)).div(new BN(1))
       let tmp = total.div(new BN(1000))
       let target = total.add(tmp)
-
       // let a = total.mul(new BN(1))
       // console.log(
       //   'to',
@@ -401,7 +407,6 @@ export default new Vuex.Store({
       //   new BN(total1.toString()),
       //   total1.times(1.1).toString(),
       // )
-
       // console.log(123, total, new BN(2.2).mod(new BN(1)).toNumber())
       if (new BN(walletCFil).cmp(target) == 1) {
         return utils.fromWei(target.toString())
@@ -441,7 +446,8 @@ export default new Vuex.Store({
             fromBlock: 12645616,
             toBlock: 'latest',
           },
-          function(error, events) {},
+          function(error, events) {
+          },
         )
         .then(function(events) {
           // same results as the optional callback above
@@ -469,7 +475,8 @@ export default new Vuex.Store({
             fromBlock: 12645616,
             toBlock: 'latest',
           },
-          function(error, events) {},
+          function(error, events) {
+          },
         )
         .then(function(events) {
           // same results as the optional callback above
@@ -488,14 +495,6 @@ export default new Vuex.Store({
           commit('setPromoteList', arr)
         })
     },
-    // 获取借贷节点列表
-    async getStakingList({ state, commit }) {
-      let address = state.userAddress
-      const list1 = await getETHStakingInfo(address, 'ETH')
-      const list2 = await getETHStakingInfo(address, 'BSC')
-      commit('setStakingList', [...list1, ...list2])
-    },
-
     // 初始化
     async init({ state, commit, dispatch }, chainId) {
       if (chainId === CHAINID) {
@@ -506,6 +505,7 @@ export default new Vuex.Store({
         CRFIContract = ETH5
         CFilContract = ETH6
         SFilContract = ETH7
+        EXContract = ETH8
       } else if (chainId === CHAINIDBSC) {
         CROSSLEND_ADDRESS = BSC1
         CFIL_ADDRESS = BSC2
@@ -514,17 +514,15 @@ export default new Vuex.Store({
         CRFIContract = BSC5
         CFilContract = BSC6
         SFilContract = BSC7
+        EXContract = BSC8
       }
       let address = state.userAddress
-
       let cfilPrice = await crossLend.callContract('GetMap', ['cfilPrice'])
       let crfiPrice = await crossLend.callContract('GetMap', ['crfiPrice'])
-
       commit('setMap', {
         cfilPrice: cfilPrice || 1,
         crfiPrice: crfiPrice || 1,
       })
-
       let burnCFilFee = await CFilContract.callContract('burnCFilFee', [])
       let burnCFilRateCRFI = await CFilContract.callContract(
         'burnCFilRateCRFI',
@@ -534,12 +532,10 @@ export default new Vuex.Store({
       commit('setBurnCFilRateCRFI', burnCFilRateCRFI)
       let systemInfo = await crossLend.callContract('GetSystemInfo', [])
       // let { affRate, cfilInterestPool, crfiInterestPool } = systemInfo
-
       // console.log('sys', systemInfo)
       commit('setSystemInfo', systemInfo)
       // packages
       let data = await crossLend.callContract('GetPackages', [])
-
       let { financialPackages, loanCFil } = data
       commit('setLoanCFil', loanCFil)
       let CRFIList = []
@@ -584,7 +580,6 @@ export default new Vuex.Store({
           })
         }
       })
-
       commit('setCRFIList', CRFIList)
       commit('setCFilList', CFilList)
       dispatch('getUserWallet')
@@ -614,7 +609,6 @@ export default new Vuex.Store({
     // 通过
     async issusStaking({ state, commit, dispatch }, data) {
       let { SID, value } = data
-
       let userAddress = state.userAddress
       await SFilContract.executeContract(
         'IssueStaking',
@@ -627,7 +621,6 @@ export default new Vuex.Store({
     async getApplyStaking({ state, commit }) {
       let res = await SFilContract.callContract('GetNowStakingApply', [])
       let arr = []
-
       for (let i = 0; i < res.length; i++) {
         let address = res[i].Addr
         console.log(address)
@@ -668,7 +661,6 @@ export default new Vuex.Store({
       let address = state.userAddress
       let userList = []
       let list = await crossLend.callContract('GetInvestRecords', [address])
-
       let { records, loanInvest, interestDetail } = list
       let { Lending, Pledge } = loanInvest
       let arr = JSON.parse(JSON.stringify(interestDetail))
@@ -684,7 +676,6 @@ export default new Vuex.Store({
       let BN = utils.BN
       records.forEach((e, index) => {
         let { Type, Days, PackageID } = e
-
         if (Type == 0) {
           commit('setCRFITotalAmount', e)
         } else {
@@ -694,13 +685,11 @@ export default new Vuex.Store({
         let itemIndex = userList.findIndex(
           n => n.PackageID === PackageID && Days == 0,
         )
-
         // let CFilInterestRate, CRFIInterestRateDyn
         let packageList = Type == 0 ? state.CRFIList : state.CFilList
         let { CFilInterestRate, CRFIInterestRateDyn } = packageList.find(
           n => n.ID == PackageID,
         )
-
         if (item) {
           let { Amount, CRFIInterest, CFilInterest } = item
           Amount = new BN(Amount).add(new BN(e.Amount))
@@ -808,12 +797,9 @@ export default new Vuex.Store({
                 timestamp,
               },
             })
-
             let from = state.userAddress
-
             var params = [from, msgParams]
             var method = 'eth_signTypedData_v3'
-
             web3.currentProvider.sendAsync(
               {
                 method,
@@ -829,7 +815,6 @@ export default new Vuex.Store({
                 // console.log('TYPED SIGNED:' + JSON.stringify(result.result))
                 // console.log('TYPED SIGNED:' + result.result.substring(2))
                 const signature = result.result.substring(2)
-
                 // sendToServerForVerification(signature)
                 axios
                   .get(API_HOST + '/get_addr', {
@@ -880,9 +865,9 @@ export default new Vuex.Store({
                 } else {
                   alert(
                     'Failed to verify signer when comparing ' +
-                      result +
-                      ' to ' +
-                      from,
+                    result +
+                    ' to ' +
+                    from,
                   )
                 }
               },
@@ -930,7 +915,6 @@ export default new Vuex.Store({
         Toast(i18n.t('minNumberToast'))
         return
       }
-
       let balanceCFil = new BigNumber(state.wallet.walletCFil)
       let balanceCRFI = new BigNumber(state.wallet.walletCRFI)
       value = new BN(utils.toWei(value.toString() || 0))
@@ -968,12 +952,10 @@ export default new Vuex.Store({
         Toast(i18n.t('balanceToast'))
         return
       }
-
       if (fileCoin == '') {
         Toast(i18n.t('FilecoinPlaceholder'))
         return
       }
-
       // 调用crfi send
       try {
         await CRFIContract.executeContract(
@@ -997,7 +979,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 修改邀请返利最低限制
     async ChangeAffRateLimit({ state, commit, dispatch }, data) {
@@ -1010,7 +993,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 修改利率
     async ChangePackageRate({ state, commit, dispatch }, data) {
@@ -1024,7 +1008,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 修改活期利率
     //
@@ -1043,7 +1028,6 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
-
     // 活期提现
     /**
      * @param {*} PackageID 提取的投资ID
@@ -1056,7 +1040,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // opcode 0xfe not defined
     /**
@@ -1072,7 +1057,8 @@ export default new Vuex.Store({
       )
       dispatch('init')
       try {
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 管理员充值
     async charge({ state, commit, dispatch }, data) {
@@ -1089,7 +1075,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 充值CRFI池子
     async chargeCRFI({ state, commit, dispatch }, data) {
@@ -1106,7 +1093,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // 购买
     async buyCoin({ state, commit, dispatch }, data) {
@@ -1115,7 +1103,6 @@ export default new Vuex.Store({
       let { walletCFil, walletCRFI } = state.wallet
       value = utils.toWei(value)
       let balance = Type == 0 ? walletCRFI : walletCFil
-
       if (new BigNumber(balance).comparedTo(new BigNumber(value)) == -1) {
         Toast(i18n.t('balanceToast'))
         return
@@ -1130,7 +1117,6 @@ export default new Vuex.Store({
         [0, ID, invite],
       )
       let contract = Type == 0 ? CRFIContract : CFilContract
-
       try {
         await contract.executeContract(
           'send',
@@ -1138,7 +1124,8 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
     },
     // stake
     async stake({ state, commit, dispatch }, data) {
@@ -1174,7 +1161,8 @@ export default new Vuex.Store({
             state.userAddress,
           )
           dispatch('init')
-        } catch (e) {}
+        } catch (e) {
+        }
       } else {
         value = utils.toWei(value)
         try {
@@ -1184,9 +1172,9 @@ export default new Vuex.Store({
             state.userAddress,
           )
           dispatch('init')
-        } catch (e) {}
+        } catch (e) {
+        }
       }
-
       // console.log('stake', mode, value)
       // try {
       //   await SFilContract.executeContract(
@@ -1204,14 +1192,11 @@ export default new Vuex.Store({
       let { walletCFil, walletCRFI } = state.wallet
       value = utils.toWei(value)
       let balance = Type == 0 ? walletCRFI : walletCFil
-
       if (new BigNumber(balance).comparedTo(new BigNumber(value)) == -1) {
         Toast(i18n.t('balanceToast'))
         return
       }
-
       let isAddress = CRFIContract.web3.utils.isAddress(inviteValue)
-
       let invite = isAddress
         ? inviteValue
         : '0x0000000000000000000000000000000000000000'
@@ -1228,7 +1213,138 @@ export default new Vuex.Store({
           state.userAddress,
         )
         dispatch('init')
-      } catch (e) {}
+      } catch (e) {
+      }
+    },
+    // 兑换参与
+    async exSwapCfil({ state, commit, dispatch }, data) {
+      try {
+        let contract = EXContract
+        let method = 'swapCfilNotLimit'
+        if (data.limit) {
+          method = 'swapCfilLimit'
+        }
+        let res = await CRFIContract.callContract('allowance', [state.userAddress, contract.address])
+        if (res < 1) {
+          await CRFIContract.executeContract('approve', [contract.address, '1000000000000000000000000000'], state.userAddress)
+        }
+        res = await contract.executeContract(
+          method,
+          [data.codeNo, utils.toWei(data.amount.toString())],
+          state.userAddress,
+        )
+        dispatch('init')
+        return res
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 兑换提取
+    async exWithdraw({ state, commit, dispatch }, data) {
+      try {
+        let contract = EXContract
+        let method = 'withdrawNotLimit'
+        if (data.limit) {
+          method = 'withdrawLimit'
+        }
+        await contract.executeContract(
+          method,
+          [data.codeNo],
+          state.userAddress,
+        )
+        dispatch('init')
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    async exIsInit({ state, commit, dispatch }, data) {
+      if (EXContract == null) {
+        return false
+      }
+      return true
+    },
+    // 授权
+    async exApprove({ state, commit, dispatch }, data) {
+      try {
+        let contract = EXContract
+        let res = await CRFIContract.callContract('allowance', [state.userAddress, contract.address])
+        if (res < 1) {
+          res = await CRFIContract.executeContract('approve', [contract.address, '1000000000000000000000000000'], state.userAddress)
+        }
+        return res
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 获取授权数据
+    async exGetApprove({ state, commit, dispatch }, data) {
+      try {
+        let contract = EXContract
+        let res = await CRFIContract.callContract('allowance', [state.userAddress, contract.address])
+        return res
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 兑换合约信息
+    async exGetIssueInfoMap({ state, commit, dispatch }, data) {
+      try {
+        if (!EXContract) {
+          return null
+        }
+        let contract = EXContract
+        let method = 'getIssueInfoMapNotLimit'
+        if (data.limit) {
+          method = 'getIssueInfoMapLimit'
+        }
+        let res = await contract.callContract(
+          method,
+          [data.codeNo],
+        )
+        return res
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 兑换用户参与信息
+    async exGetUserInfo({ state, commit, dispatch }, data) {
+      try {
+        if (!EXContract) {
+          return null
+        }
+        let contract = EXContract
+        let method = 'getUserInfoNotLimit'
+        if (data.limit) {
+          method = 'getUserInfoLimit'
+        }
+        let res = await contract.callContract(
+          method,
+          [data.codeNo, state.userAddress],
+        )
+        return res
+      } catch (e) {
+        console.log(e)
+      }
+    },
+    // 兑换用户参与信息
+    async exGetuserSwapCfil({ state, commit, dispatch }, data) {
+      try {
+        if (!EXContract) {
+          return null
+        }
+        let contract = EXContract
+        let method = 'getuserSwapCfilNotLimit'
+        if (data.limit) {
+          method = 'getuserSwapCfilLimit'
+        }
+        let res = await contract.callContract(
+          method,
+          [data.codeNo, state.userAddress],
+        )
+        return res
+      } catch (e) {
+        console.log(e)
+      }
     },
   },
   modules: {},

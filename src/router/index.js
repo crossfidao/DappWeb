@@ -37,6 +37,12 @@ const routes = [
           import(/* webpackChunkName: "about" */ '../views/v2/Wallet.vue'),
       },
       {
+        path: 'exchange',
+        name: 'Exchange',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../views/v2/Exchange.vue'),
+      },
+      {
         path: '/admin',
         name: 'admin',
         // route level code-splitting
@@ -46,6 +52,18 @@ const routes = [
           import(/* webpackChunkName: "about" */ '../views/v2/Admin.vue'),
       },
     ],
+  },
+  {
+    path: '/exchangePast',
+    name: 'ExchangePast',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/ExchangePast.vue'),
+  },
+  {
+    path: '/exchangeNext',
+    name: 'ExchangeNext',
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../views/v2/ExchangeNext.vue'),
   },
   {
     path: '/staking',

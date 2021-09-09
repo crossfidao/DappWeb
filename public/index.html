@@ -1,59 +1,52 @@
 <!DOCTYPE html>
 <html lang="">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;"
-    />
-    <!-- <script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script> -->
-    <!-- <script>
-      var vConsole = new window.VConsole();
-    </script> -->
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-  </head>
-  <body style="max-width: 500px;margin: 0 auto;">
-    <noscript>
-      <strong
-        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
-        properly without JavaScript enabled. Please enable it to
-        continue.</strong
-      >
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script>
-      window.onload = function() {
-        // document.body.addEventListener(
-        //   'touchmove',
-        //   function(e) {
-        //     e.preventDefault() //阻止默认的处理方式(阻止下拉滑动的效果)
-        //   },
-        //   { passive: false },
-        // )
-        document.addEventListener('touchstart', function(event) {
-          if (event.touches.length > 1) {
-            event.preventDefault()
-          }
-        })
-        var lastTouchEnd = 0
-        document.addEventListener(
-          'touchend',
-          function(event) {
-            var now = new Date().getTime()
-            if (now - lastTouchEnd <= 300) {
-              event.preventDefault()
-            }
-            lastTouchEnd = now
-          },
-          false,
-        )
-        document.addEventListener('gesturestart', function(event) {
-          event.preventDefault()
-        })
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
+  <!-- <script src="https://unpkg.com/vconsole/dist/vconsole.min.js"></script> -->
+  <!-- <script>
+    var vConsole = new window.VConsole();
+  </script> -->
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+  <title><%= htmlWebpackPlugin.options.title %></title>
+</head>
+<body style="max-width: 500px;margin: 0 auto;">
+<noscript>
+  <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+</noscript>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+<script>
+  window.onload = function() {
+    // document.body.addEventListener(
+    //   'touchmove',
+    //   function(e) {
+    //     e.preventDefault() //阻止默认的处理方式(阻止下拉滑动的效果)
+    //   },
+    //   { passive: false },
+    // )
+    document.addEventListener('touchstart', function(event) {
+      if (event.touches.length > 1) {
+        event.preventDefault()
       }
-    </script>
-  </body>
+    })
+    var lastTouchEnd = 0
+    document.addEventListener(
+      'touchend',
+      function(event) {
+        var now = new Date().getTime()
+        if (now - lastTouchEnd <= 300) {
+          event.preventDefault()
+        }
+        lastTouchEnd = now
+      },
+      false,
+    )
+    document.addEventListener('gesturestart', function(event) {
+      event.preventDefault()
+    })
+  }
+</script>
+</body>
 </html>

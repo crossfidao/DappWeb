@@ -1,20 +1,20 @@
 import enLocale from 'element-ui/lib/locale/lang/en'
+
 const kr = {
   // menubar
-  dashboard: 'Home',
+  dashboard: '집',
   cFILInvest: 'cFIL',
   CRFIInvest: 'CRFI',
   wallet: '지갑', // ? 保留关键字
+  exchange: 'CSO',
+  exchangeBtn: '교환',
   aaa: '지갑',
   loading: '로딩 중...',
-
   purchase: '스테이크',
   cycle1: '기간',
   profit1: '수익율',
   purchaseAmount: 'STAKE 수량',
-
   inexecution: '현재 거래가 진행중 입니다.',
-
   // Header
   staking: '대출',
   aboutCrossFi: '홈페이지',
@@ -22,9 +22,7 @@ const kr = {
   supportCenter: '문서',
   referralRewards: '추천',
   admin: '관리자',
-
   borrowMenu: '대출',
-
   // home
   filStatistics: 'cFIL통계',
   crfiStatistics: 'CRFI 통계',
@@ -33,19 +31,15 @@ const kr = {
   crfiDepositTotal: '예금총액',
   referralRewards: '인출총액',
   referra: '인출총액',
-
   // CFIL
   cFILInvestment: 'cFIL 스테이킹',
   CRFIInvestment: 'CRFI 스테이킹',
   totalDeposit: '총 예금',
-
   day: '일',
-
   Remaining: '남은시간',
   d: '일',
   h: '시',
   m: '분',
-
   // Wallet
   walletBalance: '지갑 잔고',
   balance: '잔고',
@@ -53,7 +47,6 @@ const kr = {
   stake: '파워저장',
   myPositions: 'STAKE 내역',
   profit: '수익',
-
   // stake
   stake: '대출',
   stake1: '파워저당',
@@ -80,19 +73,14 @@ const kr = {
   company: '회사',
   nodeNumber: '노드 번호',
   toastPaymentDue: '최소 대출금 보다 작을 수 없습니다.',
-
   cFILRepay: 'cFIL 상환',
   myLoan: '나의 대출',
   walletBalance: '지갑 잔고',
-  trusteeship: '저당파워',
-  sellWholesale: 'sfil발행량',
-
   // rewards
   referralRewards: '추천',
   claim: '초대장 링크 복사',
   claimedRewards: '추천보상',
   caimedPromote: '나의 추천',
-
   // swap
   filSwap: 'FIL 스왑',
   copy: '복사',
@@ -101,19 +89,16 @@ const kr = {
   addressPlaceholder: '파일코인 주소를 입력해 주십시오.',
   addressError: '주소 입력 오류',
   cfilSwap: 'cFIL 스왑',
-
   exchangeDescription: '교환 설명',
   exchangeDescriptiontext1: '최소 교환 수량은 5개 입니다.',
   exchangeDescriptiontext2: '교환 후 입금은 10~30분 정도 소요됩니다.',
   exchangeDescriptiontext3:
     'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
-
   exchangeDescriptiontext7: '교환 비용              0.02cFIL      ',
   exchangeDescriptiontext4: '최소 교환 수량      임의의 수량',
   exchangeDescriptiontext5: '교환 신청 후 입금은 10~120분 정도 소요됩니다.',
   exchangeDescriptiontext6:
     'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
-
   // base
   assets: '자산',
   cancel: '취소',
@@ -125,9 +110,7 @@ const kr = {
   selectUser: '사용자 선택',
   selectLang: '언어 선택',
   copyText: '복사 완료',
-
   // home
-
   withdrawAll: '수익 출금',
   fileconinAddress: 'Filecoin 주소',
   invite: '나의 홍보 코드',
@@ -144,7 +127,6 @@ const kr = {
   invitePlaceholder: '추천인 주소를 입력해 주십시오.',
   FilecoinPlaceholder: 'Filecoin 주소를 입력해 주십시오',
   mining: '추가 이자를 받기 위해서는 코인을 입금해 주십시오.',
-
   // investment
   current: '현재',
   buy: '구입',
@@ -156,12 +138,10 @@ const kr = {
   maturity: '선택한 주기 이후 24*3600초',
   desc: '출금 가능',
   buyPlaceholder: '구매량을 입력해 주십시오.',
-
   position: '내 위치',
   redemption: '현재 {value}개의 제품을 상환 할 수 있습니다.',
   investment: '투자',
   annualized: '연간',
-
   // assets
   // maturity: 'maturity',
   interestAssets: '이자 자산',
@@ -171,22 +151,17 @@ const kr = {
   fast: '빠른',
   onDemand: '수시입출금',
   expireDate: '기간 만료',
-
   // admin
   interestRate: '이자율',
   inviteRate: '초대율',
   rate: '비율',
   interestPool: '이자 풀',
-
   time: '일',
-
   charge: '충전',
   edit: '편집',
   config: '설정',
-
   // toast
   minNumberToast: '최소 교환 수량은 0.1 cFil 입니다.',
-
   balanceToast: '잔액이 부족합니다. 재확인 후 입력해 주십시오.',
   toast: '구매 개수를 입력해 주십시오.',
   empty: '공백',
@@ -194,11 +169,74 @@ const kr = {
   placeholderFilecoin: '출금수량을 입력해 주십시오.',
   networkErr: '네트워크 오류, 다른 네트워크로 변경하시기 바랍니다.',
   errorMsg: '로딩 실패, 다시 시도해 주시기 바랍니다.',
-
   message: {
     name: 'Alice',
   },
+  // exchange
+  exSuccess: '체결량',
+  exParticipationTotal: '스왑에 사용된 수량',
+  exDateNumber: '발행 번호',
+  exChangeRatio: '스왑 비율',
+  exTotalExchangePool: 'CFIL 할당',
+  exTotalExchangeVolumeOfExchangePool: '풀의 용량',
+  exSinglePersonLimit: '인당 최대 신청 수량',
+  exRemainingConvertible: '신청수량 / 전체',
+  exCurrentTotalParticipation: '신청된 수량',
+  exHasParticipation: '참가자 수',
+  exChangeFee: '환전수수료',
+  exBalance: '남은 수량',
+  //How to play
+  exHowToPlay: '게임 방법',
+  exHTP1: '1. 최소 교환 수량 : 10',
+  exHTP2: '2. 계좌이체 시간 : 10~30분',
+  exHTP3: '3. CFIL은 FIL의 1:1 앵커 토큰으로 사용자는 언제든지 CFIL을 FIL로 교환할 수 있습니다.',
+  exAskTitle: '상세내역(자세한 정보를 확인하려면 클릭하세요)',
+  exAsk1: '1.어떤 스왑에 참여해야 하나요? 두 가지를 동시에 참여할 수 있나요? ',
+  exAnswer1: '하나, 또는 둘다 동시에 참여할 수 있습니다.',
+  exAsk2: '2.스왑된 crfi는 어떻게 사용됩니까?',
+  exAnswer2: '스왑이 완료된 CRFI는 모두 소각됩니다. ',
+  exAsk3: '3.참여비용(수수료) 은 얼마인가요?',
+  exAnswer3: '한도스왑은 수수료가 없습니다. 무한도 스왑의 경우 스왑된 crfi 의 10%가 수수료로 발생합니다. 인출 요청시 수수료를 제외한 나머지가 반환됩니다.',
+  exAsk4: '4.참여비용(10%의 수수료)은 어떻게 사용되나요?',
+  exAnswer4: '참여비용(10%의 수수료) 모두 소각됩니다.',
+  //Limit exchange
+  exLimitExchange: '제한풀',
+  exNumberOfExchanges: '교환 횟수',
+  exCRFIBalance: 'CRFI 잔고',
+  exUnlimitedRedemption: '무제한풀',
+  exNextPreview: '다음 미리보기',
+  exStartTime: '시작 시간',
+  exEndTime: '종료 시간',
+  exStayTuned: '계속 지켜봐 주세요',
+  exPastExchange: '과거 교환',
+  exOver: '위에',
+  exViewPast: '지난 스왑',
+  exPastPeriod: '지난 스왑',
+  exNextIssue: '다음 스왑',
+  exExtract: '신청하기',
+  exNonlimitExchange: '무제한풀',
+  exNoData: '데이터 없음',
+  exParticipationProcess: '진행방법',
+  exPp1: '1.권한 부여',
+  exPp2: '2.교환',
+  exPp3: '3.보기',
+  exPp4: '4.출금',
+  exPpr1: '지갑 권한 부여.',
+  exPpr2: '교환 시작 – 교환 수량 입력 – 지갑 확인',
+  exPpr3: '이벤트 종료 후 교환 결과 확인',
+  exPpr4: '교환 완료된 자산 출금',
+  exLoading: '거래 네트워크가 확인될 때까지 기다리십시오. 페이지를 닫지 마십시오.',
+  exAuth: '권한 부여',
+  exWithdrawTip: '거래소 출금',
+  exWithdrawRemark: '참고: 교환된 CRFI 및 성공적으로 교환된 cFIL의 나머지 금액은 귀하의 지갑에 적립됩니다.',
+  exWithdrawRemark1: '참고: 출금 작업은 지갑에서 차감됩니다.',
+  exWithdrawRemark2: 'CRFI는 상환 수수료로 사용되며 상환된 CRFI의 나머지 금액과 성공적으로 상환된 cFIL은 지갑에 적립됩니다.',
+  exNoLimit: '무제한',
+  exInsufficientBalance: '잔액 불충분',
+  exOverLimit: '한도 초과',
+  exExchangePool: '교환 풀 용량',
+  exTimesTxt: '카운트다운: ',
+  
   ...enLocale,
 }
-
 export default kr

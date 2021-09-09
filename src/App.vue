@@ -87,6 +87,19 @@ export default {
 </script>
 
 <style lang="scss">
+
+@font-face {
+  font-family: 'PingFang SC';
+  src: url('./assets/font/PingFang SC Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'PingFang';
+  src: url('./assets/font/pingfang.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 #app {
   width: 100%;
   font-family: Avenir, Helvetica, Arial, sans-serif;
