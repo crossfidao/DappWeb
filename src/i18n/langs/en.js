@@ -222,7 +222,7 @@ const cn = {
   exAsk2: '2.How are swapped CRFI coins used?',
   exAnswer2: 'Successfully swapped CRFI will be burned.',
   exAsk3: '3.How much does it cost to participate?',
-  exAnswer3: 'Limit swaps are free of charge. In the case of unlimit swap, 10% of the swapped crfi will be charged as a fee. When a withdrawal is requested, the remainder less the fee will be returned',
+  exAnswer3: 'Limited swaps do not charge any fees for transaction. In the case of a un-limited swap pool, a 10% fee will be charged for the successful swap. The 10% fee will be deducted from your wallet balance upon withdrawal. (Please have enough CRFI in your wallet.）',
   exAsk4: '4.How is the participation fee used?',
   exAnswer4: 'Participation fee will be burned.',
   

@@ -96,7 +96,7 @@
                   <div class="row">
                     <!-- <div>成功兑换</div> -->
                     <div>{{$t('exSuccess')}}</div>
-                    <div>{{toFloor(exchangeLimit.success, 8)}} cFIL</div>
+                    <div>{{toFloor(exchangeLimit.success, 8)}} cFIL/{{toFloor(exchangeLimit.success * exchangeLimit.ratio, 8)}} CRFI</div>
                   </div>
                   <div class="row">
                     <!-- <div>总参与兑换</div> -->
@@ -206,7 +206,7 @@
                 <div class="four">
                   <div class="row">
                     <div>{{$t('exSuccess')}}</div>
-                    <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL</div>
+                    <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL/{{toFloor(exchangeNoLimit.success * exchangeNoLimit.ratio, 8)}} CRFI</div>
                   </div>
                   <div class="row">
                     <!-- <div>总参与兑换</div> -->
@@ -359,7 +359,7 @@
         <div class="row">
           <!-- <div>成功兑换</div> -->
           <div>{{$t('exSuccess')}}</div>
-          <div>{{toFloor(exchangeLimit.success, 8)}} cFIL</div>
+          <div>{{toFloor(exchangeLimit.success, 8)}} cFIL/{{toFloor(exchangeLimit.success * exchangeLimit.ratio, 8)}} CRFI</div>
         </div>
         <div class="row">
           <!-- <div>总参与兑换</div> -->
@@ -386,7 +386,7 @@
       <div class="popup-content" style="padding-left: 0.7rem; padding-right: 0.7rem;">
         <div class="row">
           <div>{{$t('exSuccess')}}</div>
-          <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL</div>
+          <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL/{{toFloor(exchangeNoLimit.success * exchangeNoLimit.ratio, 8)}} CRFI</div>
         </div>
         <div class="row">
           <!-- <div>总参与兑换</div> -->
