@@ -24,35 +24,36 @@ export const CFIL_ADDRESSBSC = '0x4eab1d37213B08C224E4C9C28efbA23DC493dFD2'
 export const SFIL_ADDRESSBSC = '0x86ef562a68e1EB7E3CEC2DE9b7a752A231Bf3CFF'
 
 // 兑换合约对象地址
-export const EX_ADDRESSBSC = '0x72457db5fB4c7346B5DD20Ba9FB52e679f40Aff8'
+export const EX_ADDRESSBSC = '0x91c8adf65892165eb50f5bcac330029e56b61c54'
 
 export const API_HOSTBSC = 'https://bsc.prod.crossfimain.com'
 
 // 主网
-// export const CHAINID = '0x1'
-// 合约地址 官方测试链
-// export const CROSSLEND_ADDRESS = '0x9A1d5103Ef765a3EdE26d5757353DF2Af0dd3856'
-//
-// export const CRFI_ADDRESS = '0x8848812bd31aeee33313c10a840ffc3169078c5b'
-//
-// export const CFIL_ADDRESS = '0x0f91445A15a1353A099E742f9B51b1b41C2CbFe8'
-//
-// export const SFIL_ADDRESS = '0x642C75E5E61b3169Ed40644E14260b6f5a366d65'
-//
+export const CHAINID = '0x1'
+
+export const CROSSLEND_ADDRESS = '0x9A1d5103Ef765a3EdE26d5757353DF2Af0dd3856'
+
+export const CRFI_ADDRESS = '0x8848812bd31aeee33313c10a840ffc3169078c5b'
+
+export const CFIL_ADDRESS = '0x0f91445A15a1353A099E742f9B51b1b41C2CbFe8'
+
+export const SFIL_ADDRESS = '0x642C75E5E61b3169Ed40644E14260b6f5a366d65'
+
 // // 兑换合约对象地址
 // export const EX_ADDRESS = '0x72457db5fB4c7346B5DD20Ba9FB52e679f40Aff8'
 //
 // export const API_HOST = 'https://api.crossfimain.com'
 
 // 合约地址 官方测试链 R
-export const CHAINID = '0x3'
-export const CROSSLEND_ADDRESS = '0x422066b2F51bD090BAbBb499B01dB79A8F3B335a'
+// export const CHAINID = '0x3'
 
-export const CRFI_ADDRESS = '0xacd6012077c1dd95bc4561a0e566d16080b10698'
+// export const CROSSLEND_ADDRESS = '0x422066b2F51bD090BAbBb499B01dB79A8F3B335a'
 
-export const CFIL_ADDRESS = '0xd6c0ea77bcfb756a36ca1746a7f0e4cb927bc43b'
+// export const CRFI_ADDRESS = '0xacd6012077c1dd95bc4561a0e566d16080b10698'
 
-export const SFIL_ADDRESS = '0xb3b2c4987d0f5888d38db03bcdd9beb8f8d295b8'
+// export const CFIL_ADDRESS = '0xd6c0ea77bcfb756a36ca1746a7f0e4cb927bc43b'
+
+// export const SFIL_ADDRESS = '0xb3b2c4987d0f5888d38db03bcdd9beb8f8d295b8'
 
 // 兑换合约对象地址
 // export const EX_ADDRESS = '0x35854041a12fc2ad4ED6346D1FaF81c7d9bF4F7C'
