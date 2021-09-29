@@ -56,7 +56,7 @@ export const SFIL_ADDRESS = '0xb3b2c4987d0f5888d38db03bcdd9beb8f8d295b8'
 
 // 兑换合约对象地址
 // export const EX_ADDRESS = '0x35854041a12fc2ad4ED6346D1FaF81c7d9bF4F7C'
-export const EX_ADDRESS = '0x15A799D9BC58286c921348BCFDd3186b61BfA2a4'
+export const EX_ADDRESS = '0xd0ea5f6a14970bff12870ae8d1db720aa09cb3f4'
 
 export const API_HOST = 'https://api.crossfimain.com'
 

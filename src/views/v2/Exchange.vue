@@ -22,7 +22,7 @@
                   </div>
                 </div>
                 <div class="tab-btn" v-show="allowance < 1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(true, 'auth' )">{{$t('exAuth')}}</div>
-                <div class="tab-btn" v-show="allowance > 0 && exchangeLimit.stateMark===1" :class="exchangeLimit.isentry || showLoading ? 'btn-disabled':''" @click="btnClick(true, 'exchange' )" :disabled="exchangeLimit.isentry">{{$t('exchangeBtn')}}</div>
+                <div class="tab-btn" v-show="allowance > 0 && exchangeLimit.stateMark===1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(true, 'exchange' )" >{{$t('exchangeBtn')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeLimit.stateMark===0">{{exchangeLimit.timeText}}</div>
                 <div class="three">
                   <div class="row">
@@ -50,8 +50,8 @@
                     <div>{{$t('exRemainingConvertible')}}</div>
                     <div>{{parseInt(exchangeLimit.totalDepoistCrfil)+' / '+parseInt(exchangeLimit.totalCrfi)}} CRFI</div>
                   </div>
-                  <hr v-show="exchangeLimit.isentry" />
-                  <div class="row" v-show="exchangeLimit.isentry">
+                  <hr v-show="exchangeLimit.Crfilnum>0" />
+                  <div class="row" v-show="exchangeLimit.Crfilnum>0">
                     <!-- <div>每人限额</div> -->
                     <div>{{$t('exHasParticipation')}}</div>
                     <div>{{exchangeLimit.Crfilnum}} CRFI</div>
@@ -133,7 +133,7 @@
                   </div>
                 </div>
                 <div class="tab-btn" v-show="allowance < 1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(false, 'auth' )">{{$t('exAuth')}}</div>
-                <div class="tab-btn" v-show="allowance > 0 && exchangeNoLimit.stateMark===1" :class="exchangeNoLimit.isentry || showLoading ? 'btn-disabled':''" @click="btnClick(false, 'exchange' )" :disabled="exchangeNoLimit.isentry">{{$t('exchangeBtn')}}</div>
+                <div class="tab-btn" v-show="allowance > 0 && exchangeNoLimit.stateMark===1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(false, 'exchange' )">{{$t('exchangeBtn')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeNoLimit.stateMark===0">{{exchangeNoLimit.timeText}}</div>
                 <div class="three">
                   <div class="row">
@@ -161,8 +161,8 @@
                     <div>{{$t('exChangeFee')}}</div>
                     <div>{{exchangeNoLimit.fee}}% (CRFI)</div>
                   </div>
-                  <hr v-show="exchangeNoLimit.isentry" />
-                  <div class="row" v-show="exchangeNoLimit.isentry">
+                  <hr v-show="exchangeNoLimit.Crfilnum>0" />
+                  <div class="row" v-show="exchangeNoLimit.Crfilnum>0">
                     <!-- <div>每人限额</div> -->
                     <div>{{$t('exHasParticipation')}}</div>
                     <div>{{exchangeNoLimit.Crfilnum}} CRFI</div>
@@ -586,7 +586,6 @@
         let isInit = await this.exIsInit()
         if (!isInit) return
         clearInterval(self.interv)
-        console.log('chainId:', self.$store.state.chainId)
         // 查询限额合约
         self.$api.getCurrent(self.userAddress, 1, self.$store.state.chainId).then(res => {
           // if (res.data.times > 100) self.timeStamp = res.data.times - 2
@@ -629,7 +628,7 @@
           // TODO 非限额兑换：根据期号获取当前人的链上信息，并赋值self.exchangeNoLimit的当前参与总数量、用户输入CRFI，剩余CRFI，是否已兑换、用户提取数量，
           // 查询参与总量
           self.$store.dispatch('exGetIssueInfoMap', { limit: false, codeNo: self.exchangeNoLimit.codeNo }).then(res => {
-            console.log('21', res)
+            //console.log('21', res)
             if (res) self.exchangeNoLimit.totalDepoistCrfil = utils.fromWei(res.totalDepoistCrfil.toString())
             if (res) self.exchangeNoLimit.startTime = parseInt(res.starttime) * 1000
             if (res) self.exchangeNoLimit.endTime = parseInt(res.endtime) * 1000
@@ -705,27 +704,26 @@
       },
       // 按钮点击
       btnClick(isLimit, type) {
-        console.log(isLimit, !this.exchangeLimit.isentry, !this.limitWithdraw, type === 'withdraw')
-        if (isLimit && !this.exchangeLimit.isentry && !this.showLoading && type === 'exchange') {
+        if (isLimit && this.exchangeLimit.stateMark===1 && !this.showLoading && type === 'exchange') {
           this.exchangeLimit.popupShow = true
         }
         if (isLimit && this.exchangeLimit.isentry && !this.limitWithdraw && type === 'withdraw') {
           this.exchangeLimit.popupWithdrawShow = true
         }
-        if (isLimit && !this.exchangeLimit.isentry && type === 'max') {
+        if (isLimit && this.exchangeLimit.stateMark===1 && type === 'max') {
           if (this.userCrfi > this.exchangeLimit.ratio * this.exchangeLimit.userLimit) {
             this.limitAmount = this.exchangeLimit.ratio * this.exchangeLimit.userLimit
           } else {
             this.limitAmount = this.userCrfi
           }
         }
-        if (!isLimit && !this.exchangeNoLimit.isentry && !this.showLoading && type === 'exchange') {
+        if (!isLimit && this.exchangeNoLimit.stateMark===1 && !this.showLoading && type === 'exchange') {
           this.exchangeNoLimit.popupShow = true
         }
         if (!isLimit && this.exchangeNoLimit.isentry && !this.noLimitWithdraw && type === 'withdraw') {
           this.exchangeNoLimit.popupWithdrawShow = true
         }
-        if (!isLimit && !this.exchangeNoLimit.isentry && type === 'max') {
+        if (!isLimit && this.exchangeNoLimit.stateMark===1 && type === 'max') {
           this.noLimitAmount = this.userCrfi
         }
         if (!this.showLoading && type === 'auth') {
