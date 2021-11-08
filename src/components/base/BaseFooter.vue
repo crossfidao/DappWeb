@@ -44,7 +44,10 @@ export default {
   },
   computed: {
     tabs() {
-      if (this.$store.state.chainId == CHAINIDBSC) {
+      if (
+        this.$store.state.chainId == CHAINIDBSC ||
+        this.$store.state.chainId == 0x3
+      ) {
         return [
           {
             path: '/',
