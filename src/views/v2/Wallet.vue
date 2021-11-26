@@ -122,7 +122,7 @@
             class="withdraw"
             :class="item.Type == 0 ? 'item-coin-c' : 'item-coin-f'"
             @click="WithdrawDemand(item.PackageID)"
-            v-if="item.Days == 0"
+            v-if="item.Days == 0 || getEndTime(item.EndTime) < 0"
           >
             {{ $t('withdraw') }}
           </span>
