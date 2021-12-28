@@ -1,29 +1,30 @@
 <template>
-  <div class="container home">
+  <div :class="$store.state.daynight ? 'container1' : 'container'"  class=" home">
     <BaseHeader :isBack="true" :title="$t('stake')" />
     <div class="content">
-      <div class="items">
-        <h4 class="item-title">{{ $t('stake1') }}</h4>
+      <div :class="$store.state.daynight ? 'd-bg' : ''"  class="items">
+        <h4 :class="$store.state.daynight ? 'chc' : ''"  class="item-title">{{ $t('stake1') }}</h4>
         <div class="item">
-          <span class="item-label">{{ $t('totalIssue') }}:</span>
+          <span :class="$store.state.daynight ? 'chc' : ''"  class="item-label">{{ $t('totalIssue') }}:</span>
           <span class="item-content">{{ totalSupply | decimals }}</span>
         </div>
         <div class="item-input">
-          <span class="item-input-label">{{ $t('name') }}:</span>
-          <van-field class="field" center clearable v-model="params.name" />
+          <span  :class="$store.state.daynight ? 'chc' : ''"  class="item-input-label">{{ $t('name') }}:</span>
+          <van-field  :class="$store.state.daynight ? 'd-dd placeHolder-dark' : ''"  class="field" center clearable v-model="params.name" />
           <!-- :placeholder="$t('purchaseAmount')" -->
         </div>
         <div class="item-input">
-          <span class="item-input-label">{{ $t('email') }}:</span>
-          <van-field class="field" center clearable v-model="params.email" />
+          <span  :class="$store.state.daynight ? 'chc' : ''"  class="item-input-label">{{ $t('email') }}:</span>
+          <van-field  :class="$store.state.daynight ? 'd-dd placeHolder-dark' : ''"  class="field" center clearable v-model="params.email" />
         </div>
         <div class="item-input">
-          <span class="item-input-label">{{ $t('company') }}:</span>
-          <van-field class="field" center clearable v-model="params.company" />
+          <span  :class="$store.state.daynight ? 'chc' : ''"  class="item-input-label">{{ $t('company') }}:</span>
+          <van-field  :class="$store.state.daynight ? 'd-dd placeHolder-dark' : ''"  class="field" center clearable v-model="params.company" />
         </div>
         <div class="item-input">
-          <span class="item-input-label">{{ $t('nodeNumber') }}:</span>
+          <span  :class="$store.state.daynight ? 'chc' : ''"  class="item-input-label">{{ $t('nodeNumber') }}:</span>
           <van-field
+           :class="$store.state.daynight ? 'd-dd placeHolder-dark' : ''"
             class="field"
             center
             clearable
@@ -90,15 +91,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.item-content{
+  font-size: 12px;
+font-family: PingFang SC;
+font-weight: 600;
+color: #8C8D8D;
+text-align: end !important;
+}
 .home {
   z-index: 99;
+}
+.container1 {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  background: #272831;
+  background-size: cover;
+  color: #fff;
+  .content {
+    flex: 1;
+  }
 }
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #3f495a url('../../assets/images/bg.png') no-repeat;
-
+  // background: #3f495a url('../../assets/images/bg.png') no-repeat;
+background: url('../../assets/images/bg.png') no-repeat;
+  background-size: cover;
   background-size: cover;
 
   color: #fff;
@@ -127,7 +148,7 @@ export default {
   color: #ffffff;
 }
 .items {
-  background: #3f4c5d;
+  background:#fff;
   margin-top: 15px;
   opacity: 1;
   border-radius: 13px;
@@ -145,6 +166,10 @@ export default {
     line-height: 27px;
     color: #ffffff;
     text-align: center;
+    font-size: 15px;
+font-family: PingFang SC;
+font-weight: 600;
+color: #394255;
   }
 }
 .item {
@@ -158,6 +183,10 @@ export default {
   }
   &-label {
     width: 150px;
+    font-size: 12px;
+font-family: PingFang SC;
+font-weight: 600;
+color: #394255;
   }
   &-content {
     text-align: center;
@@ -174,10 +203,19 @@ export default {
       box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
       border-radius: 10px;
       text-align: center;
+      width: 300px;
+height: 44px;
+background: #5ACBD0;
+box-shadow: 0px 3px 0px 0px #3EA0AD;
+border-radius: 10px;
     }
   }
   &-input-label {
     width: 90px;
+    font-size: 12px;
+font-family: PingFang SC;
+font-weight: 600;
+color: #394255;
   }
 }
 .item-input {
@@ -187,8 +225,8 @@ export default {
   .field {
     width: 200px;
     border-radius: 10px;
-    background: #2c3546;
-  }
+
+background: #FAFAFA;  }
 }
 
 .mask {
@@ -286,6 +324,23 @@ export default {
   }
 }
 /deep/ .van-field__control {
-  color: #fff;
+  color: #000;
+}
+.chc{
+  color: #fff !important;
+}
+.d-bg{
+
+background: #2F303B !important;
+}
+.d-dd{
+
+background: #4B4C56 !important;
+}
+
+.placeHolder-dark{
+  /deep/ input{
+    color: #dcdcdc !important;
+  }
 }
 </style>

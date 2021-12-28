@@ -1,9 +1,7 @@
 <template>
-  <div class="container home">
-    <BaseHeader color="#1f8aff" />
-    <h4 class="title">
-      {{ $t('cFILInvestment') }}
-    </h4>
+  <div :class="$store.state.daynight ? 'container1' : 'container'" class=" home">
+    <BaseHeader/>
+    <h4 class="title">{{ $t('cFILInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
         v-for="(item, index) in CFilList"
@@ -52,21 +50,31 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #1f8aff;
+   background: url('../../assets/images/bg.png') no-repeat;
   .content {
     flex: 1;
   }
 }
-
+.container1{
+background: #272831 ;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .content {
+    flex: 1;
+  }
+}
 .bg {
-  background: #3f495a;
+  // background: #3f495a;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
-  padding-top: 52px;
+  padding-top: 20px;
 }
 .title {
+  display: flex;
+  align-self: center;
   color: #fff;
-  margin-left: 30px;
+
   margin-bottom: 8px;
   text-align: left;
 }

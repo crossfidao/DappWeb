@@ -207,9 +207,12 @@ export default {
     // window.ethereum.on('accountsChanged', account => {})
     // this.getUser()
   },
-
+created(){
+this.getGongList()
+},
   methods: {
     ...mapActions(['initData', 'Repurchase', 'login', 'ComputedCRFI']),
+    
     getQueryString(name) {
       let reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
       let r = window.location.search.substr(1).match(reg)
@@ -332,6 +335,7 @@ export default {
       return isNaN(name)
     },
   },
+
 }
 </script>
 

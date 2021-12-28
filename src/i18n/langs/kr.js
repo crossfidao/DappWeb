@@ -2,7 +2,7 @@ import enLocale from 'element-ui/lib/locale/lang/en'
 
 const kr = {
   // menubar
-  dashboard: '집',
+  dashboard: '홈',
   cFILInvest: 'cFIL',
   CRFIInvest: 'CRFI',
   wallet: '지갑', // ? 保留关键字
@@ -56,7 +56,7 @@ const kr = {
   borrow: '대출',
   loanApy: '대출 연이자',
   newProfit: '새로운 수익',
-  paymentDue: '최소대출량',
+  paymentDue: '최소 대출량',
   pledgeRate: '보증률',
   repay: '상환',
   market: '마켓',
@@ -81,9 +81,10 @@ const kr = {
 
   // rewards
   referralRewards: '추천',
-  claim: '초대장 링크 복사',
+  claim: '링크 복사',
   claimedRewards: '추천보상',
   caimedPromote: '나의 추천',
+  invitess:"친구 초대 QR 코드",
   // swap
   filSwap: 'FIL 스왑',
   copy: '복사',
@@ -98,7 +99,7 @@ const kr = {
   exchangeDescriptiontext3:
     'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
   exchangeDescriptiontext7: '교환 비용              0.02cFIL      ',
-  exchangeDescriptiontext4: '최소 교환 수량      임의의 수량',
+  exchangeDescriptiontext4: '최소 교환 수량 제한 없습니다.',
   exchangeDescriptiontext5: '교환 신청 후 입금은 10~120분 정도 소요됩니다.',
   exchangeDescriptiontext6:
     'cFIL은 FIL의 1 : 1 토큰으로 사용자는 언제든지 cFIL을 FIL로 교환 할 수 있습니다.',
@@ -193,15 +194,15 @@ const kr = {
   exHTP1: '1. 최소 교환 수량 : 10',
   exHTP2: '2. 계좌이체 시간 : 10~30분',
   exHTP3: '3. CFIL은 FIL의 1:1 앵커 토큰으로 사용자는 언제든지 CFIL을 FIL로 교환할 수 있습니다.',
-  exAskTitle: '상세내역(자세한 정보를 확인하려면 클릭하세요)',
+  exAskTitle: '자주 묻는 질문 (자세한 내용은 여기를 클릭하세요)',
   exAsk1: '1.어떤 스왑에 참여해야 하나요? 두 가지를 동시에 참여할 수 있나요? ',
   exAnswer1: '하나, 또는 둘다 동시에 참여할 수 있습니다.',
-  exAsk2: '2.스왑된 crfi는 어떻게 사용됩니까?',
+  exAsk2: '2.스왑된 CRFI 는 어떻게 사용됩니까?',
   exAnswer2: '스왑이 완료된 CRFI는 모두 소각됩니다. ',
   exAsk3: '3.참여비용(수수료) 은 얼마인가요?',
   exAnswer3: '제한 스왑은 수수료가 없습니다. 무제한 스왑의 경우 스왑에 성공한 CRFI의 10%가 수수료로 발생하며 인출 시 지갑잔고에서 지불됩니다. (지갑에 수수료로 사용될 충분한CRFI를 남겨두시기 바랍니다.) ',
   exAsk4: '4.참여비용(10%의 수수료)은 어떻게 사용되나요?',
-  exAnswer4: '참여비용(10%의 수수료) 모두 소각됩니다.',
+  exAnswer4: '수수료는 모두 소각됩니다.',
   //Limit exchange
   exLimitExchange: '제한풀',
   exNumberOfExchanges: '교환 횟수',
@@ -210,7 +211,7 @@ const kr = {
   exNextPreview: '다음 미리보기',
   exStartTime: '시작 시간',
   exEndTime: '종료 시간',
-  exStayTuned: '계속 지켜봐 주세요',
+  exStayTuned: '기대해 주세요',
   exPastExchange: '과거 교환',
   exOver: '위에',
   exViewPast: '지난 스왑',
@@ -219,12 +220,12 @@ const kr = {
   exExtract: '신청하기',
   exNonlimitExchange: '무제한풀',
   exNoData: '데이터 없음',
-  exParticipationProcess: '진행방법',
+  exParticipationProcess: '참여 방법',
   exPp1: '1.권한 부여',
   exPp2: '2.교환',
   exPp3: '3.보기',
   exPp4: '4.출금',
-  exPpr1: '지갑 권한 부여.',
+  exPpr1: '지갑 권한 부여',
   exPpr2: '교환 시작 – 교환 수량 입력 – 지갑 확인',
   exPpr3: '이벤트 종료 후 교환 결과 확인',
   exPpr4: '교환 완료된 자산 출금',

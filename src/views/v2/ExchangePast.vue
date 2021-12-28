@@ -1,13 +1,13 @@
 <template>
-  <div class='container'>
-    <div class='past-title'>
+  <div :class="$store.state.daynight ? 'container' : 'container1'">
+    <div :class="$store.state.daynight ? 'past-title' : 'past-title1'">
       <van-icon name='arrow-left' size='0.48rem' style='position: absolute;left: 0rem' @click="$router.go(-1)" />
       <!-- <div>往期兑换</div> -->
       <div>{{$t('exPastExchange')}}</div>
     </div>
     <div v-for="(item, index) in list" :key="index">
       <!-- <div>限额兑换</div> -->
-      <div v-if="item.limitMark" class='content-first'>
+      <div v-if="item.limitMark" :class="$store.state.daynight ? 'content-first' : 'content-first1'">
         <div class='head-row'>
           <!--<van-icon name='question' size='0.43rem' color='#4A5263' style='position: absolute;right: 0rem;margin-top: 0.2rem' />-->
           <!-- <div>限额兑换</div> -->
@@ -80,7 +80,7 @@
         <div class='end' v-else>{{$t('exOver')}}</div>
       </div>
       <!-- <div>无限额兑换</div> -->
-      <div v-else class='content-first'>
+      <div v-else :class="$store.state.daynight ? 'content-first' : 'content-first1'">
         <div class='head-row'>
           <!--<van-icon name='question' size='0.43rem' color='#4A5263' style='position: absolute;right: 0rem;margin-top: 0.2rem' />-->
           <!-- <div>无限额兑换</div> -->

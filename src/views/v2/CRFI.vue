@@ -1,6 +1,6 @@
 <template>
-  <div class="container home">
-    <BaseHeader color="#1f8aff" />
+  <div :class="$store.state.daynight ? 'container1' : 'container'" class=" home">
+    <BaseHeader  />
     <h4 class="title">{{ $t('CRFIInvestment') }}</h4>
     <div class="content bg">
       <BaseItem
@@ -46,26 +46,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container1{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background:#272831 ;
+  .content {
+    flex: 1;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #1f8aff;
+  background: url('../../assets/images/bg.png') no-repeat;
   .content {
     flex: 1;
   }
 }
 
 .bg {
-  background: #3f495a;
+  // background: #3f495a;
   border-top-left-radius: 40px;
   border-top-right-radius: 40px;
-  padding-top: 52px;
+  padding-top: 20px;
 }
 .title {
   color: #fff;
-  margin-left: 30px;
+
   margin-bottom: 8px;
   text-align: left;
+  display: flex;
+  align-self: center;
 }
 </style>

@@ -817,7 +817,7 @@ export default {
 }
 
 .about {
-  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+  background:  url('../../assets/images/bg.png') no-repeat;
   background-size: cover;
 
   height: 100%;

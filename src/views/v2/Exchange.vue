@@ -1,22 +1,22 @@
 <template>
-  <div class="container">
+  <div :class="$store.state.daynight ? 'container' : 'container1'">
     <BaseHeaderNew></BaseHeaderNew>
     <div class="cont">
-      <div class="tabs">
-        <van-tabs v-model="active" @change="changeTab" background="#343B4A" title-inactive-color="#FFFFFF" title-active-color="#00D3D6" color="#00D3D6" line-width="120" offset-top="2ren">
+      <div  :class="$store.state.daynight ? 'tabs' : 'tabs1'" >
+        <van-tabs v-model="active" @change="changeTab" :background="$store.state.daynight ? '#2F303B' : '#fff'" :title-inactive-color="$store.state.daynight ? '#fff':'#343B4A'" title-active-color="#00D3D6" color="#00D3D6" line-width="120" offset-top="2ren">
           <!--限额兑换-->
-          <van-tab title-style="font-size: 0.45rem;font-weight: 500;" :title="$t('exLimitExchange')">
+          <van-tab :class="$store.state.daynight ? '' : 'w-f2'" title-style="font-size: 0.45rem;font-weight: 500;" :title="$t('exLimitExchange')">
             <div v-show="exchangeLimit.showData">
               <div class="tab-panel" v-if="exchangeLimit.stateMark !== 2">
-                <div class="first">
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="first">
                   <div style="width: 45%;">
-                    <div class="title">{{parseInt(exchangeLimit.totalDepoistCrfil)}} CRFI</div>
+                    <div :class="$store.state.daynight ? '' : 'w-f2'" class="title">{{parseInt(exchangeLimit.totalDepoistCrfil)}} CRFI</div>
                     <!-- <div>当前总参与数量</div> -->
                     <div>{{$t('exCurrentTotalParticipation')}}</div>
                   </div>
                   <div style="width: 10%;">/</div>
                   <div style="width: 45%;">
-                    <div class="title">{{exchangeLimit.totalCfil}} cFIL</div>
+                    <div :class="$store.state.daynight ? '' : 'w-f2'" class="title">{{exchangeLimit.totalCfil}} cFIL</div>
                     <!--<div>剩余可兑换数量</div>-->
                     <div>{{$t('exTotalExchangePool')}}</div>
                   </div>
@@ -24,7 +24,7 @@
                 <div class="tab-btn" v-show="allowance < 1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(true, 'auth' )">{{$t('exAuth')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeLimit.stateMark===1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(true, 'exchange' )" >{{$t('exchangeBtn')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeLimit.stateMark===0">{{exchangeLimit.timeText}}</div>
-                <div class="three">
+                <div :class="$store.state.daynight ? 'three' : 'three1'" >
                   <div class="row">
                     <!-- <div>期号</div> -->
                     <div>{{$t('exDateNumber')}}</div>
@@ -59,7 +59,7 @@
                 </div>
               </div>
               <div class="tab-panel" v-else>
-                <div class="three">
+                <div  :class="$store.state.daynight ? 'three' : 'three1'" >
                   <div class="row">
                     <!-- <div>期号</div> -->
                     <div>{{$t('exDateNumber')}}</div>
@@ -92,7 +92,7 @@
                   </div>
                 </div>
                 <hr />
-                <div class="four">
+                <div :class="$store.state.daynight ? 'four' : 'four1'">
                   <div class="row">
                     <!-- <div>成功兑换</div> -->
                     <div>{{$t('exSuccess')}}</div>
@@ -116,27 +116,27 @@
             </div>
           </van-tab>
           <!--非限额兑换-->
-          <van-tab title-style="font-size: 0.45rem;font-weight: 500;" :title="$t('exNonlimitExchange')">
+          <van-tab  :class="$store.state.daynight ? '' : 'w-f2'" title-style="font-size: 0.45rem;font-weight: 500;" :title="$t('exNonlimitExchange')">
             <div v-show="exchangeLimit.showData">
               <div class="tab-panel" v-if="exchangeNoLimit.stateMark !== 2">
-                <div class="first">
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="first">
                   <div style="width: 45%;">
-                    <div class="title">{{parseInt(exchangeNoLimit.totalDepoistCrfil)}} CRFI</div>
+                    <div :class="$store.state.daynight ? '' : 'w-f2'" class="title">{{parseInt(exchangeNoLimit.totalDepoistCrfil)}} CRFI</div>
                     <!-- <div>当前总参与数量</div> -->
                     <div>{{$t('exCurrentTotalParticipation')}}</div>
                   </div>
                   <div style="width: 10%;">/</div>
                   <div style="width: 45%;">
-                    <div class="title">{{exchangeNoLimit.totalCfil}} cFIL</div>
+                    <div :class="$store.state.daynight ? '' : 'w-f2'" class="title">{{exchangeNoLimit.totalCfil}} cFIL</div>
                     <!-- <div>总兑换池</div> -->
-                    <div>{{$t('exTotalExchangePool')}}</div>
+                    <div :class="$store.state.daynight ? '' : 'w-f2'">{{$t('exTotalExchangePool')}}</div>
                   </div>
                 </div>
                 <div class="tab-btn" v-show="allowance < 1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(false, 'auth' )">{{$t('exAuth')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeNoLimit.stateMark===1" :class="showLoading ? 'btn-disabled':''" @click="btnClick(false, 'exchange' )">{{$t('exchangeBtn')}}</div>
                 <div class="tab-btn" v-show="allowance > 0 && exchangeNoLimit.stateMark===0">{{exchangeNoLimit.timeText}}</div>
-                <div class="three">
-                  <div class="row">
+                <div  :class="$store.state.daynight ? 'three' : 'three1'" >
+                  <div  class="row">
                     <!-- <div>期号</div> -->
                     <div>{{$t('exDateNumber')}}</div>
                     <div>{{exchangeNoLimit.codeNo}}</div>
@@ -170,7 +170,7 @@
                 </div>
               </div>
               <div class="tab-panel" v-else>
-                <div class="three">
+                <div  :class="$store.state.daynight ? 'three' : 'three1'">
                   <div class="row">
                     <!-- <div>期号</div> -->
                     <div>{{$t('exDateNumber')}}</div>
@@ -203,7 +203,7 @@
                   </div>
                 </div>
                 <hr />
-                <div class="four">
+                <div :class="$store.state.daynight ? 'four' : 'four1'">
                   <div class="row">
                     <div>{{$t('exSuccess')}}</div>
                     <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL/{{toFloor(exchangeNoLimit.success * exchangeNoLimit.ratio, 8)}} CRFI</div>
@@ -233,9 +233,9 @@
       </div>
       <div class="tabs2">
         <!-- 参与流程 -->
-        <div class="process">
+        <div :class="$store.state.daynight ? 'process' : 'process1'">
           <!-- 参与流程 -->
-          <div class="title">{{ $t('exParticipationProcess') }}</div>
+          <div :class="$store.state.daynight ? '' : 'w-f3'" class="title">{{ $t('exParticipationProcess') }}</div>
           <div class="process-content">
             <!-- 线组合 -->
             <div class="lineCombination">
@@ -245,28 +245,28 @@
               <div class="point point4"></div>
             </div>
             <div>
-              <div class="contents" style="height: 41px;">
-                <div class="contents-title">{{$t('exPp1')}}</div>
-                <div class="contents-child">
+              <div class="contents contents1">
+                <div :class="$store.state.daynight ? '' : 'w-f3'" class="contents-title">{{$t('exPp1')}}</div>
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="contents-child">
                   {{$t('exPpr1')}}
                 </div>
               </div>
-              <div class="contents" style="height: 55px;">
-                <div class="contents-title">{{$t('exPp2')}}</div>
-                <div class="contents-child"> {{$t('exPpr2')}}
+              <div class="contents contents2">
+                <div :class="$store.state.daynight ? '' : 'w-f3'" class="contents-title">{{$t('exPp2')}}</div>
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="contents-child"> {{$t('exPpr2')}}
                 </div>
               </div>
-              <div class="contents" style="height: 40px;">
+              <div class="contents contents3">
                 <!-- 查看 -->
-                <div class="contents-title">{{$t('exPp3')}}</div>
-                <div class="contents-child">
+                <div :class="$store.state.daynight ? '' : 'w-f3'" class="contents-title">{{$t('exPp3')}}</div>
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="contents-child">
                   <!-- 等待活动结束，查看兑换结果。 -->{{$t('exPpr3')}}
                 </div>
               </div>
-              <div class="contents">
+              <div class="contents contents4">
                 <!-- 提取 -->
-                <div class="contents-title">{{$t('exPp4')}}</div>
-                <div class="contents-child">
+                <div :class="$store.state.daynight ? '' : 'w-f3'" class="contents-title">{{$t('exPp4')}}</div>
+                <div :class="$store.state.daynight ? '' : 'w-f2'" class="contents-child">
                   <!-- 提取兑换后的资产。 -->{{$t('exPpr4')}}
                 </div>
               </div>
@@ -274,7 +274,7 @@
           </div>
         </div>
       </div>
-      <div class="discription">
+      <div :class="$store.state.daynight ? 'discription' : 'discription1'">
         <div @click="openUrl('https://docs.crossfimain.com/english/operating-instructions/binance-smart-chain/cso-crossfi-swap-opportunity')">{{$t('exAskTitle')}}</div>
         <div class="ask">{{$t('exAsk1')}}</div>
         <div class="answer">{{$t('exAnswer1')}}</div>
@@ -355,7 +355,7 @@
     <van-popup v-model="exchangeLimit.popupWithdrawShow" closeable round :style="{ height: '10.7rem', width: '9.17rem', padding: '0.39rem', 'overflow-y': 'hidden' }">
       <!-- 限额兑换 -->
       <div class="popup-title">{{$t('exWithdrawTip')}}</div>
-      <div class="popup-content" style="padding-left: 0.7rem; padding-right: 0.7rem;">
+      <div class="popup-content" style="padding-left: 0.3rem; padding-right: 0.3rem;">
         <div class="row">
           <!-- <div>成功兑换</div> -->
           <div>{{$t('exSuccess')}}</div>
@@ -383,7 +383,7 @@
     <van-popup v-model="exchangeNoLimit.popupWithdrawShow" closeable round :style="{ height: '11.48rem', width: '9.17rem', padding: '0.39rem', 'overflow-y': 'hidden' }">
       <!-- 无限兑换 -->
       <div class="popup-title">{{$t('exWithdrawTip')}}</div>
-      <div class="popup-content" style="padding-left: 0.7rem; padding-right: 0.7rem;">
+      <div class="popup-content" style="padding-left: 0.3rem; padding-right: 0.3rem;">
         <div class="row">
           <div>{{$t('exSuccess')}}</div>
           <div>{{toFloor(exchangeNoLimit.success, 8)}} cFIL/{{toFloor(exchangeNoLimit.success * exchangeNoLimit.ratio, 8)}} CRFI</div>
@@ -757,7 +757,7 @@
           return
         }
         self.$store.dispatch('exSwapCfil', { limit: isLimit, codeNo: codeNo, amount: amount }).then(() => {
-          self.initData()
+          // self.initData()
           self.$api.logSuccess(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换参与', '兑换期号：' + codeNo + '，参与数量：' + amount)
         }).catch(err => {
           if (isLimit) {
@@ -784,7 +784,7 @@
           }
         }
         self.$store.dispatch('exWithdraw', { limit: isLimit, codeNo: codeNo }).then(() => {
-          self.initData()
+          // self.initData()
           self.$api.logSuccess(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换提取', '兑换期号：' + codeNo)
         }).catch(err => {
           self.$api.logError(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换提取', '兑换期号：' + codeNo, err)
@@ -852,6 +852,13 @@
 </script>
 
 <style lang="scss" scoped>
+.w-f3{
+
+color: #5ACBD0 !important;
+}
+.w-f2{
+  color: #394255 !important;
+}
   @import '~@/assets/scss/exchange.scss'
 
 </style>

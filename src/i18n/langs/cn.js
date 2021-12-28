@@ -26,12 +26,12 @@ const cn = {
   // home
   filStatistics: 'cFIL统计',
   crfiStatistics: 'CRFI统计',
-  fileCoinDepositTotal: 'cFIL<br/>总存入',
+  fileCoinDepositTotal: '总存入',
   // fileCoinDepositTotal: 'FIL 质押总数',
-  lendingTotal: 'cFIL<br/>总借出',
-  crfiDepositTotal: 'CRFI<br/>质押总数',
+  lendingTotal: '总借出',
+  crfiDepositTotal: '质押总数',
   referralRewards: '推荐奖',
-  referra: 'CRFI<br/>总产出',
+  referra: '总产出',
   // CFIL
   cFILInvestment: 'cFIL STAKING',
   CRFIInvestment: 'CRFI STAKING',
@@ -85,9 +85,10 @@ const cn = {
 
   // rewards
   referralRewards: '邀请',
-  claim: '复制邀请链接',
+  claim: '复制链接',
   claimedRewards: '我的奖励',
   caimedPromote: '我的推广',
+  invitess:"邀请朋友",
   // swap
   filSwap: 'FIL 兑换',
   copy: '复制',
@@ -228,10 +229,10 @@ const cn = {
   exPp2: '2.兑换',
   exPp3: '3.查看',
   exPp4: '4.提取',
-  exPpr1: '发起钱包授权。',
-  exPpr2: '发起兑换，输入兑换数量，钱包确认。',
-  exPpr3: '等待活动结束，查看兑换结果。',
-  exPpr4: '提取兑换后的资产。',
+  exPpr1: '发起钱包授权',
+  exPpr2: '发起兑换，输入兑换数量，钱包确认',
+  exPpr3: '等待活动结束，查看兑换结果',
+  exPpr4: '提取兑换后的资产',
   exLoading: '等待交易网络确认，请勿关闭页面',
   exAuth: '授权',
   exWithdrawTip: '兑换提取',

@@ -1,6 +1,6 @@
 <template>
-  <div :class="{ bg: isBg }">
-    <div class="footer">
+  <div :class="$store.state.daynight ? 'bg' : 'bg1'"  >
+    <div :class="$store.state.daynight ? 'footer1' : 'footer'"   >
       <router-link
         tag="div"
         :to="item.path"
@@ -118,6 +118,57 @@ export default {
 
   // padding-top: 12px;
 }
+.footer1 {
+  position: relative;
+  height: 91px;
+  background: #29282F;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  // opacity: 1;
+  border-radius: 40px 40px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  // font-weight: 600;
+  font-size: 10px;
+  font-family: Segoe UI;
+  color: #999999;
+  // letter-spacing: 10px;
+
+  .item {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    &-name {
+      margin-top: 8px;
+    }
+    .icon {
+      width: 18px;
+      height: 18px;
+      background-size: cover;
+    }
+    .dashboard {
+      background-image: url('../../assets/icon/dashboard.png');
+    }
+    .cFIL {
+      background-image: url('../../assets/icon/cFIL.png');
+    }
+    .CRFI {
+      background-image: url('../../assets/icon/CRFI.png');
+    }
+    .wallet {
+      background-image: url('../../assets/icon/wallet.png');
+    }
+    .exchange {
+      background-image: url('../../assets/icon/exchange.png');
+    }
+  }
+}
+
 .footer {
   position: relative;
   height: 91px;
@@ -196,7 +247,14 @@ export default {
     background-image: url('../../assets/icon/exchange-active.png') !important;
   }
 }
-.bg {
-  background: #3f495a !important;
+// .bg {
+//   background: transparent !important;
+//     border-radius: 40px 40px 0px 0px !important;
+// }
+.bg{
+   background: #29282F !important;
+}
+.bg1{
+   background: #E6EDFF;
 }
 </style>

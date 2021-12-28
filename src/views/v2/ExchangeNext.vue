@@ -1,11 +1,11 @@
 <template>
-  <div class='container'>
-    <div class='past-title'>
+  <div :class="$store.state.daynight ? 'container' : 'container1'">
+    <div :class="$store.state.daynight ? 'past-title' : 'past-title1'">
       <van-icon name='arrow-left' size='0.48rem' style='position: absolute;left: 0rem' @click="$router.go(-1)" />
       <!-- <div>下期预告</div> -->
       <div>{{$t('exNextPreview')}}</div>
     </div>
-    <div class='content-first'>
+    <div :class="$store.state.daynight ? 'content-first' : 'content-first1'">
       <div class='head-row'>
         <!--<van-icon name='question' size='0.43rem' color='#4A5263' style='position: absolute;right: 0rem;margin-top: 0.2rem' />-->
         <!-- <div>限额兑换</div> -->
@@ -59,7 +59,7 @@
       <!-- 敬请期待 -->
       <div class='end'>{{$t('exStayTuned')}}</div>
     </div>
-    <div class='content-first'>
+    <div :class="$store.state.daynight ? 'content-first' : 'content-first1'">
       <div class='head-row'>
         <!--<van-icon name='question' size='0.43rem' color='#4A5263' style='position: absolute;right: 0rem;margin-top: 0.2rem' />-->
         <!-- <div>无限额兑换</div> -->

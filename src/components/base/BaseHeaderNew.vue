@@ -7,9 +7,9 @@
         </router-link>
         <van-icon name="arrow-left" v-else size="24" @click="$router.back()" />
         <span v-if="title" class="headernew-title">{{ title }}</span>
-        <div class="address">
-          <span :class="`address-icon ${iconClass}`"></span> <span class="address-text" v-if="!showLoading">{{ address }}</span>
-          <span class="address-pending" v-else>
+        <div :class="$store.state.daynight ? 'address'  :'address2' ">
+          <span :class="`address-icon ${iconClass}`"></span>
+          <span :class="$store.state.daynight ? 'address-text'  :'address1' " v-if="!showLoading">{{ address }}</span> <span class="address-pending" v-else>
             <i style="margin-right: 4px">pending</i>
             <van-loading type="spinner" size="20px" />
           </span>
@@ -17,23 +17,29 @@
       </div>
       <!-- <span v-show="showLoading">pending</span> -->
       <div class="right">
-        <van-popover v-model="lookShow" theme="dark" trigger="click" :actions="lookActions" @select="selectLookActions">
+        <div style="display:flex; margin-right: 10px;" @click="changeMoudles">
+          <img style="width:15px;height:15px" src="@/assets/images/bai.png" alt="">
+          <div style="margin:0 5px"> /</div>
+          <img style="width:15px;height:15px" src="@/assets/images/hei.png" alt="">
+        </div>
+        <van-popover v-model="lookShow" theme="dark" trigger="click" :actions="lookActions" @select="selectLookActions" class="popover">
           <template #reference>
-            <div class="look">
+            <div style="display: flex; flex-direction: row;" :class="$store.state.daynight ? ''  :'address1' " class="look">
               <!-- 查看往期 -->{{$t('exViewPast')}}
               <van-icon v-show="!lookShow" name="arrow-down" />
               <van-icon v-show="lookShow" name="arrow-up" />
             </div>
           </template>
         </van-popover>
-        <span class="icon" @click="showpop = true"></span>
+        <!-- <span class="icon" @click="showpop = true"></span> -->
+        <img style="width:18px;height:16px;margin-left:10px" src="@/assets/images/hanbao.png" @click="showpop = true" alt="">
         <!-- <van-icon :name="line" size="28" @click="showpop = true" /> -->
       </div>
     </div>
     <div class="headernew-top">
       <div class="headernew-top-title">
-        <div>CSO (CrossFi</div>
-        <div>Swap Opportunity)</div>
+        <div :class="$store.state.daynight ? '' : 'w-f2'">CSO (CrossFi</div>
+        <div :class="$store.state.daynight ? '' : 'w-f2'">Swap Opportunity)</div>
         <div class="headernew-top-nz">
           <div>{{exchangeTimeText}}</div>
           <!--<van-icon name="question-o" class="headernew-icon" size="0.34rem" color="#999" />-->
@@ -44,37 +50,43 @@
         <img src="~@/assets/images/cfil-wallet.png" />
       </div>
     </div>
-    <van-popup :overlay="true" closeable :close-icon="closeIcon" overlay-class="dfkdslfdl" v-model="showpop" position="right" :style="{ height: '100%', 'z-index': 9999 }">
+    <van-popup :class="$store.state.daynight?'van-popup-dark':'van-popup-light'" :overlay="true" overlay-class="dfkdslfdl" v-model="showpop" position="right" :style="{ height: '100%', 'z-index': 9999 }">
+      <img style="position: absolute;
+    width: 18px;
+    height: 16px;
+    top: 20px;
+    right: 15px;
+" src="@/assets/images/hanbao.png" @click="showpop = false" alt="">
       <div class="pop">
         <div class="pop-menu">
-          <router-link tag="div" to="/staking" class="pop-menu-item">
-            <van-icon name="arrow-left" />
+          <router-link tag="div" to="/staking" class="pop-menu-item" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/1.png" size="24px" />
             <span class="text">{{ $t('borrowMenu') }}</span>
           </router-link>
-          <div class="pop-menu-item" @click="gotoOfficial">
-            <van-icon name="arrow-left" />
+          <div class="pop-menu-item" @click="gotoOfficial" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/2.png" size="24px" />
             <span class="text">{{ $t('aboutCrossFi') }}</span>
           </div>
-          <div class="pop-menu-item" @click="gotoSafe">
-            <van-icon name="arrow-left" />
+          <div class="pop-menu-item" @click="gotoSafe" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/3.png" size="24px" />
             <span class="text">{{ $t('auditReport') }}</span>
           </div>
-          <div class="pop-menu-item" @click="gotoDoc">
-            <van-icon name="arrow-left" />
+          <div class="pop-menu-item" @click="gotoDoc" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/4.png" size="24px" />
             <span class="text">{{ $t('supportCenter') }}</span>
           </div>
-          <router-link tag="div" to="/reward" class="pop-menu-item">
-            <van-icon name="arrow-left" />
+          <router-link tag="div" to="/reward" class="pop-menu-item" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/5.png" size="24px" />
             <span class="text">{{ $t('referralRewards') }}</span>
           </router-link>
-          <router-link v-if="userInfo && userInfo.admin" tag="div" to="/admin" class="pop-menu-item">
-            <van-icon name="arrow-left" />
+          <router-link v-if="userInfo.admin" tag="div" to="/admin" class="pop-menu-item" :class="$store.state.daynight?'pop-menu-item-dark':''">
+            <van-icon name="/static/img/menu/1.png" size="24px" />
             <span class="text">{{ $t('admin') }}</span>
           </router-link>
         </div>
 
         <div class="lang">
-          <div class="lang-item" v-for="item in lang" :key="item.name" @click="onSelect(item.lang)">
+          <div class="lang-item" :class="$store.state.daynight?'':'lang-item-light'" v-for="item in lang" :key="item.name" @click="onSelect(item.lang)">
             {{ item.name }}
           </div>
         </div>
@@ -180,6 +192,11 @@
     methods: {
       ...mapMutations(['setUserAddress']),
       ...mapActions(['initData']),
+      ...mapMutations(['setmoudles']),
+      changeMoudles() {
+        this.$store.state.daynight = !this.$store.state.daynight
+        console.log(this.$store.state.daynight)
+      },
       exchangeTime() {
         if (this.exchangeStart < new Date().getTime() && this.exchangeEnd && this.exchangeEnd > new Date().getTime()) {
           let time = this.exchangeEnd - new Date().getTime()
@@ -216,7 +233,7 @@
       },
       gotoSafe() {
         location.href =
-          'https://docs.crossfimain.com/english/project-introduction/code/audit'
+          'https://docs.crossfimain.com/english/crossfi-crfi/audit'
       },
       gotoDoc() {
         location.href = 'https://docs.crossfimain.com/'
@@ -237,11 +254,51 @@
 </script>
 
 <style lang="scss" scoped>
+  .w-f2 {
+
+    color: #394255;
+  }
   .icon {
     width: 24px;
     height: 24px;
     background: url(../../assets/icon/menu.png) no-repeat;
     background-size: cover;
+  }
+  .address2 {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    // width: 109px;
+    background: transparent;
+    margin-right: 16px;
+    border: 1px solid #5ACBD0;
+    border-radius: 32px;
+    padding: 0 6px;
+
+    &-icon {
+      width: 18px;
+      height: 18px;
+      background-image: url(../../assets/icon/Group.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-right: 5px;
+
+      &.eth {
+        background-image: url(../../assets/icon/icon_eth.png);
+        background-color: #fff;
+        border-radius: 50%;
+      }
+
+      &.bsc {
+        background-image: url(../../assets/icon/icon_bsc.svg);
+        border-radius: 50%;
+      }
+    }
+
+    &-pending {
+      display: flex;
+      align-items: center;
+    }
   }
   .address {
     display: flex;
@@ -250,7 +307,7 @@
     // width: 109px;
     background: #232a38;
     margin-right: 16px;
-    box-shadow: 0px 1px 1px #343c4a, inset 0px 3px 9px rgba(0, 0, 0, 0.1);
+    border: 1px solid #5ACBD0;
     border-radius: 32px;
     padding: 0 6px;
 
@@ -313,8 +370,8 @@
         }
 
         .title-logo {
-          width: 0.91rem;
-          height: 0.88rem;
+          width: 26px;
+          height: 26px;
           margin-right: 10px;
         }
       }
@@ -324,11 +381,15 @@
         align-items: center;
 
         .icon {
-          margin-left: 10px;
+          margin-left: 5px;
         }
 
         .look {
           font-size: 0.4rem;
+        }
+
+        /deep/ .popover{
+          width: 90px;
         }
       }
 
@@ -433,7 +494,12 @@
   }
 
   /deep/ .van-popup {
-    background: #1f8aff;
+    background: #EAF2FF;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    color: #fff;
+  }
+  /deep/ .van-popup-dark {
+    background: #272831;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     color: #fff;
   }
@@ -456,20 +522,24 @@
         width: 227px;
         height: 36px;
 
-        background: #2c3446;
+        /*background: #2c3446;*/
         margin: 0 auto 20px;
         border-radius: 10px;
         padding: 0 20px;
-        font-size: 15px;
+        font-size: 16px;
         font-family: Montserrat;
         font-weight: 400;
         line-height: 19px;
-        color: #ffffff;
+        color: #394255;
         opacity: 1;
 
         .text {
           margin-left: 20px;
         }
+      }
+
+      &-item-dark {
+        color: #e5e4e4 !important;
       }
     }
 
@@ -484,6 +554,12 @@
       text-align: center;
 
       &-item {
+        color: #e5e4e4;
+        margin-bottom: 24px;
+      }
+
+      &-item-light {
+        color: #394255;
         margin-bottom: 24px;
       }
     }
@@ -491,5 +567,8 @@
 
   /deep/ .action-sheet__item {
     font-size: 18px;
+  }
+  .address1 {
+    color: #394255 !important;
   }
 </style>

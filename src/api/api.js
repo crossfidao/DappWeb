@@ -9,6 +9,30 @@ import requestForm from '@/api/requestForm'
 
 const baseURL = ''
 
+// 查询公告列表
+export function getGongList() {
+  return request({
+    baseURL: baseURL,
+    url: '/apiNew//business/app/listNotice',
+    method: 'get',
+  })
+}
+// 查询公告信息
+export function getGongMessage () {
+  return request({
+    baseURL: baseURL,
+    url: '/apiNew/business/app/getCurrent?address=' + (address ? address : '') + '&limit=' + limit + '&chainId=' + chainId,
+    method: 'get',
+  })
+}
+// 查询轮播列表
+export function getSwiper() {
+  return request({
+    baseURL: baseURL,
+    url: '/apiNew/business/app/listBanner',
+    method: 'get',
+  })
+}
 // 查询当前
 export function getCurrent(address, limit, chainId) {
   return request({

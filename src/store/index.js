@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import i18n from '@/i18n/i18n'
 import BigNumber from 'bignumber.js'
+import Cookies from 'js-cookie'
 import {
   API_HOST as ETH4,
   API_HOSTBSC as BSC4,
@@ -40,11 +41,13 @@ let EXContract = null
 Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
+    daynight: true,
     chainId: '',
     showLoading: false,
     isHome: false,
     userAddress: '',
     FilAddr: '',
+    pattern: false,
     systemInfo: {
       affRate: '0',
       nowInvestCRFI: '',
@@ -202,6 +205,11 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    setmoudles(state, value) {
+      state.daynight = value
+      console.log('store1', value)
+      Cookies.set('moudles', value ? 1 : 0)
+    },
     setChainId(state, value) {
       state.chainId = value
     },
@@ -507,7 +515,6 @@ export default new Vuex.Store({
       const list2 = await getETHStakingInfo(address, 'BSC')
       commit('setStakingList', [...list1, ...list2])
     },
-
     // 初始化
     async init({ state, commit, dispatch }, chainId) {
       if (chainId === CHAINID) {
@@ -948,6 +955,7 @@ export default new Vuex.Store({
         dispatch('init')
         return
       }
+      console.log(3333, res, value)
       let rate = utils.fromWei(res)
       // 计算crfi
       let crfiValue = value.times(new BigNumber(res)).div(new BigNumber(1e18))
@@ -965,10 +973,12 @@ export default new Vuex.Store({
         Toast(i18n.t('balanceToast'))
         return
       }
+      console.log(2222)
       if (fileCoin == '') {
         Toast(i18n.t('FilecoinPlaceholder'))
         return
       }
+      console.log(111111111)
       // 调用crfi send
       try {
         await CRFIContract.executeContract(

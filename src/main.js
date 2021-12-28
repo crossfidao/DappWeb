@@ -11,12 +11,37 @@ import 'amfe-flexible'
 import './assets/scss/common.scss'
 import Vant from 'vant'
 import 'vant/lib/index.css'
-
-Vue.config.productionTip = false
 // import VConsole from 'vconsole'
 // new VConsole()
 // if (process.env.NODE_ENV === 'production') {
 // }
+// 引入echarts核心模块
+import * as echarts from 'echarts/core'
+// 引入图表
+import { BarChart, GaugeChart } from 'echarts/charts'
+// 引入提示框，标题，直角坐标系等组件，组件后缀都为 Component
+import {
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+} from 'echarts/components'
+// 引入 Canvas 渲染器，注意引入 CanvasRenderer 或者 SVGRenderer 是必须的一步
+import { CanvasRenderer } from 'echarts/renderers'
+// 注册组件
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent,
+  BarChart,
+  GaugeChart,
+  CanvasRenderer,
+])
+// 将echarts挂载到Vue原型上
+Vue.prototype.$echarts = echarts
+// import echarts from 'echarts'
+Vue.config.productionTip = false
 Vue.use(Api)
 Vue.use(Vant)
 new Vue({

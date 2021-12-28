@@ -39,27 +39,27 @@ export const CFIL_ADDRESS = '0x0f91445A15a1353A099E742f9B51b1b41C2CbFe8'
 
 export const SFIL_ADDRESS = '0x642C75E5E61b3169Ed40644E14260b6f5a366d65'
 
-// // 兑换合约对象地址
-// export const EX_ADDRESS = '0x72457db5fB4c7346B5DD20Ba9FB52e679f40Aff8'
-//
-// export const API_HOST = 'https://api.crossfimain.com'
+// 兑换合约对象地址
+export const EX_ADDRESS = '0x72457db5fB4c7346B5DD20Ba9FB52e679f40Aff8'
+
+export const API_HOST = 'https://api.crossfimain.com'
 
 // 合约地址 官方测试链 R
 // export const CHAINID = '0x3'
-
-// export const CROSSLEND_ADDRESS = '0x422066b2F51bD090BAbBb499B01dB79A8F3B335a'
-
+//
+// export const CROSSLEND_ADDRESS = '0xCA29A2679E319f6d7FA16cC69A262F4Dd6C3BbD7'
+//
 // export const CRFI_ADDRESS = '0xacd6012077c1dd95bc4561a0e566d16080b10698'
-
+//
 // export const CFIL_ADDRESS = '0xd6c0ea77bcfb756a36ca1746a7f0e4cb927bc43b'
-
-// export const SFIL_ADDRESS = '0xb3b2c4987d0f5888d38db03bcdd9beb8f8d295b8'
-
-// 兑换合约对象地址
-// export const EX_ADDRESS = '0x35854041a12fc2ad4ED6346D1FaF81c7d9bF4F7C'
-export const EX_ADDRESS = '0xd0ea5f6a14970bff12870ae8d1db720aa09cb3f4'
-
-export const API_HOST = 'https://api.crossfimain.com'
+//
+// export const SFIL_ADDRESS = '0xb5a41f42a419a41598fb079dc07d55cb1e7516d7'
+//
+// // 兑换合约对象地址
+// // export const EX_ADDRESS = '0x35854041a12fc2ad4ED6346D1FaF81c7d9bF4F7C'
+// export const EX_ADDRESS = '0x15a799d9bc58286c921348bcfdd3186b61bfa2a4'
+//
+// export const API_HOST = 'https://api.crossfimain.com'
 
 // export const CHAINID = '0x9fbf1'
 // export const CROSSLEND_ADDRESS = '0x7e27e8f3aa4bda26502c38ccd28a4838aeca7966'

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="cont">
     <router-view class="content" />
     <BaseFooter></BaseFooter>
   </div>
@@ -24,12 +24,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.cont {
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background: #3f495a url('../../assets/images/bg.png') no-repeat;
+  // background: #3f495a url('../../assets/images/bg.png') no-repeat;
   background-size: cover;
   background-size: cover;
   .content {
