@@ -13,23 +13,23 @@ const baseURL = ''
 export function getGongList() {
   return request({
     baseURL: baseURL,
-    url: '/apiNew//business/app/listNotice',
+    url: '/api/business/app/listNotice',
     method: 'get',
   })
 }
 // 查询公告信息
-export function getGongMessage () {
+/*export function getGongMessage () {
   return request({
     baseURL: baseURL,
-    url: '/apiNew/business/app/getCurrent?address=' + (address ? address : '') + '&limit=' + limit + '&chainId=' + chainId,
+    url: '/api/business/app/getCurrent?address=' + (address ? address : '') + '&limit=' + limit + '&chainId=' + chainId,
     method: 'get',
   })
-}
+}*/
 // 查询轮播列表
 export function getSwiper() {
   return request({
     baseURL: baseURL,
-    url: '/apiNew/business/app/listBanner',
+    url: '/api/business/app/listBanner',
     method: 'get',
   })
 }
