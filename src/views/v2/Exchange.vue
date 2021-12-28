@@ -757,7 +757,7 @@
           return
         }
         self.$store.dispatch('exSwapCfil', { limit: isLimit, codeNo: codeNo, amount: amount }).then(() => {
-          // self.initData()
+          self.initData()
           self.$api.logSuccess(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换参与', '兑换期号：' + codeNo + '，参与数量：' + amount)
         }).catch(err => {
           if (isLimit) {
@@ -784,7 +784,7 @@
           }
         }
         self.$store.dispatch('exWithdraw', { limit: isLimit, codeNo: codeNo }).then(() => {
-          // self.initData()
+          self.initData()
           self.$api.logSuccess(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换提取', '兑换期号：' + codeNo)
         }).catch(err => {
           self.$api.logError(self.userAddress, (isLimit ? '限额' : '非限额') + '兑换提取', '兑换期号：' + codeNo, err)

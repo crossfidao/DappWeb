@@ -42,7 +42,7 @@
         <span class="item-logo"></span>
         <div class="item-right">
           <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
-          <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
+          <p class="price">+ {{ item.cfilInterest | decimals }} cFIL</p>
           <p class="address">
             {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }} </p>
           <p class="date">{{ getDate(item.timestamp) }}</p>

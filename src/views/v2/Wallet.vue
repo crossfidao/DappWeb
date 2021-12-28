@@ -313,7 +313,7 @@ font-weight: 600;" class="item-balance">
   .f3 {
     // color: #5e4e4e !important;
     color: #394255 !important;
-    font-size: 9px;
+    font-size: 12px;
     font-family: Segoe UI;
     font-weight: 400;
   }

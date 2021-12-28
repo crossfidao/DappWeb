@@ -32,7 +32,7 @@ const cn = {
   crfiDepositTotal: '质押总数',
   referralRewards: '推荐奖',
   referra: '总产出',
-  // CFIL
+  // cFIL
   cFILInvestment: 'cFIL STAKING',
   CRFIInvestment: 'CRFI STAKING',
   totalDeposit: '总质押',
@@ -196,7 +196,7 @@ const cn = {
   exHowToPlay: '玩法说明',
   exHTP1: '1.最小兑换数量：10个',
   exHTP2: '2.兑换到账时间：10-30分钟',
-  exHTP3: '3.CFIL为FIL的1:1锚定代币，用户可以在任意时刻把CFIL兑 换成FIL，请务向此地址转入FIL意外以外的代币',
+  exHTP3: '3.cFIL为FIL的1:1锚定代币，用户可以在任意时刻把cFIL兑 换成FIL，请务向此地址转入FIL意外以外的代币',
   exAskTitle: '详情（点击查看更多详情）',
   exAsk1: '1.我应该参与哪种兑换？我可以同时参与两种吗？',
   exAnswer1: '您可以同时选择一种或两种！',

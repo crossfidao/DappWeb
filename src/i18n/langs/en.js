@@ -36,7 +36,7 @@ const cn = {
   referralRewards: 'Output Total',
   referra: 'Total Output',
   
-  // CFIL
+  // cFIL
   cFILInvestment: 'cFIL STAKING',
   CRFIInvestment: 'CRFI STAKING',
   totalDeposit: 'Total Deposit',
@@ -50,7 +50,7 @@ const cn = {
   // Wallet
   walletBalance: 'Wallet Balance',
   balance: 'Balance',
-  swap: 'SWAP',
+  swap: 'Swap',
   stake: 'Storage pledge',
   myPositions: 'My Stake',
   profit: 'Profit',
@@ -202,7 +202,7 @@ const cn = {
   exParticipationTotal: 'Exchanged quantity',
   exDateNumber: 'Date Number',
   exChangeRatio: 'Swap Ratio',
-  exTotalExchangePool: 'Quota of CFIL',
+  exTotalExchangePool: 'Quota of cFIL',
   exTotalExchangeVolumeOfExchangePool: 'Total Exchange Volume Of ExchangePool',
   exSinglePersonLimit: 'Member Max Apply Amount',
   exRemainingConvertible: 'Current / Total',
@@ -215,7 +215,7 @@ const cn = {
   exHowToPlay: 'How To Play',
   exHTP1: '1. Minimum exchange quantity: 10',
   exHTP2: '2. Time for redemption to the account: 10-30 minutes',
-  exHTP3: '3. CFIL is the 1:1 anchor token of FIL. Users can exchange CFIL into FIL at any time. Please make sure to transfer tokens other than FIL accident to this address.',
+  exHTP3: '3. cFIL is the 1:1 anchor token of FIL. Users can exchange cFIL into FIL at any time. Please make sure to transfer tokens other than FIL accident to this address.',
   exAskTitle: 'Transaction detail (Click here to read the detailed process)',
   exAsk1: '1. Which swap should I participate in? Can I participate in both at the same time?',
   exAnswer1: 'You can participate in one or both at the same time.',
