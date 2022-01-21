@@ -3,10 +3,10 @@
     <BaseHeader />
     <!-- <h4 class="title">{{ $t('dashboard') }}</h4> -->
     <!-- <h4 class="title2">{{ $t('filStatistics') }}</h4> -->
-    <div class="circle" style="text-align: center">
+    <div class="circle">
       <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
         <van-swipe-item class="banner-img" @click="toUrl(swiper.url)" v-for="(swiper, index) in swiperList" :key="index">
-          <img style="width:100%;height:100%" :src="swiper.img" alt="" />
+          <img :src="swiper.img" alt="" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -340,7 +340,7 @@
     margin-left: 9px;
     margin-right: 5px;
   }
-  /deep/ .van-notice-bar {
+  ::v-deep .van-notice-bar {
     position: relative;
     top: -12px;
     background-color: transparent;
@@ -350,28 +350,34 @@
     width: 360px;
     color: #394255;
   }
-  /deep/ .van-notice-bar__wrap {
+  ::v-deep .van-notice-bar__wrap {
     height: 14px;
   }
-  /deep/ .van-swipe__track--vertical {
+  ::v-deep .van-swipe__track--vertical {
     height: 14px;
   }
-  /deep/ .van-notice-bar__content {
+  ::v-deep .van-notice-bar__content {
     height: 18px;
     display: flex;
     align-items: center;
     width: 320px;
   }
-  /deep/ .notice-swipe {
+  ::v-deep .notice-swipe {
     width: 300px !important;
     height: 25px !important;
     line-height: 24px !important;
   }
-  /deep/ .van-swipe__track {
+  ::v-deep .van-swipe__track {
     height: 165px;
   }
   .van-swipe {
     border-radius: 10px;
+  }
+  .my-swipe{
+    width: 342px !important;
+    height: 165px;
+    margin-left: auto;
+    margin-right: auto;
   }
   .my-swipe .van-swipe-item {
     color: #fff;
@@ -382,11 +388,11 @@
     text-align: center;
   }
   .banner-img {
-    width: 342px;
+    width: 342px !important;
     height: 165px;
 
-    /deep/ img {
-      width: 342px;
+    ::v-deep img {
+      width: 342px !important;
       height: 165px;
     }
   }
@@ -473,14 +479,11 @@
     color: #fff;
   }
   .circle {
-    width: 100%;
+    width: 375px;
     height: 180px;
     margin-bottom: 23px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
-  /deep/ .van-circle__text {
+  ::v-deep .van-circle__text {
     color: #73ffe9;
     font-size: 20px;
     font-weight: bold;
@@ -523,3 +526,4 @@
     }
   }
 </style>
+
