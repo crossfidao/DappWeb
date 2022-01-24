@@ -63,6 +63,12 @@
           {{ toFloor(fromWei(Number(systemInfo.crfiRewardTotal) + Number(otherSystemInfo.crfiRewardTotal)),4) }} </p>
       </div>
     </div>
+    <van-overlay :show="currentNotice.img" @click="showNotice = false">
+      <div class="notice-overlay">
+        <img :src="currentNotice.img" />
+        <van-icon name="close" class="notice-icon" @click="closeNotice"/>
+      </div>
+    </van-overlay>
   </div>
 </template>
 
@@ -71,6 +77,7 @@
   import BigNumber from 'bignumber.js'
   import QRCode from 'qrcodejs2'
   import Web3 from 'web3'
+  import Cookies from 'js-cookie'
 
   let web3 = new Web3()
   let { utils } = web3
@@ -80,12 +87,16 @@
         currentRate: 0,
         gongList: [],
         swiperList: [],
+        bannerNotices: [],
+        currentNotice: {},
         currentNum: 0.7,
+        showNotice: false
       }
     },
     created() {
       this.getGongList()
       this.getSwiperList()
+      this.getBannerNoticeList()
     },
     watch: {
       '$store.state.daynight'(newVal, oldVal) {
@@ -138,10 +149,46 @@
     methods: {
       ...mapMutations(['setUserAddress']),
       ...mapActions(['initData']),
-
       toUrl(str) {
         str = str.replace('<p>', '').replace('</p>', '')
         location.href = str
+      },
+      closeNotice() {
+        const self = this
+        let id = self.currentNotice.id
+        let bnids = Cookies.get('bnids') || ''
+        if(bnids.indexOf(id.toString()) < 0){
+          bnids += '#' + id
+        }
+        Cookies.set('bnids', bnids)
+        self.currentNotice = {}
+        self.showNotice = false
+        for (let i = 0; i < self.bannerNotices.length; i++) {
+          let item = self.bannerNotices[i]
+          if(item.id == id && i < self.bannerNotices.length - 1) {
+            self.currentNotice = self.bannerNotices[i+1]
+            self.showNotice = true
+            break;
+          }
+        }
+      },
+      //获取公告列表
+      getBannerNoticeList() {
+        const self = this
+        let bnids = Cookies.get('bnids') || ''
+        self.$api.getBannerNoticeList().then(res => {
+          self.bannerNotices = []
+          for (let i = 0; i < res.data.length; i++) {
+            let item = res.data[i]
+            if(bnids.indexOf(item.id.toString()) < 0){
+              self.bannerNotices.push(item)
+            }
+          }
+          if(self.bannerNotices.length > 0) {
+            self.currentNotice = self.bannerNotices[0]
+            self.showNotice = true
+          }
+        })
       },
       //获取公告列表
       getGongList() {
@@ -283,6 +330,22 @@
 </script>
 
 <style lang="scss" scoped>
+  .notice-overlay{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    img{
+      width: 250px;
+    }
+    .notice-icon{
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  }
   .d-bg {
     background: #2F303B !important;
   }

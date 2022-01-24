@@ -17,6 +17,14 @@ export function getGongList() {
     method: 'get',
   })
 }
+// 查询公告列表
+export function getBannerNoticeList() {
+  return request({
+    baseURL: baseURL,
+    url: '/api/business/app/listBannerNotice',
+    method: 'get',
+  })
+}
 // 查询公告信息
 /*export function getGongMessage () {
   return request({
