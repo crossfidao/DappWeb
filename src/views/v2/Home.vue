@@ -66,7 +66,8 @@
     <van-overlay :show="currentNotice.img" @click="showNotice = false">
       <div class="notice-overlay">
         <img :src="currentNotice.img" />
-        <van-icon name="close" class="notice-icon" @click="closeNotice"/>
+        <!--<van-icon name="close" class="notice-icon" @click="closeNotice" size="20"/>-->
+        <img class="notice-icon" src="@/assets/icon/close.png" />
       </div>
     </van-overlay>
   </div>
@@ -343,6 +344,8 @@
     }
     .notice-icon{
       margin-top: 10px;
+      width: 30px;
+      height: 30px;
       cursor: pointer;
     }
   }
