@@ -24,7 +24,7 @@ import {
   SFilContract as ETH7,
   SFilContractBSC as BSC7,
   utils,
-  getETHStakingInfo,
+  // getETHStakingInfo,
 } from '@/config'
 import { Toast } from 'vant'
 
@@ -510,10 +510,31 @@ export default new Vuex.Store({
     },
     // 获取借贷节点列表
     async getStakingList({ state, commit }) {
-      let address = state.userAddress
-      const list1 = await getETHStakingInfo(address, 'ETH')
-      const list2 = await getETHStakingInfo(address, 'BSC')
-      commit('setStakingList', [...list1, ...list2])
+      // let address = state.userAddress
+      // const list1 = await getETHStakingInfo(address, 'ETH')
+      // const list2 = await getETHStakingInfo(address, 'BSC')
+      // TODO 直接改为写死，之后把config的getETHStakingInfo函数去掉，考虑目前部署，故先不去
+
+      const list = [{
+        sfilNum: 130000,
+        sid: 2,
+          detail: {
+            name: 'Cangri kim',
+            email: '44silver@naver.com',
+            company: 'DataLine',
+            nodeNumber: 'f060805',
+          },
+      }, {
+        sfilNum: 34000,
+        sid: 5,
+          detail: {
+            name: 'SEANCHA',
+            email: 'iamudori@naver.com',
+            company: 'DSTORAGE',
+            nodeNumber: 'f01086808',
+          },
+      }]
+      commit('setStakingList', [...list])
     },
     // 初始化
     async init({ state, commit, dispatch }, chainId) {

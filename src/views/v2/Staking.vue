@@ -49,7 +49,7 @@
       </div>
       <div :class="$store.state.daynight ? 'd-bg' : ''" class="items">
         <h4 :class="$store.state.daynight ? 'chc' : ''" class="item-title">{{ $t('trusteeship') }}</h4>
-        <div class="box" v-for="item in stakingList" :key="item.sid">
+        <div :class="$store.state.daynight ? 'box box-black' : 'box'" v-for="item in stakingList" :key="item.sid">
           <div class="node-box node-read" :data-clipboard-text="item.detail.nodeNumber">
             <a :href="`https://filfox.info/address/${item.detail.nodeNumber}`"> ID: {{ item.detail.nodeNumber }} </a>
             <svg @click="copy" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +62,7 @@
               {{ $t('sellWholesale') }}
             </div>
             <div>
-              {{ item.sfilNum | decimals(0) }}
+              {{ item.sfilNum }}
             </div>
           </div>
         </div>
@@ -249,7 +249,8 @@ background: #FAFAFA;" />
   .container1 {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
+    height: auto;
 
     background: #272831;
     background-size: cover;
@@ -324,20 +325,32 @@ background: #FAFAFA;" />
     }
 
     .box {
-      background: #4d5a6a;
+      background: #e9f3ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 18px;
       border-radius: 10px;
       margin-bottom: 10px;
-
+      &.box-black{
+        background: #4d5a6a;
+        .node-box {
+          a {
+            color: #fff;
+          }
+        }
+        .sfil-box {
+          & > div:nth-of-type(1) {
+            color: #a5aabf;
+          }
+        }
+      }
       .node-box {
         height: 100%;
 
         a {
           font-size: 14px;
-          color: #fff;
+          color: #394255;
         }
 
         svg {
@@ -352,7 +365,7 @@ background: #FAFAFA;" />
         line-height: 1.5;
 
         & > div:nth-of-type(1) {
-          color: #a5aabf;
+          color: #8C8D8D;
           font-size: 12px;
         }
 
