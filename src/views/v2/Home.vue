@@ -67,7 +67,7 @@
       <div class="notice-overlay">
         <img @click="toUrl(currentNotice.url)" :src="currentNotice.img" />
         <!--<van-icon name="close" class="notice-icon" @click="closeNotice" size="20"/>-->
-        <img class="notice-icon" src="@/assets/icon/close.png" />
+        <img class="notice-icon" @click="closeNotice" src="@/assets/icon/close.png" />
       </div>
     </van-overlay>
   </div>
