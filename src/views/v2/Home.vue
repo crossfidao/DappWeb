@@ -65,7 +65,7 @@
     </div>
     <van-overlay :show="currentNotice.img" @click="showNotice = false">
       <div class="notice-overlay">
-        <img @click="toUrl(currentNotice.url)" :src="currentNotice.img" />
+        <img @click="toUrl2(currentNotice.url)" :src="currentNotice.img" />
         <!--<van-icon name="close" class="notice-icon" @click="closeNotice" size="20"/>-->
         <img class="notice-icon" @click="closeNotice" src="@/assets/icon/close.png" />
       </div>
@@ -151,6 +151,12 @@
       ...mapMutations(['setUserAddress']),
       ...mapActions(['initData']),
       toUrl(str) {
+        if(str){
+          str = str.replace('<p>', '').replace('</p>', '')
+          location.href = str
+        }
+      },
+      toUrl2(str) {
         this.closeNotice()
         if(str){
           str = str.replace('<p>', '').replace('</p>', '')
