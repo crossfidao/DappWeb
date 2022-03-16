@@ -9,6 +9,33 @@ import requestForm from '@/api/requestForm'
 
 const baseURL = ''
 
+// 查询用户信息
+export function getUser(address, eth) {
+  return request({
+    baseURL: baseURL,
+    url: '/api/business/app/getUser?address=' + address + '&eth=' + eth,
+    method: 'get',
+  })
+}
+
+// 获取邀请记录
+export function getInvitateList(address, eth, page, size) {
+  return request({
+    baseURL: baseURL,
+    url: '/api/business/app/getInvitateList?address=' + address + '&eth=' + eth + '&page=' + page + '&size=' + size,
+    method: 'get',
+  })
+}
+
+// 获取奖励记录
+export function getRewardList(address, eth, page, size) {
+  return request({
+    baseURL: baseURL,
+    url: '/api/business/app/getRewardList?address=' + address + '&eth=' + eth + '&page=' + page + '&size=' + size,
+    method: 'get',
+  })
+}
+
 // 查询公告列表
 export function getGongList() {
   return request({
@@ -17,6 +44,7 @@ export function getGongList() {
     method: 'get',
   })
 }
+
 // 查询公告列表
 export function getBannerNoticeList() {
   return request({
@@ -25,6 +53,7 @@ export function getBannerNoticeList() {
     method: 'get',
   })
 }
+
 // 查询公告信息
 /*export function getGongMessage () {
   return request({
@@ -33,6 +62,7 @@ export function getBannerNoticeList() {
     method: 'get',
   })
 }*/
+
 // 查询轮播列表
 export function getSwiper() {
   return request({
@@ -41,6 +71,7 @@ export function getSwiper() {
     method: 'get',
   })
 }
+
 // 查询当前
 export function getCurrent(address, limit, chainId) {
   return request({
