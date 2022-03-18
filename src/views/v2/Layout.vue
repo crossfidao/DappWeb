@@ -2,7 +2,7 @@
   <div class="cont">
     <router-view class="content" />
     <BaseFooter></BaseFooter>
-    <Depositdue v-if="userList.length > 0" />
+    <!-- <Depositdue v-if="userList.length > 0" /> -->
   </div>
 </template>
 
