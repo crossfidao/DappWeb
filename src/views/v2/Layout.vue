@@ -19,9 +19,11 @@ export default {
       return this.$store.state.showLoading
     },
     userList() {
-      return this.$store.state.userList.filter((item)=>{
-        return item.Days == 0
+      return this.$store.state.userList.filter(item => {
+        // 只留活期且是cfil的
+        return item.Days == 0 && item.Type != 0
         //  || this.getEndTime(item.EndTime) < 0
+        // {{ item.Type == 0 ? 'CRFI' : 'cFIL' }}
       })
     },
   },
