@@ -54,6 +54,7 @@ const cn = {
   stake: 'Storage pledge',
   myPositions: 'My Stake',
   profit: 'Profit',
+  yesterprofit: 'yday Profit',
   
   // stake
   stake: 'Borrow',
@@ -138,6 +139,8 @@ const cn = {
   repurchase: 'repurchase',
   withdraw: 'Withdraw Stake + Profit',
   withdrawAll: 'Profit Withdrawal',
+  clickWithdraw: 'One-click extraction',
+  depositdue: 'You can withdraw your deposit earnings',
   eFilDesc: 'cFil can be redeemed in 1:1 ratio by Filecoin',
   FDDesc: 'CRFI can be obtained by staking and mining',
   eFilPlaceholder: 'please input your cFil selling amount',

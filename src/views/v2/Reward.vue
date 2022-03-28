@@ -7,13 +7,13 @@
         <div class="logo-item" style="margin-right: 140px;">
           <div class="logo"></div>
           <div :class="$store.state.daynight ? '' : 'chc'" class="items-content">
-            {{ userInfo && userInfo.uInfoView && userInfo.uInfoView.totalAffCRFI | decimals }}
+            <!--            {{ userInfo && userInfo.uInfoView && userInfo.uInfoView.totalAffCRFI | decimals }}-->{{ userInfoService && userInfoService.crfiReward }}
           </div>
         </div>
         <div class="logo-item">
           <div class="logo cfil"></div>
           <div :class="$store.state.daynight ? '' : 'chc'" class="items-content">
-            {{ userInfo && userInfo.uInfoView && userInfo.uInfoView.totalAffCFil | decimals }}
+            <!--            {{ userInfo && userInfo.uInfoView && userInfo.uInfoView.totalAffCFil | decimals }}-->{{ userInfoService && userInfoService.cfilReward }}
           </div>
         </div>
       </div>
@@ -36,35 +36,34 @@
           {{ $t(item.name) }} <span class="line"></span>
         </div>
       </div>
+
+      <template v-if="active === 0">
+        <div class="item" v-for="item in rewardList" :key="item.indexed">
+          <span v-if="item.currency" class="item-logoc"></span> <span v-else class="item-logo"></span>
+          <div class="item-right">
+            <p class="price">+ {{ item.crfiReward }} CRFI</p>
+            <p class="price">+ {{ item.cfilReward }} cFIL</p>
+            <p class="address">
+              {{ item.address.slice(0, 12) + '...' + item.address.slice(32, 42) }} </p>
+            <p class="date">{{ getDate(item.createTime/1000) }}</p>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="item" v-for="item in invitateList" :key="item.indexed">
+          <span v-if="item.currency" class="item-logoc"></span> <span v-else class="item-logo"></span>
+          <div class="item-right">
+            <p class="amount">
+              + {{ item.amount }} {{ item.currency ? 'cFIL' : 'CRFI' }} </p>
+            <p class="price">+ {{ item.cycleTime }} Days</p>
+            <p class="address">
+              {{ item.address.slice(0, 12) + '...' + item.address.slice(32, 42) }} </p>
+            <p class="date">{{ getDate(item.createTime/1000) }}</p>
+          </div>
+        </div>
+      </template>
     </div>
-    <template v-if="active === 0">
-      <div class="item" v-for="item in rewardsList" :key="item.indexed">
-        <span class="item-logo"></span>
-        <div class="item-right">
-          <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
-          <p class="price">+ {{ item.cfilInterest | decimals }} cFIL</p>
-          <p class="address">
-            {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }} </p>
-          <p class="date">{{ getDate(item.timestamp) }}</p>
-        </div>
-      </div>
-    </template>
-    <template v-else>
-      <div class="item" v-for="item in promoteList" :key="item.indexed">
-        <span class="item-logo"></span>
-        <div class="item-right">
-          <!-- <p class="amount">
-            + {{ item.amount | decimals }}
-            {{ item.Type == 0 ? 'CRFI' : 'CFIL' }}
-          </p> -->
-          <!-- <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p> -->
-          <p class="address">
-            {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }} </p>
-          <p class="date">{{ getDate(item.timestamp) }}</p>
-        </div>
-      </div>
-    </template>
-    <!-- <van-tabs v-model="active" background="#3f4b5d">
+    <!--<van-tabs v-model="active" background="#3f4b5d">
       <van-tab :title="$t('claimedRewards')">
         <div class="item" v-for="item in rewardsList" :key="item.indexed">
           <span class="item-logo"></span>
@@ -72,8 +71,7 @@
             <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
             <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
             <p class="address">
-              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
-            </p>
+              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }} </p>
             <p class="date">{{ getDate(item.timestamp) }}</p>
           </div>
         </div>
@@ -85,13 +83,12 @@
             <p class="price">+ {{ item.crfiInterest | decimals }} CRFI</p>
             <p class="price">+ {{ item.cfilInterest | decimals }} CFIL</p>
             <p class="address">
-              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }}
-            </p>
+              {{ item.sender.slice(0, 12) + '...' + item.sender.slice(32, 42) }} </p>
             <p class="date">{{ getDate(item.timestamp) }}</p>
           </div>
         </div>
       </van-tab>
-    </van-tabs> -->
+    </van-tabs>-->
     <van-popup v-model="show" style="width: 280px;height: 580px;overflow: hidden;">
       <div style="width: 280px; height: 580px;" ref="imageWrapper" id="captureId">
         <!-- <vue-esign ref="esign" :width="800" :height="300" :isCrop="isCrop" :lineWidth="lineWidth" :lineColor="lineColor" :bgColor.sync="bgColor" />
@@ -107,7 +104,7 @@
 
 <script>
   import Vue from 'vue'
-  import { Popup, Toast } from 'vant'
+  import { Popup } from 'vant'
 
   Vue.use(Popup)
   import QRCode from 'qrcodejs2'
@@ -133,7 +130,7 @@
         bgPic: bgPic,
         makePic: '',
         firstFlag: true,
-        active: 0,
+        active: 1,
         showMask: false,
         currentRate: 0,
         value: '',
@@ -150,12 +147,15 @@
             name: 'caimedPromote',
           },
         ],
+        userInfoService: {},
+        invitateList: [],
+        rewardList: [],
       }
     },
     computed: {
       copyValue() {
         return (
-          window.location.origin + '/#/?add=' + this.$store.state.wallet.account
+          window.location.origin + '/#/?add=' + this.$store.state.userAddress
         )
       },
       userAddress() {
@@ -180,6 +180,9 @@
     },
     mounted() {
       this.getRewardList()
+      this.getUser()
+      this.getInvitateList()
+      this.getRewardList()
       this.creatQrCode()
     },
     methods: {
@@ -192,13 +195,33 @@
           this.firstFlag = false
         })
       },
+      //获取公告列表
+      getUser() {
+        const self = this
+        self.$api.getUser(self.$store.state.userAddress, self.$store.state.chainId === '0x1').then(res => {
+          self.userInfoService = res.data
+        })
+      },
+      //获取公告列表
+      getInvitateList() {
+        const self = this
+        self.$api.getInvitateList(self.$store.state.userAddress, self.$store.state.chainId === '0x1', 1, 1000).then(res => {
+          self.invitateList = res.data.records
+        })
+      },
+      getRewardList() {
+        const self = this
+        self.$api.getRewardList(self.$store.state.userAddress, self.$store.state.chainId === '0x1', 1, 1000).then(res => {
+          self.rewardList = res.data.records
+        })
+      },
       // 创建二维码
       creatQrCode() {
         var qrcode = new QRCode(this.$refs.qrCodeUrl, {
           text:
             window.location.origin +
             '/#/?add=' +
-            this.$store.state.wallet.account, // 需要转换为二维码的内容
+            this.$store.state.userAddress, // 需要转换为二维码的内容
           width: 100,
           height: 100,
           colorDark: '#000000',
@@ -290,7 +313,6 @@
 
   .d-c6 {
     width: 342px;
-    height: 315px;
     background: #2f303b;
     box-shadow: 0px 2px 5px 0px rgba(0, 1, 0, 0.1);
     border-radius: 12px;
@@ -328,7 +350,7 @@
     width: 342px;
     height: 290px;
   }
-  /deep/ .van-cell::after {
+  ::v-deep .van-cell::after {
     border-bottom: none;
   }
   .flex-col {
@@ -336,7 +358,7 @@
     flex-direction: column;
     align-self: center;
   }
-  /deep/ .van-empty__image {
+  ::v-deep .van-empty__image {
     display: none;
   }
 
@@ -442,9 +464,9 @@
     align-items: center;
     background: #3f4b5d;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    margin: 24px 24px 12px;
+    margin: 12px 16px 12px;
     border-radius: 17px;
-    padding: 32px 24px;
+    padding: 24px 20px;
     font-size: 14px;
     font-family: Montserrat;
     font-weight: 400;
@@ -455,6 +477,14 @@
       width: 42px;
       height: 42px;
       background: url('../../assets/images/1.png') no-repeat;
+      background-size: cover;
+      margin-right: 32px;
+    }
+
+    &-logoc {
+      width: 42px;
+      height: 42px;
+      background: url('../../assets/images/2.png') no-repeat;
       background-size: cover;
       margin-right: 32px;
     }
@@ -617,7 +647,7 @@
       border-radius: 10px;
     }
   }
-  /deep/ .van-field__control {
+  ::v-deep .van-field__control {
     color: #fff;
   }
   .chc {
@@ -626,9 +656,23 @@
   .d-bg {
     background: #fff !important;
 
-    /deep/ input {
+    ::v-deep input {
       color: black;
     }
+
+    .item {
+      background-color: #d6e4fd !important;
+      color: #272831 !important;
+    }
+
+    .price {
+      color: #272831 !important;
+    }
+
+    .amount {
+      color: #272831 !important;
+    }
+
   }
   .d-dd {
     // color: #fff !important;

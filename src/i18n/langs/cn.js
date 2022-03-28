@@ -50,6 +50,7 @@ const cn = {
   stake: '存力质押',
   myPositions: '我的存款',
   profit: '收益',
+  yesterprofit: '昨日收益',
   // stake
   stake: '借贷',
   stake1: '存力质押',
@@ -127,6 +128,8 @@ const cn = {
   repurchase: '赎回',
   withdraw: '赎回',
   withdrawAll: '提取收益',
+  clickWithdraw: '一键提取',
+  depositdue: '你有理财收益可以提取了',
   eFilDesc: 'cFil可以与Filecoin以1:1的比例交换。',
   FDDesc: 'CRFI可以质押和理财',
   eFilPlaceholder: '请输入cFil兑换量',

@@ -47,6 +47,7 @@ const kr = {
   stake: '파워저장',
   myPositions: 'STAKE 내역',
   profit: '수익',
+  yesterprofit: '어제의 수입',
   // stake
   stake: '대출',
   stake1: '파워저당',
@@ -116,6 +117,8 @@ const kr = {
   copyText: '복사 완료',
   // home
   withdrawAll: '수익 출금',
+  clickWithdraw: '원클릭 추출',
+  depositdue: '고객님의 예금 수익을 인출할 수 있습니다',
   fileconinAddress: 'Filecoin 주소',
   invite: '나의 홍보 코드',
   inviteText:

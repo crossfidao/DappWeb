@@ -63,11 +63,12 @@
           {{ toFloor(fromWei(Number(systemInfo.crfiRewardTotal) + Number(otherSystemInfo.crfiRewardTotal)),4) }} </p>
       </div>
     </div>
-    <van-overlay :show="currentNotice.img" @click="showNotice = false">
+    <van-overlay :show="currentNotice.img">
       <div class="notice-overlay">
         <img @click="toUrl2(currentNotice.url)" :src="currentNotice.img" />
         <!--<van-icon name="close" class="notice-icon" @click="closeNotice" size="20"/>-->
-        <img class="notice-icon" @click="closeNotice" src="@/assets/icon/close.png" />
+        <div v-show="!showNotice" class="notice-time">({{showTime}}s)</div>
+        <img v-show="showNotice" class="notice-icon" @click="closeNotice" src="@/assets/icon/close.png" />
       </div>
     </van-overlay>
   </div>
@@ -91,7 +92,9 @@
         bannerNotices: [],
         currentNotice: {},
         currentNum: 0.7,
-        showNotice: false
+        showNotice: false,
+        showTime: 9,
+        showInterval: 0
       }
     },
     created() {
@@ -163,6 +166,13 @@
           location.href = str
         }
       },
+      showIntervalFun(){
+        this.showTime--
+        if(this.showTime < 1){
+          this.showNotice = true
+          clearInterval(this.showInterval)
+        }
+      },
       closeNotice() {
         const self = this
         let id = self.currentNotice.id
@@ -177,7 +187,8 @@
           let item = self.bannerNotices[i]
           if(item.id == id && i < self.bannerNotices.length - 1) {
             self.currentNotice = self.bannerNotices[i+1]
-            self.showNotice = true
+            self.showTime = 9
+            self.showInterval = setInterval(self.showIntervalFun , 1000)
             break;
           }
         }
@@ -196,7 +207,8 @@
           }
           if(self.bannerNotices.length > 0) {
             self.currentNotice = self.bannerNotices[0]
-            self.showNotice = true
+            self.showTime = 9
+            self.showInterval = setInterval(self.showIntervalFun , 1000)
           }
         })
       },
@@ -350,6 +362,12 @@
 
     img{
       width: 250px;
+    }
+    .notice-time{
+      margin-top: 10px;
+      width: 50px;
+      height: 30px;
+      cursor: pointer;
     }
     .notice-icon{
       margin-top: 10px;
