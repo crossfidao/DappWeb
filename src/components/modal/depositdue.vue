@@ -184,8 +184,9 @@ export default {
   },
   computed: {
     userList() {
-      return this.$store.state.userList.filter((item)=>{
-        return item.Days == 0 || this.getEndTime(item.EndTime) < 0
+      return this.$store.state.userList.filter(item => {
+        // 只留活期且是cfil的
+        return item.Days == 0 && item.Type != 0
       })
     },
 
@@ -203,8 +204,10 @@ export default {
     // ...mapMutations(['setUserAddress']),
     ...mapActions(['Withdraw']),
     closes(action, done) {
+      // 活期只有一个 PackageID
+      // 0 是全部提取
       this.Withdraw({
-        PackageID: 0,
+        PackageID: this.userList[0].PackageID || 0,
         bool: false,
       }).then(()=>{
         done()
