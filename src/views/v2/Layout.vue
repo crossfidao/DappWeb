@@ -2,7 +2,7 @@
   <div class="cont">
     <router-view class="content" />
     <BaseFooter></BaseFooter>
-    <!-- <Depositdue v-if="userList.length > 0" /> -->
+    <Depositdue v-if="userList.length > 0" />
   </div>
 </template>
 
@@ -20,7 +20,8 @@ export default {
     },
     userList() {
       return this.$store.state.userList.filter((item)=>{
-        return item.Days == 0 || this.getEndTime(item.EndTime) < 0
+        return item.Days == 0
+        //  || this.getEndTime(item.EndTime) < 0
       })
     },
   },

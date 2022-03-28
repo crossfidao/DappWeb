@@ -118,7 +118,7 @@ const kr = {
   // home
   withdrawAll: '수익 출금',
   clickWithdraw: '원클릭 추출',
-  depositdue: '고객님께서 예치한 상품 만기되어, 수익 지급이 중지되었습니다',
+  depositdue: '고객님의 예금 수익을 인출할 수 있습니다',
   fileconinAddress: 'Filecoin 주소',
   invite: '나의 홍보 코드',
   inviteText:

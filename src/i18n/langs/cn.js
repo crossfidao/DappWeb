@@ -129,7 +129,7 @@ const cn = {
   withdraw: '赎回',
   withdrawAll: '提取收益',
   clickWithdraw: '一键提取',
-  depositdue: '您有理财到期啦，收益发放已经停止',
+  depositdue: '你有理财收益可以提取了',
   eFilDesc: 'cFil可以与Filecoin以1:1的比例交换。',
   FDDesc: 'CRFI可以质押和理财',
   eFilPlaceholder: '请输入cFil兑换量',

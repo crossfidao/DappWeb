@@ -140,7 +140,7 @@ const cn = {
   withdraw: 'Withdraw Stake + Profit',
   withdrawAll: 'Profit Withdrawal',
   clickWithdraw: 'One-click extraction',
-  depositdue: 'Your financial management has expired, and the profit distribution has stopped',
+  depositdue: 'You can withdraw your deposit earnings',
   eFilDesc: 'cFil can be redeemed in 1:1 ratio by Filecoin',
   FDDesc: 'CRFI can be obtained by staking and mining',
   eFilPlaceholder: 'please input your cFil selling amount',
