@@ -207,8 +207,8 @@ export default {
       // 活期只有一个 PackageID
       // 0 是全部提取
       this.Withdraw({
-        PackageID: this.userList[0].PackageID || 0,
-        bool: false,
+        PackageID: this.userList[0].PackageID,
+        bool: true,
       }).then(()=>{
         done()
       }).catch(()=>{
